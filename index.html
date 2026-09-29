@@ -3734,9 +3734,23 @@ function rcSplitPrescribed(exerciseName, raw){
 
   let qty = scheme;
   if(!qty){
-    let rest = kgMatch ? s.replace(kgMatch[0], '') : s;
-    const numMatch = rest.match(/^\s*\d+[\d,.\s]*(min|seg|s|reps?|rounds?)?/i);
-    if(numMatch) qty = numMatch[0].trim();
+    const rest = (kgMatch ? s.replace(kgMatch[0], '') : s).trim();
+    // número + unidade opcional; m/km mantidos (400m, 7,5 km)
+    const NUM = /^\d+(?:[,.]\d+)?(?:\s*(?:-|a)\s*\d+(?:[,.]\d+)?)?(?:\s*(?:min|seg|s|reps?|rounds?|km|m)\b|x)?/i;
+    // rótulo antes de dois-pontos: "Min ímpar: 12", "Min par: 40s forte"
+    const labelMatch = rest.match(/^(min(?:uto)?s?\s+(?:ímpar|impar|par)(?:es)?)\s*:\s*(.*)$/i);
+    // formato no início: "EMOM 10 min x 2", "AMRAP 12", "E2MOM 8 min"
+    const fmtMatch = rest.match(/^(E\d*MOM|AMRAP|Tabata|For\s+time|RFT)\b[^,;|—]*/i);
+    if(labelMatch){
+      const label = labelMatch[1].charAt(0).toUpperCase() + labelMatch[1].slice(1).toLowerCase();
+      const n = labelMatch[2].match(NUM);
+      qty = n ? `${label}: ${n[0].trim()}` : label;
+    } else if(fmtMatch){
+      qty = fmtMatch[0].replace(/\s+/g,' ').trim();
+    } else {
+      const numMatch = rest.match(NUM);
+      if(numMatch) qty = numMatch[0].trim();
+    }
   }
   return {name, qty};
 }
