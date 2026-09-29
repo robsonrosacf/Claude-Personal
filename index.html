@@ -368,9 +368,11 @@
     position:absolute;top:320px;left:110px;right:110px;bottom:320px;
     display:flex;flex-direction:column;justify-content:center;
   }
-  /* selo RBSN em x 715-929, y 1349-1765 (mesma posição da arte padrão); o texto termina em 1330 */
-  .rc-frame .rc-safe{bottom:590px;}
-  .rc-selo{position:absolute;left:715px;top:1349px;width:214px;height:auto;pointer-events:none;}
+  /* selo RBSN a 75% do da arte padrão, preso no mesmo canto (direita 929, base 1765);
+     texto termina 19 px acima do selo. Na arte padrão o selo é maior (topo 1349), texto até 1330 */
+  .rc-frame .rc-safe{bottom:486px;}
+  .rc-frame.rc-bg-default .rc-safe{bottom:590px;}
+  .rc-selo{position:absolute;left:768.5px;top:1453.0px;width:160.5px;height:auto;pointer-events:none;}
   /* dias longos: aperta só os espaçamentos, fontes mantidas */
   .rc-compact .rc-block-section{margin-bottom:18px;}
   .rc-compact .rc-wod-item{padding:10px 0;}
