@@ -413,7 +413,7 @@
   .rc-wod-item-name{
     font-family:var(--font-body);font-weight:700;font-size:34px;line-height:1.15;
     color:var(--chalk);letter-spacing:-0.2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
-    max-width:560px;
+    flex:1 1 auto;min-width:0;
   }
   .rc-wod-item-reps{
     font-family:var(--font-mono);font-weight:700;font-size:27px;line-height:1;
@@ -4335,11 +4335,50 @@ function rcUpdatePreview(){
   scoreBlockEl.style.borderColor = 'var(--accent)';
   scoreBlockEl.style.display = rcScore.trim() ? '' : 'none';
   document.getElementById('rcOutPills').innerHTML = rcPills.filter(p=>p.trim()).map(p=>`<div class="rc-pill">${escapeHtml(p)}</div>`).join('');
-  rcFitDefaultContent();
-  if(document.fonts && !rcFitDefaultContent._bound){
-    rcFitDefaultContent._bound = true;
-    document.fonts.ready.then(rcFitDefaultContent);
+  rcAfterLayout();
+  if(document.fonts && !rcAfterLayout._bound){
+    rcAfterLayout._bound = true;
+    document.fonts.ready.then(rcAfterLayout);
   }
+}
+
+function rcAfterLayout(){
+  rcShortenNames();
+  rcFitDefaultContent();
+}
+
+// versões progressivamente mais curtas de um nome; a carga (kg) nunca sai
+function rcNameCandidates(name){
+  const out = [name];
+  let s = name;
+  const push = v => { v = v.replace(/\s{2,}/g,' ').trim(); if(v && v !== out[out.length-1]){ out.push(v); } s = v; };
+  // 1. carga de halter compacta
+  push(s.replace(/\((?:dois|duas|2)\s+halteres?\s+de\s+([^)]*)\)/i, '(2x $1)')
+        .replace(/\((?:um|uma|1)\s+halter\s+de\s+([^)]*)\)/i, '($1)'));
+  // 2. remove parênteses descritivos sem carga, se sobrar um nome de verdade
+  const noDesc = s.replace(/\s*\((?![^)]*kg)[^)]*\)/gi, '');
+  if(/[a-zà-ú]{3,}/i.test(noDesc)) push(noDesc);
+  // 3. abreviações, da mais leve à mais agressiva (mantém a maiúscula)
+  const abbr = (re, short) => s.replace(re, m => m[0] === m[0].toUpperCase() ? short[0].toUpperCase() + short.slice(1) : short);
+  push(abbr(/\balternad[oa]\b/gi, 'alt.'));
+  push(abbr(/\bunilateral\b/gi, 'unil.'));
+  push(s.replace(/(\d)\s+min\b/gi, '$1min'));
+  push(abbr(/\bcaminhada\b/gi, 'caminh.'));
+  // 4. último recurso: corta o que vem depois do travessão
+  push(s.split(/\s+—\s+/)[0]);
+  return out;
+}
+
+function rcShortenNames(){
+  document.querySelectorAll('#rcOutBlocks .rc-wod-item-name').forEach(el=>{
+    const full = el.dataset.full || el.textContent;
+    el.dataset.full = full;
+    const cands = rcNameCandidates(full);
+    for(const c of cands){
+      el.textContent = c;
+      if(el.scrollWidth <= el.clientWidth + 1) return;
+    }
+  });
 }
 
 // no fundo padrão a área útil é menor; se o conteúdo não couber, compacta os espaçamentos
