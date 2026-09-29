@@ -6,8 +6,8 @@
 <title>Log de Treino</title>
 <link rel="manifest" href="manifest.json">
 <meta name="theme-color" content="#0c0e0f">
-<link rel="icon" href="icon-v2-192.png">
-<link rel="apple-touch-icon" href="icon-v2-192.png">
+<link rel="icon" href="icon-v3-192.png">
+<link rel="apple-touch-icon" href="icon-v3-192.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Anton&family=Work+Sans:wght@400;500;600;700;800&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
@@ -368,6 +368,13 @@
     position:absolute;top:320px;left:110px;right:110px;bottom:320px;
     display:flex;flex-direction:column;justify-content:center;
   }
+  /* fundo padrão: escudo RBSN ocupa x 715-929, y 1349-1767; o texto termina em 1330 */
+  .rc-bg-default .rc-safe{bottom:590px;}
+  /* dias longos no fundo padrão: aperta só os espaçamentos, fontes mantidas */
+  .rc-compact .rc-block-section{margin-bottom:18px;}
+  .rc-compact .rc-wod-item{padding:10px 0;}
+  .rc-compact .rc-kicker{margin-bottom:14px;}
+  .rc-compact .rc-stat-row{margin-top:22px;}
   .rc-program-counter{
     font-family:var(--font-mono);font-size:23px;color:var(--accent);text-transform:uppercase;
     letter-spacing:3px;margin-bottom:16px;
@@ -3774,6 +3781,11 @@ let rcPhotoMinScale = 1;
 let rcPhotoOffsetX = 0;
 let rcPhotoOffsetY = 0;
 let rcMaskOpacity = 82;
+// fundo padrão (arte RBSN) usado quando não há foto ou vídeo
+const RC_DEFAULT_BG = 'recalibra-fundo-v1.jpg';
+let rcIsDefaultBg = false;
+let rcDefaultBgFailed = false;
+let rcUserMask = 82;         // máscara da mídia do usuário, restaurada ao sair do fundo padrão
 let rcPreviewScale = 1;
 let rcAdjustMode = false;
 let rcExporting = false;
@@ -3865,8 +3877,13 @@ function renderRecalibraTab(){
     return;
   }
 
+  if(!rcPhotoDataUrl && !rcDefaultBgFailed){ rcUseDefaultBg(); }
+
   const isVideo = rcMediaType === 'video';
   const zoomPct = rcPhotoMinScale ? Math.round((rcPhotoScale / rcPhotoMinScale) * 100) : 100;
+  const uploadTxt = rcIsDefaultBg
+    ? 'Fundo padrão RBSN · toque para usar foto ou vídeo'
+    : rcPhotoDataUrl ? `${isVideo ? 'Vídeo' : 'Foto'} carregado · toque para trocar` : 'Toque para escolher uma foto ou um vídeo';
 
   const body = document.createElement('div');
   body.innerHTML = `
@@ -3893,10 +3910,11 @@ function renderRecalibraTab(){
 
         <div class="rc-field-group">
           <div class="rc-field-group-title">Foto ou vídeo de fundo</div>
-          <div class="rc-upload-zone ${rcPhotoDataUrl?'has-photo':''}" id="rcUploadZone">
+          <div class="rc-upload-zone ${rcPhotoDataUrl && !rcIsDefaultBg ?'has-photo':''}" id="rcUploadZone">
             <input type="file" id="rcPhotoInput" accept="image/*,video/*">
-            <div class="txt" id="rcUploadTxt">${rcPhotoDataUrl ? `${isVideo ? 'Vídeo' : 'Foto'} carregado — toque para trocar` : 'Toque para escolher uma foto ou um vídeo'}</div>
+            <div class="txt" id="rcUploadTxt">${uploadTxt}</div>
           </div>
+          ${rcPhotoDataUrl && !rcIsDefaultBg && !rcDefaultBgFailed ? `<button class="rc-ex-btn" id="rcDefaultBgBtn">Voltar ao fundo padrão</button>` : ''}
           ${isVideo ? `<div class="rc-hint">Vídeos acima de ${RC_MAX_VIDEO_SECONDS}s são cortados nos primeiros ${RC_MAX_VIDEO_SECONDS}s. A exportação grava em tempo real: mantenha a tela ligada e o app aberto.</div>` : ''}
         </div>
 
@@ -3912,7 +3930,7 @@ function renderRecalibraTab(){
         <div class="rc-export-status" id="rcExportStatus"></div>
       </div>
 
-      ${rcPhotoDataUrl ? `
+      ${rcPhotoDataUrl && !rcIsDefaultBg ? `
       <div class="rc-adjust-bar">
         <button class="rc-adjust-btn ${rcAdjustMode ? 'on' : ''}" id="rcAdjustBtn">${rcAdjustMode ? 'Ajustando mídia · toque pra sair' : 'Ajustar posição da mídia'}</button>
         <div class="rc-slider-row">
@@ -3925,7 +3943,7 @@ function renderRecalibraTab(){
 
       <div class="rc-preview-scaler ${rcAdjustMode ? 'rc-adjusting' : ''}" id="rcPreviewScaler">
         <div class="rc-preview-inner" id="rcPreviewInner">
-          <div class="rc-frame" id="rcCaptureFrame">
+          <div class="rc-frame ${rcIsDefaultBg ? 'rc-bg-default' : ''}" id="rcCaptureFrame">
             <div class="rc-photo-layer" id="rcPhotoLayer">
               ${rcMediaMarkup()}
             </div>
@@ -4016,6 +4034,9 @@ function renderRecalibraTab(){
     });
   }
 
+  const defaultBgBtn = document.getElementById('rcDefaultBgBtn');
+  if(defaultBgBtn) defaultBgBtn.addEventListener('click', rcUseDefaultBg);
+
   document.getElementById('rcExportBtn').addEventListener('click', rcExport);
 
   if(!window._rcResizeBound){
@@ -4023,14 +4044,49 @@ function renderRecalibraTab(){
     window.addEventListener('resize', rcFitPreview);
   }
 
-  if(rcPhotoDataUrl) rcAttachPhotoGestures();
+  if(rcPhotoDataUrl && !rcIsDefaultBg) rcAttachPhotoGestures();
+}
+
+let rcDefaultBgLoading = false;
+function rcUseDefaultBg(){
+  if(rcDefaultBgLoading) return;
+  rcDefaultBgLoading = true;
+  const img = new Image();
+  img.onload = ()=>{
+    rcDefaultBgLoading = false;
+    if(rcPhotoDataUrl && !rcIsDefaultBg){
+      URL.revokeObjectURL(rcPhotoDataUrl);
+      rcUserMask = rcMaskOpacity;
+    }
+    rcPhotoDataUrl = RC_DEFAULT_BG;
+    rcMediaType = 'image';
+    rcMediaName = RC_DEFAULT_BG;
+    rcIsDefaultBg = true;
+    rcPhotoNaturalW = img.naturalWidth;
+    rcPhotoNaturalH = img.naturalHeight;
+    rcPhotoMinScale = Math.max(1080/img.naturalWidth, 1920/img.naturalHeight);
+    rcPhotoScale = rcPhotoMinScale;
+    rcPhotoOffsetX = 0;
+    rcPhotoOffsetY = 0;
+    rcAdjustMode = false;
+    rcMaskOpacity = 0;       // a arte já é escura; máscara apagaria o escudo
+    const view = document.getElementById('view-recalibra');
+    if(view && view.classList.contains('active')) renderRecalibraTab();
+  };
+  img.onerror = ()=>{ rcDefaultBgLoading = false; rcDefaultBgFailed = true; };
+  img.src = RC_DEFAULT_BG;
 }
 
 function rcLoadMediaFile(file){
   const isVideo = file.type.startsWith('video/');
   const url = URL.createObjectURL(file);
   const onReady = (natW, natH)=>{
-    if(rcPhotoDataUrl) URL.revokeObjectURL(rcPhotoDataUrl);
+    if(rcIsDefaultBg){
+      rcIsDefaultBg = false;
+      rcMaskOpacity = rcUserMask;
+    } else if(rcPhotoDataUrl){
+      URL.revokeObjectURL(rcPhotoDataUrl);
+    }
     rcPhotoDataUrl = url;
     rcMediaType = isVideo ? 'video' : 'image';
     rcMediaName = file.name;
@@ -4279,6 +4335,25 @@ function rcUpdatePreview(){
   scoreBlockEl.style.borderColor = 'var(--accent)';
   scoreBlockEl.style.display = rcScore.trim() ? '' : 'none';
   document.getElementById('rcOutPills').innerHTML = rcPills.filter(p=>p.trim()).map(p=>`<div class="rc-pill">${escapeHtml(p)}</div>`).join('');
+  rcFitDefaultContent();
+  if(document.fonts && !rcFitDefaultContent._bound){
+    rcFitDefaultContent._bound = true;
+    document.fonts.ready.then(rcFitDefaultContent);
+  }
+}
+
+// no fundo padrão a área útil é menor; se o conteúdo não couber, compacta os espaçamentos
+function rcFitDefaultContent(){
+  const frame = document.getElementById('rcCaptureFrame');
+  if(!frame) return;
+  frame.classList.remove('rc-compact');
+  if(!frame.classList.contains('rc-bg-default')) return;
+  const safe = frame.querySelector('.rc-safe');
+  const kids = [...safe.children].filter(c => c.offsetHeight);
+  if(!kids.length) return;
+  const first = kids[0], last = kids[kids.length-1];
+  const h = last.offsetTop + last.offsetHeight - first.offsetTop;
+  if(h > safe.clientHeight) frame.classList.add('rc-compact');
 }
 
 function rcFitPreview(){
