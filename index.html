@@ -368,11 +368,9 @@
     position:absolute;top:320px;left:110px;right:110px;bottom:320px;
     display:flex;flex-direction:column;justify-content:center;
   }
-  /* selo RBSN a 75% do da arte padrão, preso no mesmo canto (direita 929, base 1765);
-     texto termina 19 px acima do selo. Na arte padrão o selo é maior (topo 1349), texto até 1330 */
-  .rc-frame .rc-safe{bottom:486px;}
-  .rc-frame.rc-bg-default .rc-safe{bottom:590px;}
-  .rc-selo{position:absolute;left:768.5px;top:1453.0px;width:160.5px;height:auto;pointer-events:none;}
+  /* selo RBSN em x 766-927, y 1449-1762, mesma posição do selo da arte padrão; texto termina em 1430 */
+  .rc-frame .rc-safe{bottom:490px;}
+  .rc-selo{position:absolute;left:766px;top:1449px;width:161px;height:auto;pointer-events:none;}
   /* dias longos: aperta só os espaçamentos, fontes mantidas */
   .rc-compact .rc-block-section{margin-bottom:18px;}
   .rc-compact .rc-wod-item{padding:10px 0;}
@@ -3785,7 +3783,7 @@ let rcPhotoOffsetX = 0;
 let rcPhotoOffsetY = 0;
 let rcMaskOpacity = 82;
 // fundo padrão (arte RBSN) usado quando não há foto ou vídeo
-const RC_DEFAULT_BG = 'recalibra-fundo-v1.jpg';
+const RC_DEFAULT_BG = 'recalibra-fundo-v2.jpg';
 let rcIsDefaultBg = false;
 let rcDefaultBgFailed = false;
 let rcUserMask = 82;         // máscara da mídia do usuário, restaurada ao sair do fundo padrão
