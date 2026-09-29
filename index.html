@@ -368,9 +368,10 @@
     position:absolute;top:320px;left:110px;right:110px;bottom:320px;
     display:flex;flex-direction:column;justify-content:center;
   }
-  /* fundo padrão: escudo RBSN ocupa x 715-929, y 1349-1767; o texto termina em 1330 */
-  .rc-bg-default .rc-safe{bottom:590px;}
-  /* dias longos no fundo padrão: aperta só os espaçamentos, fontes mantidas */
+  /* selo RBSN em x 715-929, y 1349-1765 (mesma posição da arte padrão); o texto termina em 1330 */
+  .rc-frame .rc-safe{bottom:590px;}
+  .rc-selo{position:absolute;left:715px;top:1349px;width:214px;height:auto;pointer-events:none;}
+  /* dias longos: aperta só os espaçamentos, fontes mantidas */
   .rc-compact .rc-block-section{margin-bottom:18px;}
   .rc-compact .rc-wod-item{padding:10px 0;}
   .rc-compact .rc-kicker{margin-bottom:14px;}
@@ -3948,6 +3949,7 @@ function renderRecalibraTab(){
               ${rcMediaMarkup()}
             </div>
             <div class="rc-mask" id="rcMaskEl"></div>
+            ${rcIsDefaultBg ? '' : '<img class="rc-selo" src="selo-v1.png" alt="">'}
             <div class="rc-safe">
               <div class="rc-program-counter">${phase.week ? `Semana ${phase.week} | Dia ${dayNum}` : `Dia ${dayNum}`}</div>
               <div class="rc-kicker">${fmtDate(selectedDate)}</div>
@@ -4381,12 +4383,11 @@ function rcShortenNames(){
   });
 }
 
-// no fundo padrão a área útil é menor; se o conteúdo não couber, compacta os espaçamentos
+// a área útil termina acima do selo; se o conteúdo não couber, compacta os espaçamentos
 function rcFitDefaultContent(){
   const frame = document.getElementById('rcCaptureFrame');
   if(!frame) return;
   frame.classList.remove('rc-compact');
-  if(!frame.classList.contains('rc-bg-default')) return;
   const safe = frame.querySelector('.rc-safe');
   const kids = [...safe.children].filter(c => c.offsetHeight);
   if(!kids.length) return;
@@ -4412,6 +4413,8 @@ async function rcCaptureOverlay(){
   const frame = document.getElementById('rcCaptureFrame');
   const savedTransform = inner.style.transform;
   const savedBg = frame.style.background;
+  const selo = frame.querySelector('.rc-selo');
+  if(selo && !selo.complete) await new Promise(r => { selo.onload = selo.onerror = r; });
   inner.style.transform = 'none';
   layer.style.visibility = 'hidden';
   frame.style.background = 'transparent';

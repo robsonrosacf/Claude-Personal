@@ -85,6 +85,10 @@ Navegação em `nav.tabs`, e cada aba renderiza sob demanda.
      - destaca por padrão o metcon, com o score limpo por `rcCleanScore` (só tempo ou reps) e o cap extraído do título.
    - **Contador:** mostra "Semana N | Dia X", a partir de `RC_WEEK_PHASES` e de `RC_START_DATE = '2026-08-31'`, que é o dia 1.
    - **Mídia de fundo:** foto ou vídeo, com modo de ajuste (arrastar, pinça e slider de zoom de 100 a 300%) e slider de contraste da máscara.
+   - **Fundo padrão:** sem foto ou vídeo, usa `recalibra-fundo-v1.jpg` (arte RBSN com o selo já aplicado), sem máscara e sem modo de ajuste.
+   - **Selo:** `selo-v1.png` (escudo RBSN + "A vida é f▭da!") vai na camada de texto em foto e vídeo, em x 715, y 1349, 214 px de largura, a mesma posição da arte padrão. É PNG porque o html2canvas desenha o SVG errado.
+   - **Área do texto:** termina em y 1330 para não encostar no selo. Se o dia não couber, a classe `rc-compact` aperta só os espaçamentos.
+   - **Nomes longos:** o nome ocupa o espaço que a quantidade não usa; se ainda não couber, `rcNameCandidates` encurta em etapas sem remover a carga (só na arte, nunca no programa).
    - **Exportação:**
      - PNG por composição em canvas: mídia + overlay capturado por html2canvas;
      - vídeo em MP4 padrão, não fragmentado, com H.264 e AAC via WebCodecs + mp4-muxer (`fastStart: 'in-memory'`), para funcionar na galeria e no Instagram;
