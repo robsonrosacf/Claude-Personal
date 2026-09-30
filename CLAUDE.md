@@ -56,7 +56,7 @@ blk(title, category, items, rpe, done)       // bloco; `done` = texto do RESULTA
 wk(date, name, blocks)                       // dia: {id, date:'AAAA-MM-DD', name, notes, blocks}
 ```
 
-- **Categorias** (em `CATEGORIES`, cada uma com rótulo e cor): `potencia`, `forca`, `metcon`, `gym`, `resistencia`, `recovery`, `rest`.
+- **Categorias** (em `CATEGORIES`, cada uma com rótulo e cor): `potencia`, `forca`, `metcon`, `gym`, `resistencia`, `aquecimento`, `recovery`, `rest`. Blocos de aquecimento usam `aquecimento` (cinza `--steel`), não `recovery`.
 - **Resultado:** fica no 5º argumento de `blk()`, como texto livre. Exemplos: `'3:32 · RPE 9'`, `'160kg'`, `'6 rounds + 8 reps'`. O campo `logged` dos itens é legado e não é mais usado.
 - **Programa:** `MONTH_PROGRAM` é o array com todos os dias do ciclo. Hoje cobre de 31/08 a 31/10/2026. **O programa no código é a fonte da verdade.**
 - **Carga na abertura:** `mergeMonthProgram()` sobrescreve no `localStorage` todo dia que não tenha `logged` preenchido. Na prática, uma edição feita pelo botão "Editar treino" pode ser apagada no próximo carregamento, se o programa do código tiver aquele dia. Isso é conhecido e aceito, porque os resultados entram pelo código.
@@ -79,7 +79,7 @@ Navegação em `nav.tabs`, e cada aba renderiza sob demanda.
 4. **Corrida** traz pontos técnicos (cadência, apoio do pé, postura) e onde a técnica melhora.
 5. **Recalibra** é o gerador de Stories em 1080×1920 a partir do treino do dia.
    - **Montagem do texto:**
-     - puxa os blocos do dia, exceto `recovery` e `rest`;
+     - puxa os blocos do dia, exceto `aquecimento`, `recovery` e `rest`;
      - remove itens de instrução usando a lista `RC_META_LABELS`;
      - separa quantidade e carga com `rcSplitPrescribed`: a carga vai para o nome do exercício, e a coluna da direita mostra só o esquema ou o número;
      - destaca por padrão o metcon, com o score limpo por `rcCleanScore` (só tempo ou reps) e o cap extraído do título.

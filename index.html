@@ -2405,6 +2405,7 @@ const CATEGORIES = [
   {id:'metcon',       label:'Resistência Metabólica',    color:'#ff9f4d'},
   {id:'gym',          label:'Ginástica / Habilidade',    color:'#d9a6ff'},
   {id:'resistencia',  label:'Resistência Aeróbica',      color:'#5fb8ff'},
+  {id:'aquecimento',  label:'Aquecimento',               color:'#5f6462'},
   {id:'recovery',     label:'Recuperação Ativa',         color:'#6fe0c0'},
   {id:'rest',         label:'Descanso Total',            color:'#5f6462'}
 ];
@@ -2524,7 +2525,7 @@ const MONTH_PROGRAM = [
     blk('Bloco B — Força: Deadlift', 'forca', [ it('Deadlift', '3x3 | ref: 160kg (80%) | alvo RPE 8') ], '', '170kg')
   ]),
   wk('2026-09-11', 'FRAN + ANNIE — retestes de benchmark', [
-    blk('Aquecimento', 'recovery', [
+    blk('Aquecimento', 'aquecimento', [
       it('Geral', '8-10 min: mobilidade de ombro e quadril, alguns thrusters leves com barra vazia'),
       it('Específico', '2 séries de 5 thrusters (30kg) + 5 pull-ups, ritmo de prova'),
       it('Descanso antes do teste', '5 min completos — chegue fresco')
@@ -2669,7 +2670,7 @@ const MONTH_PROGRAM = [
     ], 'RPE 4 · véspera de teste', 'feito · sessão: 3')
   ]),
   wk('2026-09-30', 'FECHAMENTO — Fran (reteste)', [
-    blk('Aquecimento', 'recovery', [
+    blk('Aquecimento', 'aquecimento', [
       it('Geral', '8-10 min: mobilidade de ombro e quadril, thrusters leves com barra vazia'),
       it('Específico', '2 séries de 5 thrusters (30kg) + 5 pull-ups, ritmo de prova'),
       it('Descanso antes do teste', '5 min completos'),
@@ -2686,7 +2687,7 @@ const MONTH_PROGRAM = [
   /* Semana: Seg força pesada + metcon curto | Ter Zona 2 | Qua metcon longo | Qui corrida de qualidade + hinge | Sex força + metcon curto ou benchmark | Sáb Zona 2 longa | Dom descanso.
      Zona 2 guiada pela respiração só pelo nariz, sem caminhar. Deload só por sinal (RPE da sessão, sono, dor), nunca por calendário. */
   wk('2026-10-01', 'Abertura · Zona 2 de base + Deadlift', [
-    blk('Aquecimento', 'recovery', [
+    blk('Aquecimento', 'aquecimento', [
       it('Início da corrida', 'primeiros 5 min bem leves; o ritmo da Zona 2 vem depois disso'),
       it('Tornozelo e panturrilha', '10 elevações de panturrilha e 10 rotações de tornozelo por lado'),
       it('Rampa do deadlift', 'depois da corrida: 10 good mornings com a barra, 60kg x5, 100kg x3, 130kg x2')
@@ -2699,7 +2700,7 @@ const MONTH_PROGRAM = [
     blk('Bloco B — Força: Deadlift', 'forca', [ it('Deadlift', '5x3 | ref: 150kg | alvo RPE 7') ], 'RPE 7')
   ]),
   wk('2026-10-02', 'Metcon de referência + Strict Press', [
-    blk('Aquecimento', 'recovery', [
+    blk('Aquecimento', 'aquecimento', [
       it('Corrida pré-treino', '2,5 km em trote leve, só pelo nariz'),
       it('Mobilidade de ombro', '10 deslocamentos com cabo de vassoura, 10 scap pull-ups, 10 scap push-ups, 30 s pendurado na barra'),
       it('Mobilidade de quadril e tornozelo', '5 world\'s greatest stretch por lado, 10 cossack squats, 30 s no agachamento profundo'),
@@ -2713,7 +2714,7 @@ const MONTH_PROGRAM = [
     blk('Bloco B — Força: Strict Press', 'forca', [ it('Strict Press', '5x5 | ref: 60kg | alvo RPE 7') ], 'RPE 7')
   ]),
   wk('2026-10-03', 'Zona 2 longa', [
-    blk('Aquecimento', 'recovery', [
+    blk('Aquecimento', 'aquecimento', [
       it('Início da corrida', 'primeiros 5 min bem leves; o ritmo da Zona 2 vem depois disso'),
       it('Tornozelo e panturrilha', '10 elevações de panturrilha e 10 rotações de tornozelo por lado')
     ], 'RPE 3'),
@@ -2728,7 +2729,7 @@ const MONTH_PROGRAM = [
 
   /* ---------- SEMANA 1 ---------- */
   wk('2026-10-05', 'Back Squat + For Time curto', [
-    blk('Aquecimento', 'recovery', [
+    blk('Aquecimento', 'aquecimento', [
       it('Corrida pré-treino', '2,5 km em trote leve, só pelo nariz'),
       it('Mobilidade de ombro', '10 deslocamentos com cabo de vassoura, 10 scap pull-ups, 10 scap push-ups, 30 s pendurado na barra'),
       it('Mobilidade de quadril e tornozelo', '5 world\'s greatest stretch por lado, 10 cossack squats, 30 s no agachamento profundo'),
@@ -2741,7 +2742,7 @@ const MONTH_PROGRAM = [
     ], 'RPE 8-9')
   ]),
   wk('2026-10-06', 'Zona 2 + argolas', [
-    blk('Aquecimento', 'recovery', [
+    blk('Aquecimento', 'aquecimento', [
       it('Início da corrida', 'primeiros 5 min bem leves; o ritmo da Zona 2 vem depois disso'),
       it('Tornozelo e panturrilha', '10 elevações de panturrilha e 10 rotações de tornozelo por lado'),
       it('Antes das argolas', 'mobilidade de ombro: 10 deslocamentos com cabo de vassoura e 10 scap push-ups')
@@ -2753,7 +2754,7 @@ const MONTH_PROGRAM = [
     ], 'RPE 5')
   ]),
   wk('2026-10-07', 'Metcon longo', [
-    blk('Aquecimento', 'recovery', [
+    blk('Aquecimento', 'aquecimento', [
       it('Mobilidade de ombro', '10 deslocamentos com cabo de vassoura, 10 scap pull-ups, 10 scap push-ups, 30 s pendurado na barra'),
       it('Mobilidade de quadril e tornozelo', '5 world\'s greatest stretch por lado, 10 cossack squats, 30 s no agachamento profundo'),
       it('Técnica do snatch', 'com a barra: 5 snatch balance, 5 muscle snatch, 5 overhead squats'),
@@ -2766,7 +2767,7 @@ const MONTH_PROGRAM = [
     ], 'RPE 8')
   ]),
   wk('2026-10-08', 'Teste de FC máxima + Deadlift', [
-    blk('Aquecimento', 'recovery', [
+    blk('Aquecimento', 'aquecimento', [
       it('Tornozelo e panturrilha', '10 elevações de panturrilha e 10 rotações de tornozelo por lado'),
       it('Educativos', '2x 20 m de skipping, 2x 20 m de anfersen e 3 acelerações de 15 s'),
       it('Rampa do deadlift', 'depois da corrida: 60kg x5, 100kg x3, 130kg x2')
@@ -2780,7 +2781,7 @@ const MONTH_PROGRAM = [
     blk('Bloco B — Força: Deadlift', 'forca', [ it('Deadlift', '4x3 | ref: 150kg | alvo RPE 7') ], 'RPE 7')
   ]),
   wk('2026-10-09', 'Clean & Jerk + DIANE', [
-    blk('Aquecimento', 'recovery', [
+    blk('Aquecimento', 'aquecimento', [
       it('Corrida pré-treino', '2,5 km em trote leve, só pelo nariz'),
       it('Mobilidade de ombro', '10 deslocamentos com cabo de vassoura, 10 scap pull-ups, 10 scap push-ups, 30 s pendurado na barra'),
       it('Técnica do C&J', 'com a barra: 3 hang cleans + 3 jerks; depois 60kg x2, 80kg x1, 90kg x1'),
@@ -2793,7 +2794,7 @@ const MONTH_PROGRAM = [
     ], 'RPE 9')
   ]),
   wk('2026-10-10', 'Zona 2 longa', [
-    blk('Aquecimento', 'recovery', [
+    blk('Aquecimento', 'aquecimento', [
       it('Início da corrida', 'primeiros 5 min bem leves; o ritmo da Zona 2 vem depois disso'),
       it('Tornozelo e panturrilha', '10 elevações de panturrilha e 10 rotações de tornozelo por lado')
     ], 'RPE 3'),
@@ -2808,7 +2809,7 @@ const MONTH_PROGRAM = [
 
   /* ---------- SEMANA 2 ---------- */
   wk('2026-10-12', 'Front Squat + AMRAP curto', [
-    blk('Aquecimento', 'recovery', [
+    blk('Aquecimento', 'aquecimento', [
       it('Corrida pré-treino', '2,5 km em trote leve, só pelo nariz'),
       it('Mobilidade de ombro', '10 deslocamentos com cabo de vassoura, 10 scap pull-ups, 10 scap push-ups, 30 s pendurado na barra'),
       it('Mobilidade de quadril e tornozelo', '5 world\'s greatest stretch por lado, 10 cossack squats, 30 s no agachamento profundo'),
@@ -2821,7 +2822,7 @@ const MONTH_PROGRAM = [
     ], 'RPE 8-9')
   ]),
   wk('2026-10-13', 'Zona 2 + argolas', [
-    blk('Aquecimento', 'recovery', [
+    blk('Aquecimento', 'aquecimento', [
       it('Início da corrida', 'primeiros 5 min bem leves; o ritmo da Zona 2 vem depois disso'),
       it('Tornozelo e panturrilha', '10 elevações de panturrilha e 10 rotações de tornozelo por lado'),
       it('Antes das argolas', 'mobilidade de ombro: 10 deslocamentos com cabo de vassoura e 10 scap push-ups')
@@ -2832,7 +2833,7 @@ const MONTH_PROGRAM = [
     ], 'RPE 6')
   ]),
   wk('2026-10-14', 'Metcon longo · Chipper', [
-    blk('Aquecimento', 'recovery', [
+    blk('Aquecimento', 'aquecimento', [
       it('Mobilidade de ombro', '10 deslocamentos com cabo de vassoura, 10 scap pull-ups, 10 scap push-ups, 30 s pendurado na barra'),
       it('Mobilidade de quadril e tornozelo', '5 world\'s greatest stretch por lado, 10 cossack squats, 30 s no agachamento profundo'),
       it('Técnica do C&J', 'com a barra: 3 hang cleans + 3 jerks; depois 60kg x2'),
@@ -2846,7 +2847,7 @@ const MONTH_PROGRAM = [
     ], 'RPE 8')
   ]),
   wk('2026-10-15', 'Intervalado de corrida + Deadlift', [
-    blk('Aquecimento', 'recovery', [
+    blk('Aquecimento', 'aquecimento', [
       it('Tornozelo e panturrilha', '10 elevações de panturrilha e 10 rotações de tornozelo por lado'),
       it('Educativos', '2x 20 m de skipping, 2x 20 m de anfersen e 3 acelerações de 15 s'),
       it('Rampa do deadlift', 'depois da corrida: 60kg x5, 100kg x3, 140kg x2, 160kg x1')
@@ -2859,7 +2860,7 @@ const MONTH_PROGRAM = [
     blk('Bloco B — Força: Deadlift', 'forca', [ it('Deadlift', '5x2 | ref: 170kg | alvo RPE 8') ], 'RPE 8')
   ]),
   wk('2026-10-16', 'Push Jerk + ELIZABETH', [
-    blk('Aquecimento', 'recovery', [
+    blk('Aquecimento', 'aquecimento', [
       it('Corrida pré-treino', '2,5 km em trote leve, só pelo nariz'),
       it('Mobilidade de ombro', '10 deslocamentos com cabo de vassoura, 10 scap pull-ups, 10 scap push-ups, 30 s pendurado na barra'),
       it('Rampa do push jerk', 'barra x5, 60kg x3, 80kg x2, 100kg x1'),
@@ -2872,7 +2873,7 @@ const MONTH_PROGRAM = [
     ], 'RPE 9')
   ]),
   wk('2026-10-17', 'Zona 2 longa', [
-    blk('Aquecimento', 'recovery', [
+    blk('Aquecimento', 'aquecimento', [
       it('Início da corrida', 'primeiros 5 min bem leves; o ritmo da Zona 2 vem depois disso'),
       it('Tornozelo e panturrilha', '10 elevações de panturrilha e 10 rotações de tornozelo por lado')
     ], 'RPE 3'),
@@ -2884,7 +2885,7 @@ const MONTH_PROGRAM = [
 
   /* ---------- SEMANA 3 · PICO ---------- */
   wk('2026-10-19', 'Back Squat pesado + For Time curto', [
-    blk('Aquecimento', 'recovery', [
+    blk('Aquecimento', 'aquecimento', [
       it('Corrida pré-treino', '2,5 km em trote leve, só pelo nariz'),
       it('Mobilidade de quadril e tornozelo', '5 world\'s greatest stretch por lado, 10 cossack squats, 30 s no agachamento profundo'),
       it('Rampa do back squat', 'barra x10, 60kg x5, 100kg x3, 120kg x2, 140kg x1'),
@@ -2897,14 +2898,14 @@ const MONTH_PROGRAM = [
     ], 'RPE 9')
   ]),
   wk('2026-10-20', 'Zona 2 leve', [
-    blk('Aquecimento', 'recovery', [
+    blk('Aquecimento', 'aquecimento', [
       it('Início da corrida', 'primeiros 5 min bem leves; o ritmo da Zona 2 vem depois disso'),
       it('Tornozelo e panturrilha', '10 elevações de panturrilha e 10 rotações de tornozelo por lado')
     ], 'RPE 3'),
     blk('Bloco único — Zona 2 (rua)', 'resistencia', [ it('Corrida contínua', '35 min sem caminhar, só pelo nariz. Véspera do Murph: nada além disso.') ], 'RPE 3 · Zona 2')
   ]),
   wk('2026-10-21', 'MURPH', [
-    blk('Aquecimento', 'recovery', [
+    blk('Aquecimento', 'aquecimento', [
       it('Geral', '10 min: mobilidade de ombro e quadril, 400 m de trote'),
       it('Mobilidade de ombro', '10 deslocamentos com cabo de vassoura, 10 scap pull-ups, 10 scap push-ups, 30 s pendurado na barra'),
       it('Específico', '2 rounds de 5 pull-ups, 10 push-ups e 15 air squats')
@@ -2924,7 +2925,7 @@ const MONTH_PROGRAM = [
     ], 'RPE 2-3')
   ]),
   wk('2026-10-23', 'Snatch pesado + For Time curto', [
-    blk('Aquecimento', 'recovery', [
+    blk('Aquecimento', 'aquecimento', [
       it('Corrida pré-treino', '2,5 km em trote leve, só pelo nariz'),
       it('Mobilidade de ombro', '10 deslocamentos com cabo de vassoura, 10 scap pull-ups, 10 scap push-ups, 30 s pendurado na barra'),
       it('Check do ombro', 'se o ombro ainda sentir o Murph nos deslocamentos, o snatch para em 80kg'),
@@ -2937,7 +2938,7 @@ const MONTH_PROGRAM = [
     ], 'RPE 9')
   ]),
   wk('2026-10-24', 'Zona 2 longa', [
-    blk('Aquecimento', 'recovery', [
+    blk('Aquecimento', 'aquecimento', [
       it('Início da corrida', 'primeiros 5 min bem leves; o ritmo da Zona 2 vem depois disso'),
       it('Tornozelo e panturrilha', '10 elevações de panturrilha e 10 rotações de tornozelo por lado')
     ], 'RPE 3'),
@@ -2949,7 +2950,7 @@ const MONTH_PROGRAM = [
 
   /* ---------- SEMANA 4 · TESTES (menos volume, mesma intensidade) ---------- */
   wk('2026-10-26', 'Back Squat + EMOM', [
-    blk('Aquecimento', 'recovery', [
+    blk('Aquecimento', 'aquecimento', [
       it('Corrida pré-treino', '2,5 km em trote leve, só pelo nariz'),
       it('Mobilidade de ombro', '10 deslocamentos com cabo de vassoura, 10 scap pull-ups, 10 scap push-ups, 30 s pendurado na barra'),
       it('Mobilidade de quadril e tornozelo', '5 world\'s greatest stretch por lado, 10 cossack squats, 30 s no agachamento profundo'),
@@ -2962,7 +2963,7 @@ const MONTH_PROGRAM = [
     ], 'RPE 7')
   ]),
   wk('2026-10-27', 'TESTE 5 km', [
-    blk('Aquecimento', 'recovery', [
+    blk('Aquecimento', 'aquecimento', [
       it('Trote leve', '10 min'),
       it('Tornozelo e panturrilha', '10 elevações de panturrilha e 10 rotações de tornozelo por lado'),
       it('Educativos', '2x 20 m de skipping, 2x 20 m de anfersen e 3 acelerações de 15 s')
@@ -2974,7 +2975,7 @@ const MONTH_PROGRAM = [
     ], 'RPE 9')
   ]),
   wk('2026-10-28', 'Zona 2 leve + técnica', [
-    blk('Aquecimento', 'recovery', [
+    blk('Aquecimento', 'aquecimento', [
       it('Início da corrida', 'primeiros 5 min bem leves; o ritmo da Zona 2 vem depois disso'),
       it('Tornozelo e panturrilha', '10 elevações de panturrilha e 10 rotações de tornozelo por lado'),
       it('Antes da técnica', 'mobilidade de ombro: 10 deslocamentos com cabo de vassoura e 10 scap push-ups')
@@ -2986,7 +2987,7 @@ const MONTH_PROGRAM = [
     blk('Sem treino programado', 'rest', [ it('Descanso', 'véspera da Fran. Caminhada leve, se quiser.') ], 'RPE 0')
   ]),
   wk('2026-10-30', 'FRAN · reteste de fechamento', [
-    blk('Aquecimento', 'recovery', [
+    blk('Aquecimento', 'aquecimento', [
       it('Mobilidade de ombro', '10 deslocamentos com cabo de vassoura, 10 scap pull-ups, 10 scap push-ups, 30 s pendurado na barra'),
       it('Mobilidade de quadril e tornozelo', '5 world\'s greatest stretch por lado, 10 cossack squats, 30 s no agachamento profundo'),
       it('Barra vazia', '10 thrusters'),
@@ -3000,7 +3001,7 @@ const MONTH_PROGRAM = [
     ], 'RPE 9-10')
   ]),
   wk('2026-10-31', 'Zona 2 · fechamento do ciclo', [
-    blk('Aquecimento', 'recovery', [
+    blk('Aquecimento', 'aquecimento', [
       it('Início da corrida', 'primeiros 5 min bem leves; o ritmo da Zona 2 vem depois disso'),
       it('Tornozelo e panturrilha', '10 elevações de panturrilha e 10 rotações de tornozelo por lado')
     ], 'RPE 3'),
@@ -3911,7 +3912,7 @@ let rcExporting = false;
 const RC_MAX_VIDEO_SECONDS = 60;
 
 function rcAvailableBlocks(w){
-  return w.blocks.filter(b => b.category !== 'recovery' && b.category !== 'rest');
+  return w.blocks.filter(b => b.category !== 'recovery' && b.category !== 'rest' && b.category !== 'aquecimento');
 }
 
 function rcSeedFromDay(){
