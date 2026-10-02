@@ -2697,7 +2697,7 @@ const MONTH_PROGRAM = [
       it('Registrar', 'distância e pace médio. É o ponto de partida do mês, para comparar em 31/10.'),
       it('Como fazer', 'se a respiração apertar, reduz o passo e segue trotando. Relógio grava, não guia.')
     ], 'RPE 3-4 · Zona 2', '4,29 km em 30:41 no relógio (+ cerca de 2 min sem gravar, durante uma ligação) · ida 15 min toda em subida, volta em descida · pace médio 7:09/km · FC média 156, máx 175 · cadência 157'),
-    blk('Bloco C — Força: Deadlift', 'forca', [ it('Deadlift', '5x3 | ref: 150kg | alvo RPE 7') ], 'RPE 7', '150kg · sessão: 5')
+    blk('Bloco C — Força: Deadlift', 'forca', [ it('Deadlift', '5x3 | ref: 150kg | alvo RPE 7') ], 'RPE 7', '150kg · sessão: 2')
   ]),
   wk('2026-10-02', 'Metcon de referência + Strict Press', [
     blk('Bloco A — Aquecimento', 'aquecimento', [
@@ -3718,11 +3718,32 @@ const RPE_SCALE = [
   {n:'5',  rir:'5+ reps',color:'#4fbf6b', desc:'<strong>Leve.</strong> Aquecimento ou deload. Termina a série sentindo que mal treinou — proposital.'}
 ];
 
+const SESSION_SCALE = [
+  {n:0,d:'Repouso'},{n:1,d:'Muito, muito fácil'},{n:2,d:'Fácil'},{n:3,d:'Moderado'},{n:4,d:'Um pouco difícil'},
+  {n:5,d:'Difícil'},{n:6,d:'Entre difícil e muito difícil'},{n:7,d:'Muito difícil'},{n:8,d:'Entre muito difícil e extremo'},
+  {n:9,d:'Quase máximo'},{n:10,d:'Máximo, o mais duro que você já fez'}
+];
+
 function renderRPE(){
   const container = document.getElementById('view-rpe');
   container.innerHTML = `
     <div class="card">
-      <label class="field-label" style="margin-top:0;">Escala de esforço percebido</label>
+      <label class="field-label" style="margin-top:0;">Nota da sessão (0 a 10)</label>
+      <p class="rpe-note" style="margin-bottom:12px;">
+        Uma nota para o <strong>treino inteiro</strong>, do aquecimento ao último bloco, dada <strong>30 min depois de terminar</strong>. Responda só: quanto isso me custou? Não olhe o RPE prescrito.
+      </p>
+      ${SESSION_SCALE.map(r=>`
+        <div style="display:grid;grid-template-columns:44px 1fr;gap:12px;align-items:center;padding:8px 0;border-bottom:1px solid var(--line);">
+          <div class="rpe-num" style="font-size:18px;color:${r.n>=7?'var(--accent)':'var(--chalk)'};background:var(--bg-raised);">${r.n}</div>
+          <div class="rpe-desc" style="padding-top:0;">${r.d}</div>
+        </div>
+      `).join('')}
+      <p class="rpe-note" style="margin-top:12px;">
+        <strong>Não confunda com o RPE de série abaixo.</strong> Aqui, 5 é um treino difícil. Lá, RPE 5 é uma série leve.
+      </p>
+    </div>
+    <div class="card">
+      <label class="field-label" style="margin-top:0;">RPE de série (reps na reserva)</label>
       ${RPE_SCALE.map(r=>`
         <div class="rpe-row">
           <div class="rpe-num" style="color:${r.color};background:${r.color}18;">${r.n}</div>
