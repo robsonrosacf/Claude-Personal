@@ -8,7 +8,7 @@ App pessoal do Robson, que é atleta de CrossFit. Ele mostra:
 
 - a programação diária de treino, montada por um treinador (Claude) em ciclos mensais;
 - os resultados que o Robson reporta;
-- ferramentas de apoio: escala de RPE, técnica de corrida e um gerador de posts para Instagram Stories (aba Recalibra).
+- ferramentas de apoio: nota da sessão, escala de RPE e técnica de corrida (aba Guia) e um gerador de posts para Instagram Stories (aba Mídia).
 
 Uso principal: abrir no celular Android, ver o treino do dia, navegar entre os dias e consultar resultados passados.
 
@@ -31,7 +31,7 @@ Uso principal: abrir no celular Android, ver o treino do dia, navegar entre os d
 
 Os dois chats fazem push no mesmo repositório e no mesmo `index.html`.
 
-- **Chat do treinador:** edita apenas o bloco `MONTH_PROGRAM` (prescrições e resultados) e algumas constantes de conteúdo, como `RC_WEEK_PHASES` e textos das abas RPE e Corrida. Ele atualiza o app sempre que o Robson reporta um resultado.
+- **Chat do treinador:** edita apenas o bloco `MONTH_PROGRAM` (prescrições e resultados) e algumas constantes de conteúdo, como `RC_WEEK_PHASES` e os textos da aba Guia (em `renderRPE`, `SESSION_SCALE`, `RPE_SCALE`, `renderCorrida` e `RUN_CUES`). Ele atualiza o app sempre que o Robson reporta um resultado.
 - **Chat do app:** edita o código, o CSS e as funcionalidades. **Não altere prescrições nem resultados dentro de `MONTH_PROGRAM`.** Se uma mudança de estrutura exigir mexer nos dados, preserve cada valor.
 - **Regras para os dois:**
   - rodar `git pull` antes de editar;
@@ -63,9 +63,9 @@ wk(date, name, blocks)                       // dia: {id, date:'AAAA-MM-DD', nam
 
 ## Abas e funcionamento
 
-Navegação em `nav.tabs`, e cada aba renderiza sob demanda.
+Menu (`nav.tabs`) com três abas: **TREINO**, **GUIA** e **MÍDIA**. A troca passa por `showTab(tab)`, e cada aba renderiza sob demanda. Os identificadores internos não mudaram: TREINO é `hoje`, MÍDIA é `recalibra`.
 
-1. **Treino (`hoje`)** mostra o treino do dia selecionado.
+1. **TREINO (`hoje`)** mostra o treino do dia selecionado.
    - Blocos com título, tag de RPE e tag de categoria, e itens com a prescrição.
    - O resultado aparece em `.result-panel`: rótulo "Resultado" com borda verde à esquerda. Não há checkboxes.
    - Navegação entre dias:
@@ -74,10 +74,14 @@ Navegação em `nav.tabs`, e cada aba renderiza sob demanda.
      - faixa da semana, com ponto verde para dia com resultado e cinza para dia planejado;
      - calendário mensal recolhível.
    - Botão "Editar treino" abre um formulário de edição local.
-2. **Programação (`historico`)** lista todos os dias, que expandem para mostrar blocos e resultados.
-3. **RPE** mostra a escala de 10 a 5 com reps na reserva, as zonas aeróbicas e como usar a carga de referência junto com o alvo de RPE.
-4. **Corrida** traz pontos técnicos (cadência, apoio do pé, postura) e onde a técnica melhora.
-5. **Recalibra** é o gerador de Stories em 1080×1920 a partir do treino do dia.
+   - Link discreto "ver lista completa" no fim da aba abre a lista de todos os dias (`historico`).
+2. **Lista completa (`historico`)**, antiga aba Programação: sem botão no menu, abre pelo link da aba Treino e tem "‹ voltar ao treino" no topo. Os dias expandem para mostrar blocos e resultados. Com ela aberta, o menu marca TREINO.
+3. **GUIA (`guia`)**, junção das antigas abas RPE e Corrida. `renderGuia()` chama `renderRPE(container)` e `renderCorrida(container)`, em três seções nesta ordem:
+   - **Nota da sessão:** escala de 0 a 10 do treino inteiro (`SESSION_SCALE`);
+   - **RPE de série:** escala de 10 a 5 com reps na reserva (`RPE_SCALE`), zonas aeróbicas e "Como usar" a carga de referência com o alvo de RPE;
+   - **Técnica de corrida:** pontos técnicos (`RUN_CUES`) e onde a técnica melhora.
+4. **MÍDIA (`recalibra`)**, antiga aba Recalibra, renomeada sem mudança de funcionalidade. Nomes internos (`renderRecalibraTab`, `view-recalibra`, prefixo `rc`) continuam iguais.
+   É o gerador de Stories em 1080×1920 a partir do treino do dia.
    - **Montagem do texto:**
      - puxa os blocos do dia, exceto `aquecimento`, `recovery` e `rest`;
      - remove itens de instrução usando a lista `RC_META_LABELS`;
