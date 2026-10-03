@@ -41,9 +41,10 @@ Os dois chats fazem push no mesmo repositório e no mesmo `index.html`.
 ## Stack
 
 - HTML, CSS e JS puros num único arquivo, sem build e sem framework.
-- Dois `<script>` inline:
-  1. **mp4-muxer 5.2.2** (licença MIT) embutido inteiro, usado na exportação de vídeo;
-  2. o **app**, a partir de `const STORAGE_KEY`.
+- Três `<script>` inline:
+  1. no `<head>`, um script curto que liga o tema de teste (`?tema=azul`, ver Design);
+  2. **mp4-muxer 5.2.2** (licença MIT) embutido inteiro, usado na exportação de vídeo;
+  3. o **app**, a partir de `const STORAGE_KEY`.
 - Dependência externa: html2canvas 1.4.1, pelo cdnjs.
 - Fontes do Google Fonts: Anton (títulos), Work Sans (corpo) e Space Mono (dados e rótulos).
 - Persistência em `localStorage`, na chave `workouts`.
@@ -108,6 +109,7 @@ Menu (`nav.tabs`) com três abas: **TREINO**, **GUIA** e **MÍDIA**. A troca pas
   - fundo `#0c0e0f`, elevado `#16191a`, card `#14171a`;
   - texto `#f4f3ee`, texto secundário `#9aa09c`, `--steel` `#5f6462`, linhas `#262a29`;
   - acento verde-limão `#c6ff3a`.
+- **Tema azul (em teste):** com `?tema=azul` no endereço, `:root[data-tema="azul"]` troca `--accent` e `--done` por `#3d7bff` (e os tons escuros e o fundo do `.result-panel`). Vale para a interface e para os textos da arte da aba Mídia; selo e fundo padrão continuam verdes. Sem o parâmetro, e no app instalado, tudo fica verde.
 - **Tipografia:** Anton em caixa alta para títulos, Work Sans para o corpo e Space Mono para dados.
 - **Preferências de layout do Robson:** poucas cores (verde + branco e cinza), texto grande e margens generosas.
 - **Recalibra:** zona segura do Stories de 320 px em cima e embaixo e 110 px nas laterais; rótulos de bloco em verde, nomes em branco a 34 px e quantidades a 27 px; bloco de resultado só com borda esquerda, em 4 linhas (Resultado / formato / score grande / cap). **Sem a palavra "RECALIBRA" e sem "Treino do dia".**

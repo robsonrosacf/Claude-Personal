@@ -6,6 +6,10 @@
 <title>Log de Treino</title>
 <link rel="manifest" href="manifest.json">
 <meta name="theme-color" content="#0c0e0f">
+<script>
+  // tema de teste por link: ?tema=azul (sem o parâmetro, verde padrão)
+  try{ var t = new URLSearchParams(location.search).get('tema'); if(t === 'azul') document.documentElement.dataset.tema = 'azul'; }catch(e){}
+</script>
 <link rel="icon" href="icon-v3-192.png">
 <link rel="apple-touch-icon" href="icon-v3-192.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -29,6 +33,14 @@
     --font-body: 'Work Sans', sans-serif;
     --font-mono: 'Space Mono', monospace;
   }
+  /* TEMA DE TESTE: só ativa com ?tema=azul no endereço; o app instalado continua verde */
+  :root[data-tema="azul"]{
+    --accent: #3d7bff;
+    --accent-dim: #1c3170;
+    --done: #3d7bff;
+    --done-dim: #132347;
+  }
+  :root[data-tema="azul"] .result-panel{background:linear-gradient(to right, #17213a, #161e33);}
   *{box-sizing:border-box;}
   body{
     margin:0;
