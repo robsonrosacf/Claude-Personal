@@ -2785,7 +2785,7 @@ const MONTH_PROGRAM = [
   ]),
   wk('2026-10-07', 'Deadlift + For Time curto', [
     blk('Bloco A — Aquecimento', 'aquecimento', [
-      it('Remo leve', '5 min, só pelo nariz'),
+      it('Remo leve', '5 min, só pelo nariz. Serve de teste do tendão: se doer acima de 2 de 10, o remo sai do metcon.'),
       it('Específico do metcon', 'depois do deadlift: 5 cal de remo forte e 5 toes-to-bar'),
       it('Mobilidade de quadril', '5 world\'s greatest stretch por lado e 10 cat-camel'),
       it('Check da lombar', '5 good mornings com a barra vazia. Se incomodar acima de 2 de 10, o deadlift sai.'),
@@ -2798,22 +2798,23 @@ const MONTH_PROGRAM = [
     blk('Bloco C — For Time (cap 10 min)', 'metcon', [
       it('Remo (calorias)', '21-15-9'),
       it('Toes-to-bar', '21-15-9'),
-      it('Tendão', 'se a dor acima do calcanhar aparecer na empurrada do remo, pare o remo e termine só com os toes-to-bar.'),
+      it('Tendão', 'se o remo doer acima de 2 de 10 (no aquecimento ou no metcon), troque as calorias pelo mesmo número de push-ups.'),
       it('Sem corrida', 'teste de FC adiado por causa do tendão de Aquiles esquerdo. Sem salto e sem quadril pesado depois do deadlift.')
     ], 'RPE 8-9')
   ]),
   wk('2026-10-08', 'Chácara · peso corporal', [
     blk('Bloco A — Aquecimento', 'aquecimento', [
-      it('Geral', '3 min: polichinelos, skipping parado e 10 air squats lentos'),
+      it('Geral', '3 min: marcha parada, rotações de braço e 10 air squats lentos'),
       it('Mobilidade de ombro', '10 rotações de braço para cada lado, 10 scap push-ups, 10 Y-T-W deitado de bruços'),
-      it('Mobilidade de quadril e tornozelo', '5 world\'s greatest stretch por lado, 10 cossack squats, 30 s no agachamento profundo')
+      it('Mobilidade de quadril', '5 world\'s greatest stretch por lado, 10 cossack squats, 30 s no agachamento profundo')
     ], 'RPE 3'),
     blk('Bloco B — EMOM 24 min', 'metcon', [
-      it('Air Squats', 'min 1: 20'), it('Push-ups', 'min 2: 12'), it('Double Unders', 'min 3: 50'), it('Burpees', 'min 4: 10'),
+      it('Air Squats', 'min 1: 20'), it('Push-ups', 'min 2: 12'), it('V-ups', 'min 3: 15'), it('Burpees sem salto', 'min 4: 10'),
+      it('Tendão', 'sem corda, sem salto e sem ficar na ponta do pé até o tendão de Aquiles acalmar.'),
       it('Nota', '6 voltas completas. Se sobrar menos de 15 s de descanso por minuto, reduza as reps do próximo minuto.')
     ], 'RPE 7'),
     blk('Bloco C — Core', 'gym', [
-      it('Sit-ups', '3x20'), it('Hollow Hold', '3x30s'), it('Prancha lateral', '3x30s por lado')
+      it('Hollow Hold', '3x30s'), it('Prancha lateral', '3x30s por lado'), it('Superman Hold', '3x30s')
     ], 'RPE 6')
   ]),
   wk('2026-10-09', 'Descanso total', [
@@ -2821,16 +2822,16 @@ const MONTH_PROGRAM = [
   ]),
   wk('2026-10-10', 'Chácara · chipper longo', [
     blk('Bloco A — Aquecimento', 'aquecimento', [
-      it('Geral', '3 min: polichinelos, skipping parado e 10 air squats lentos'),
+      it('Geral', '3 min: marcha parada, rotações de braço e 10 air squats lentos'),
       it('Mobilidade de ombro', '10 rotações de braço para cada lado, 10 scap push-ups, 10 Y-T-W deitado de bruços'),
-      it('Mobilidade de quadril e tornozelo', '5 world\'s greatest stretch por lado, 10 cossack squats, 30 s no agachamento profundo'),
-      it('Corda', '2 min: double unders soltos e tentativas de DU crossover'),
-      it('Específico', '1 round leve: 10 air squats, 5 push-ups, 5 lunges por perna, 3 burpees')
+      it('Mobilidade de quadril', '5 world\'s greatest stretch por lado, 10 cossack squats, 30 s no agachamento profundo'),
+      it('Específico', '1 round leve: 10 air squats, 5 push-ups, 5 reverse lunges por perna, 3 burpees sem salto')
     ], 'RPE 3'),
     blk('Bloco B — For Time (cap 40 min)', 'metcon', [
-      it('Double Unders', '100'), it('Air Squats', '100'), it('Sit-ups', '80'), it('Walking Lunges', '60'), it('Push-ups', '60'),
-      it('Burpees', '40'), it('Pistols alternados', '20'), it('Double Unders', '100'),
-      it('Ritmo', 'estimativa de 30 a 35 min. Fracione os push-ups desde o começo, em séries de 10 a 12. Os DU do fim vão sair cansados: quebre em séries de 25.')
+      it('Air Squats', '100'), it('Sit-ups', '80'), it('Reverse Lunges alternados', '60'), it('Push-ups', '60'),
+      it('Burpees sem salto', '40'), it('Cossack Squats alternados', '30'), it('V-ups', '40'),
+      it('Ritmo', 'estimativa de 28 a 33 min. Fracione os push-ups desde o começo, em séries de 10 a 12.'),
+      it('Tendão', 'sem corda, sem salto e sem pistol até o tendão de Aquiles acalmar. Nos lunges, pé da frente inteiro no chão.')
     ], 'RPE 8')
   ]),
   wk('2026-10-11', 'Descanso total', [
