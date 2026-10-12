@@ -2856,176 +2856,217 @@ const MONTH_PROGRAM = [
   wk('2026-10-12', 'Descanso total', [
     blk('Sem treino programado', 'rest', [ it('Descanso', 'dia da volta. Se quiser mover, 20 a 30 min de caminhada. Sem trote enquanto o tendão de Aquiles estiver em observação.') ], 'RPE 0')
   ]),
-  /* ---------- SEMANA 2 ---------- */
+  /* ---------- SEMANA 2 · VOLTA DO IMPACTO (corrida 2x, sem corda) ---------- */
   wk('2026-10-13', 'Front Squat + AMRAP curto', [
     blk('Bloco A — Aquecimento', 'aquecimento', [
-      it('Corrida pré-treino', '1,5 km em trote leve, só pelo nariz. O tempo que sobra vai para a rampa, sem pressa entre as séries.'),
-      it('Mobilidade de ombro', '10 deslocamentos com cabo de vassoura, 10 scap pull-ups, 10 scap push-ups, 30 s pendurado na barra'),
+      it('Remo ou bike', '5 min leve, só pelo nariz'),
       it('Mobilidade de quadril e tornozelo', '5 world\'s greatest stretch por lado, 10 cossack squats, 30 s no agachamento profundo'),
-      it('Rampa do front squat', 'barra x10, 60kg x5, 90kg x3, 110kg x2'),
-      it('Específico do metcon', '3 power cleans a 50kg, 5 toes-to-bar e 20 double unders')
+      it('Mobilidade de punho e ombro', '10 deslocamentos com cabo de vassoura e 30 s de front rack com a barra vazia'),
+      it('Rampa do front squat', 'barra x10, 60kg x5, 90kg x3, 110kg x2')
     ], 'RPE 3'),
-    blk('Bloco B — Força: Front Squat', 'forca', [ it('Front Squat', '4x3 | ref: 130kg | alvo RPE 7-8') ], 'RPE 7-8'),
+    blk('Bloco B — Força: Front Squat', 'forca', [
+      it('Front Squat', '4x3 | ref: 120kg | alvo RPE 7'),
+      it('Regra', 'se a 1ª série sair em RPE 6 ou menos, as outras 3 vão com 130kg. Descanso de 2 a 3 min.')
+    ], 'RPE 7'),
     blk('Bloco C — AMRAP 10 min', 'metcon', [
-      it('Power Clean (70kg)', '5'), it('Toes-to-bar', '10'), it('Double Unders', '30')
+      it('Antes de começar', '3 power cleans a 50kg, 5 toes-to-bar e 5 cal de remo, depois 2 min de descanso'),
+      it('Power Clean (70kg)', '5'), it('Toes-to-bar', '10'), it('Remo (calorias)', '10'),
+      it('Ritmo', 'meta de 6 a 7 rounds. Cleans em singles rápidos se a lombar pedir, sempre com a coluna neutra.')
     ], 'RPE 8-9')
   ]),
-  wk('2026-10-14', 'Zona 2 + EMOM de argolas', [
+  wk('2026-10-14', 'Aeróbico misto + EMOM de barra', [
     blk('Bloco A — Aquecimento', 'aquecimento', [
-      it('Início da corrida', 'primeiros 5 min bem leves; o ritmo da Zona 2 vem depois disso'),
-      it('Tornozelo e panturrilha', '10 elevações de panturrilha e 10 rotações de tornozelo por lado'),
-      it('Antes das argolas', 'mobilidade de ombro: 10 deslocamentos com cabo de vassoura e 10 scap push-ups')
+      it('Remo', '3 min bem leve'),
+      it('Mobilidade de ombro', '10 deslocamentos com cabo de vassoura, 10 scap pull-ups, 30 s pendurado na barra')
     ], 'RPE 3'),
-    blk('Bloco B — Zona 2 (rua)', 'resistencia', [ it('Corrida contínua', '40 min sem caminhar, só pelo nariz. Ida e volta: 20 min para ir, vira e volta pelo mesmo caminho.') ], 'RPE 3-4 · Zona 2'),
-    blk('Bloco C — EMOM 10 min: argolas', 'gym', [
-      it('Strict Pull-ups nas argolas', 'min ímpar: 7'),
-      it('L-sit nas argolas', 'min par: 20 s'),
-      it('Nota', 'sem dips nesta semana: amanhã tem HSPU na Diane. Se o L-sit não segurar 20 s, dobre os joelhos (tuck).')
+    blk('Bloco B — Aeróbico misto, 30 min contínuos', 'resistencia', [
+      it('3 voltas de 10 min', '4 min de remo, 3 min de bike e 3 min alternando 6 burpees sem salto e 12 air squats'),
+      it('Ritmo', 'só pelo nariz o tempo todo, sem parar. Se o nariz não segurar no burpee, diminua o ritmo até segurar.'),
+      it('Por quê', 'o burpee foi o limite no chipper de 10/10. Aqui ele entra num ritmo que você mantém, para encurtar a pausa entre as reps.')
+    ], 'RPE 4 · Zona 2'),
+    blk('Bloco C — EMOM 10 min: barra', 'gym', [
+      it('Strict Pull-ups', 'min ímpar: 7'),
+      it('Hanging L-sit', 'min par: 20 s (joelhos dobrados se não segurar)'),
+      it('Nota', 'nada de empurrar hoje: amanhã tem HSPU na Diane.')
     ], 'RPE 6-7')
   ]),
   wk('2026-10-15', 'Clean & Jerk + DIANE', [
     blk('Bloco A — Aquecimento', 'aquecimento', [
-      it('Corrida pré-treino', '1,5 km em trote leve, só pelo nariz. O tempo que sobra vai para a rampa, sem pressa entre as séries.'),
+      it('Remo ou bike', '5 min leve'),
       it('Mobilidade de ombro', '10 deslocamentos com cabo de vassoura, 10 scap pull-ups, 10 scap push-ups, 30 s pendurado na barra'),
-      it('Técnica do C&J', 'com a barra: 3 hang cleans + 3 jerks; depois 60kg x2, 80kg x1, 90kg x1'),
-      it('Específico da Diane', '2 rounds: 5 deadlifts a 60kg e 3 HSPU')
+      it('Check da lombar', '10 cat-camel e 5 good mornings com a barra vazia. Acima de 2 de 10, a Diane vira 21-15-9 de HSPU e remo.'),
+      it('Técnica do C&J', 'com a barra: 3 hang cleans + 3 jerks; depois 60kg x2, 80kg x1, 90kg x1')
     ], 'RPE 3'),
     blk('Bloco B — EMOM 6 min: Clean & Jerk', 'potencia', [ it('Clean & Jerk', '1 rep por minuto | ref: 100kg → até 110kg | alvo RPE 7-8') ], 'RPE 7-8'),
     blk('Bloco C — DIANE For Time (cap 12 min)', 'metcon', [
+      it('Antes de começar', '2 rounds de 5 deadlifts a 60kg e 3 HSPU, depois 3 min de descanso'),
       it('Deadlift (100kg)', '21-15-9'), it('Handstand Push-ups', '21-15-9'),
-      it('Nota', 'o limitante é o HSPU. Fracione desde o set de 21, em 7-7-7 ou 5-5-5-6.')
+      it('Estratégia', 'HSPU fracionado desde o set de 21 (7-7-7). Deadlift em séries grandes, mas solte a barra antes de a coluna arredondar.')
     ], 'RPE 9')
   ]),
-  wk('2026-10-16', 'Intervalado de corrida (fora do box)', [
+  wk('2026-10-16', 'Volta à corrida + core', [
     blk('Bloco A — Aquecimento', 'aquecimento', [
-      it('Tornozelo e panturrilha', '10 elevações de panturrilha e 10 rotações de tornozelo por lado'),
-      it('Educativos', '2x 20 m de skipping, 2x 20 m de anfersen e 3 acelerações de 15 s')
-    ], 'RPE 3'),
-    blk('Bloco B — Intervalado (rua, trecho plano)', 'resistencia', [
-      it('Trote inicial', '10 min leve'),
-      it('6x (2 min forte / 2 min trote leve)', 'recupere trotando, sem caminhar. Ritmo igual do 1º ao 6º.'),
+      it('Teste do tendão', '5 subidas na ponta do pé esquerdo. Acima de 2 de 10, a corrida vira 25 min de bike no mesmo ritmo.'),
+      it('Tornozelo e quadril', '10 rotações de tornozelo por lado e 5 world\'s greatest stretch por lado')
+    ], 'RPE 2'),
+    blk('Bloco B — Corrida (esteira a 1% ou trecho plano)', 'resistencia', [
+      it('Trote inicial', '5 min bem leve'),
+      it('Contínuo', '15 min só pelo nariz, sem caminhar'),
       it('Volta à calma', '5 min de trote leve'),
-      it('Nota', 'dia sem barra, para você correr num lugar plano. O deadlift da semana sai: o posterior já trabalha no power clean de segunda e na Elizabeth de sexta.')
-    ], 'RPE 7')
+      it('Por quê', 'primeira corrida depois da irritação no tendão de Aquiles. Plano e curto de propósito: a carga sobe na semana 3 se ele seguir em 0.')
+    ], 'RPE 3-4 · Zona 2'),
+    blk('Bloco C — Core', 'gym', [
+      it('Formato', '3 voltas em circuito, até 10 s de transição e 1 min de descanso por volta'),
+      it('Hollow Rock', '20'), it('Prancha lateral', '40 s por lado'), it('Superman Hold', '40 s')
+    ], 'RPE 6')
   ]),
   wk('2026-10-17', 'Sábado longo · Chipper', [
     blk('Bloco A — Aquecimento', 'aquecimento', [
+      it('Remo', '5 min leve'),
       it('Mobilidade de ombro', '10 deslocamentos com cabo de vassoura, 10 scap pull-ups, 10 scap push-ups, 30 s pendurado na barra'),
-      it('Mobilidade de quadril e tornozelo', '5 world\'s greatest stretch por lado, 10 cossack squats, 30 s no agachamento profundo'),
-      it('Técnica do C&J', 'com a barra: 3 hang cleans + 3 jerks; depois 60kg x2'),
-      it('Específico do metcon', '1 round leve: 200 m de trote, 10 KB swings, 5 wall balls, 5 chest-to-bar, 4 DB snatches')
+      it('Mobilidade de quadril e tornozelo', '5 world\'s greatest stretch por lado, 10 cossack squats, 30 s no agachamento profundo')
     ], 'RPE 3'),
-    blk('Bloco B — Oly técnica: Clean & Jerk', 'potencia', [ it('Clean & Jerk', '5x2 | ref: 90kg | alvo RPE 6, velocidade') ], 'RPE 6'),
-    blk('Bloco C — For Time (cap 32 min)', 'metcon', [
-      it('Corrida (rua)', '1 km'), it('KB Swings (20kg)', '50'), it('Wall Balls (9kg)', '40'), it('Chest-to-bar', '30'),
-      it('DB Snatch alternado (22,5kg)', '20'), it('Corrida (rua)', '1 km'),
-      it('Ritmo', 'estimativa de 24 a 27 min. A segunda corrida é onde o treino se decide.')
+    blk('Bloco B — For Time (cap 35 min)', 'metcon', [
+      it('Antes de começar', '1 round leve: 200 m de trote, 5 cal de remo, 5 wall balls, 5 chest-to-bar, 3 burpees. Depois 3 min de descanso.'),
+      it('Corrida (plano)', '1 km'), it('Remo (calorias)', '40'), it('Wall Balls (9kg)', '50'), it('Chest-to-bar', '30'),
+      it('Burpees', '30'), it('Corrida (plano)', '1 km'),
+      it('Ritmo', 'estimativa de 24 a 28 min. Burpees com salto só se o teste do tendão de sexta deu 0; senão, sem salto.'),
+      it('Por quê', 'sem swing e sem snatch: volume de quadril com cansaço é o que gerou os três episódios de lombar.')
     ], 'RPE 8')
   ]),
-  wk('2026-10-18', 'Zona 2 longa', [
+  wk('2026-10-18', 'Aeróbico misto longo', [
     blk('Bloco A — Aquecimento', 'aquecimento', [
-      it('Início da corrida', 'primeiros 5 min bem leves; o ritmo da Zona 2 vem depois disso'),
-      it('Tornozelo e panturrilha', '10 elevações de panturrilha e 10 rotações de tornozelo por lado')
-    ], 'RPE 3'),
-    blk('Bloco B — Zona 2 (rua)', 'resistencia', [ it('Corrida contínua', '55 min sem caminhar, só pelo nariz. Ida e volta: 27 min e 30 s para ir, vira e volta pelo mesmo caminho.') ], 'RPE 3-4 · Zona 2')
+      it('Remo', '5 min bem leve'),
+      it('Mobilidade geral', '5 world\'s greatest stretch por lado e 10 deslocamentos com cabo de vassoura')
+    ], 'RPE 2'),
+    blk('Bloco B — 45 min contínuos', 'resistencia', [
+      it('3 voltas de 15 min', '5 min de remo, 5 min de bike e 5 min alternando 8 burpees e 16 afundos alternados'),
+      it('Ritmo', 'só pelo nariz, sem parar. Mesmo princípio da Zona 2, sem impacto de corrida.')
+    ], 'RPE 4 · Zona 2')
   ]),
-  /* ---------- SEMANA 3 · PICO ---------- */
+  /* ---------- SEMANA 3 · PICO (corrida 2x se o tendão seguir em 0) ---------- */
   wk('2026-10-19', 'Back Squat pesado + For Time curto', [
     blk('Bloco A — Aquecimento', 'aquecimento', [
-      it('Corrida pré-treino', '1,5 km em trote leve, só pelo nariz. O tempo que sobra vai para a rampa, sem pressa entre as séries.'),
+      it('Remo ou bike', '5 min leve'),
       it('Mobilidade de quadril e tornozelo', '5 world\'s greatest stretch por lado, 10 cossack squats, 30 s no agachamento profundo'),
-      it('Rampa do back squat', 'barra x10, 60kg x5, 100kg x3, 120kg x2, 140kg x1'),
-      it('Específico do metcon', '5 KB swings e 5 burpees')
+      it('Rampa do back squat', 'barra x10, 60kg x5, 100kg x3, 120kg x2, 140kg x1')
     ], 'RPE 3'),
-    blk('Bloco B — Força: Back Squat', 'forca', [ it('Back Squat', '3x3 | ref: 150kg | alvo RPE 8-9') ], 'RPE 8-9'),
+    blk('Bloco B — Força: Back Squat', 'forca', [
+      it('Back Squat', '3x3 | ref: 150kg | alvo RPE 8-9'),
+      it('Regra', 'descanso de 3 min. Se a 1ª série passar de RPE 9, as outras vão com 140kg.')
+    ], 'RPE 8-9'),
     blk('Bloco C — For Time (cap 8 min)', 'metcon', [
-      it('KB Swings (20kg)', '21-15-9'), it('Burpees', '21-15-9'),
-      it('Nota', 'sem nada acima da cabeça: o ombro fica guardado para a Elizabeth de quarta e o Murph de sábado.')
+      it('Antes de começar', '5 cal de remo forte e 5 burpees, depois 2 min de descanso'),
+      it('Remo (calorias)', '21-15-9'), it('Burpees', '21-15-9'),
+      it('Nota', 'o remo entrou no lugar do KB swing: depois de agachamento pesado, quadril com volume é risco para a lombar.')
     ], 'RPE 9')
   ]),
-  wk('2026-10-20', 'Zona 2', [
+  wk('2026-10-20', 'Zona 2 na corrida + barra', [
     blk('Bloco A — Aquecimento', 'aquecimento', [
-      it('Início da corrida', 'primeiros 5 min bem leves; o ritmo da Zona 2 vem depois disso'),
-      it('Tornozelo e panturrilha', '10 elevações de panturrilha e 10 rotações de tornozelo por lado')
-    ], 'RPE 3'),
-    blk('Bloco B — Zona 2 (rua)', 'resistencia', [ it('Corrida contínua', '40 min sem caminhar, só pelo nariz. Ida e volta: 20 min para ir, vira e volta pelo mesmo caminho.') ], 'RPE 3-4 · Zona 2')
+      it('Teste do tendão', '5 subidas na ponta do pé esquerdo. Acima de 2 de 10, a corrida vira 30 min de remo e bike.'),
+      it('Tornozelo e panturrilha', '10 rotações de tornozelo por lado e 10 elevações de panturrilha com as duas pernas')
+    ], 'RPE 2'),
+    blk('Bloco B — Zona 2 (esteira a 1% ou plano)', 'resistencia', [
+      it('Corrida contínua', '30 min sem caminhar, só pelo nariz. Os primeiros 5 min bem leves.')
+    ], 'RPE 3-4 · Zona 2'),
+    blk('Bloco C — Força de puxada', 'gym', [
+      it('Strict Pull-ups', '5 séries de 5, com 1 min e 30 s de descanso'),
+      it('Nota', 'nada de empurrar: amanhã tem push e ring dips na Elizabeth.')
+    ], 'RPE 7')
   ]),
-  wk('2026-10-21', 'Push Jerk + ELIZABETH', [
+  wk('2026-10-21', 'Pull-up com carga + ELIZABETH', [
     blk('Bloco A — Aquecimento', 'aquecimento', [
-      it('Corrida pré-treino', '1,5 km em trote leve, só pelo nariz. O tempo que sobra vai para a rampa, sem pressa entre as séries.'),
+      it('Remo ou bike', '5 min leve'),
       it('Mobilidade de ombro', '10 deslocamentos com cabo de vassoura, 10 scap pull-ups, 10 scap push-ups, 30 s pendurado na barra'),
-      it('Rampa do push jerk', 'barra x5, 60kg x3, 80kg x2, 100kg x1'),
-      it('Específico da Elizabeth', '2 rounds: 5 cleans a 40kg e 3 ring dips')
+      it('Ombro esquerdo', '2x10 rotação externa com elástico ou anilha leve, devagar. Não pule: os dips de 06/10 incomodaram sem isso.')
     ], 'RPE 3'),
-    blk('Bloco B — Força: Push Jerk', 'forca', [ it('Push Jerk', '5x2 | ref: 110kg | alvo RPE 8') ], 'RPE 8'),
+    blk('Bloco B — Força: Strict Pull-up com carga', 'forca', [
+      it('Weighted Strict Pull-up', '5x3 | carga: halter entre os pés ou cinto | alvo RPE 8'),
+      it('Por quê', 'no lugar do push jerk pesado: jerk pesado mais 45 dips no mesmo dia é carga demais para a tendinite. A puxada equilibra o dia.')
+    ], 'RPE 8'),
     blk('Bloco C — ELIZABETH For Time (cap 12 min)', 'metcon', [
+      it('Antes de começar', '2 rounds de 3 squat cleans a 40kg e 3 ring dips, depois 3 min de descanso'),
       it('Squat Clean (61kg)', '21-15-9'), it('Ring Dips', '21-15-9'),
-      it('Nota', 'se os ring dips travarem, use paralela e registre a adaptação.')
+      it('Ombro', 'descida controlada, ombro até a altura do cotovelo. Se passar de 3 de 10 no ombro, troque os dips por push-ups e registre.')
     ], 'RPE 9')
   ]),
-  wk('2026-10-22', 'Zona 2 leve', [
+  wk('2026-10-22', 'Deadlift + For Time curto', [
     blk('Bloco A — Aquecimento', 'aquecimento', [
-      it('Início da corrida', 'primeiros 5 min bem leves; o ritmo da Zona 2 vem depois disso'),
-      it('Tornozelo e panturrilha', '10 elevações de panturrilha e 10 rotações de tornozelo por lado')
+      it('Remo ou bike', '5 min leve'),
+      it('Mobilidade de quadril', '5 world\'s greatest stretch por lado e 10 cat-camel'),
+      it('Check da lombar', '5 good mornings com a barra vazia. Acima de 2 de 10, o deadlift sai.'),
+      it('Rampa do deadlift', '60kg x5, 100kg x3, 130kg x2')
     ], 'RPE 3'),
-    blk('Bloco B — Zona 2 (rua)', 'resistencia', [ it('Corrida contínua', '35 min sem caminhar, só pelo nariz. Ida e volta: 17 min e 30 s para ir, vira e volta pelo mesmo caminho.') ], 'RPE 3 · Zona 2')
+    blk('Bloco B — Força: Deadlift', 'forca', [
+      it('Deadlift', '4x3 | ref: 150kg | alvo RPE 7'),
+      it('Nota', 'é o deadlift que ficou para trás em 07/10. Sábado tem Murph: nada de buscar carga acima da referência.')
+    ], 'RPE 7'),
+    blk('Bloco C — For Time (cap 8 min)', 'metcon', [
+      it('Antes de começar', '5 cal de bike e 5 toes-to-bar, depois 2 min de descanso'),
+      it('3 rounds', '15 cal de bike + 12 toes-to-bar'),
+      it('Nota', 'sem quadril com carga depois do deadlift e sem empurrar depois dos dips de ontem.')
+    ], 'RPE 8-9')
   ]),
   wk('2026-10-23', 'Descanso total', [
     blk('Sem treino programado', 'rest', [ it('Descanso', 'véspera do Murph.') ], 'RPE 0')
   ]),
   wk('2026-10-24', 'MURPH', [
     blk('Bloco A — Aquecimento', 'aquecimento', [
-      it('Geral', '10 min: mobilidade de ombro e quadril, 400 m de trote'),
+      it('Teste do tendão', '5 subidas na ponta do pé esquerdo. Acima de 2 de 10, as duas milhas viram 2.000 m de remo cada.'),
+      it('Geral', '400 m de trote leve e 10 rotações de tornozelo por lado'),
       it('Mobilidade de ombro', '10 deslocamentos com cabo de vassoura, 10 scap pull-ups, 10 scap push-ups, 30 s pendurado na barra'),
       it('Específico', '2 rounds de 5 pull-ups, 10 push-ups e 15 air squats')
     ], 'RPE 3'),
     blk('Bloco B — MURPH For Time (cap 60 min)', 'metcon', [
-      it('Corrida (rua)', '1 milha (1,6 km)'),
+      it('Corrida (plano)', '1 milha (1,6 km)'),
       it('Pull-ups / Push-ups / Air Squats', '20 rounds de 5 / 10 / 15'),
-      it('Corrida (rua)', '1 milha (1,6 km)'),
+      it('Corrida (plano)', '1 milha (1,6 km)'),
       it('Estratégia', 'sem colete. Particionado. Primeira milha no ritmo da Zona 2: o Murph se perde saindo rápido.'),
       it('Referência', 'você fazia abaixo de 60 min, uma vez por mês.')
     ], 'RPE 8-9')
   ]),
   wk('2026-10-25', 'Recuperação ativa', [
     blk('Bloco único — 30 min bem leve', 'recovery', [
-      it('Trote ou caminhada', '20 min, só pelo nariz, bem abaixo da Zona 2'),
+      it('Caminhada ou bike', '20 min, só pelo nariz, bem abaixo da Zona 2'),
       it('Mobilidade de ombro', '10 min, foco em rotadores e peitoral')
-    ], 'RPE 2-3')
+    ], 'RPE 2')
   ]),
   /* ---------- SEMANA 4 · TESTES (menos volume, mesma intensidade) ---------- */
   wk('2026-10-26', 'Snatch pesado + For Time curto', [
     blk('Bloco A — Aquecimento', 'aquecimento', [
-      it('Corrida pré-treino', '1,5 km em trote leve, só pelo nariz. O tempo que sobra vai para a rampa, sem pressa entre as séries.'),
+      it('Remo ou bike', '5 min leve'),
       it('Mobilidade de ombro', '10 deslocamentos com cabo de vassoura, 10 scap pull-ups, 10 scap push-ups, 30 s pendurado na barra'),
       it('Check do ombro', 'se o ombro ainda sentir o Murph nos deslocamentos, o snatch para em 80kg'),
-      it('Rampa do snatch', 'barra: 5 snatch balance; depois 40kg x3, 60kg x2, 70kg x1'),
-      it('Específico do metcon', '5 deadlifts a 60kg e 3 burpee box jump-overs')
+      it('Rampa do snatch', 'barra: 5 snatch balance; depois 40kg x3, 60kg x2, 70kg x1')
     ], 'RPE 3'),
     blk('Bloco B — Oly: Squat Snatch', 'potencia', [ it('Squat Snatch', 'subir até um single pesado | ref: 85kg | alvo RPE 8. Se o ombro ainda sentir o Murph, pare em 80kg.') ], 'RPE 8'),
     blk('Bloco C — For Time (cap 10 min)', 'metcon', [
-      it('Deadlift (100kg)', '21-15-9'), it('Burpee Box Jump-over (24")', '21-15-9')
+      it('Antes de começar', '5 wall balls e 3 chest-to-bar, depois 2 min de descanso'),
+      it('Wall Balls (9kg)', '21-15-9'), it('Chest-to-bar', '21-15-9'),
+      it('Nota', 'sem deadlift depois do snatch (lombar) e sem salto a dois dias do teste de 5 km (tendão).')
     ], 'RPE 9')
   ]),
-  wk('2026-10-27', 'Zona 2 leve + técnica', [
+  wk('2026-10-27', 'Aeróbico misto + técnica', [
     blk('Bloco A — Aquecimento', 'aquecimento', [
-      it('Início da corrida', 'primeiros 5 min bem leves; o ritmo da Zona 2 vem depois disso'),
-      it('Tornozelo e panturrilha', '10 elevações de panturrilha e 10 rotações de tornozelo por lado'),
-      it('Antes da técnica', 'mobilidade de ombro: 10 deslocamentos com cabo de vassoura e 10 scap push-ups')
-    ], 'RPE 3'),
-    blk('Bloco B — Zona 2 (rua)', 'resistencia', [ it('Corrida contínua', '30 min sem caminhar, só pelo nariz. Ida e volta: 15 min para ir, vira e volta pelo mesmo caminho.') ], 'RPE 3 · Zona 2'),
+      it('Remo', '3 min bem leve'),
+      it('Mobilidade de ombro', '10 deslocamentos com cabo de vassoura e 10 scap push-ups')
+    ], 'RPE 2'),
+    blk('Bloco B — Aeróbico misto, 25 min contínuos', 'resistencia', [
+      it('5 voltas de 5 min', '2 min de remo, 2 min de bike e 1 min de 6 burpees + air squats até fechar o minuto'),
+      it('Ritmo', 'só pelo nariz. Sem corrida: amanhã é o teste de 5 km e o tendão chega descansado.')
+    ], 'RPE 4 · Zona 2'),
     blk('Bloco C — Oly técnica', 'potencia', [ it('Clean & Jerk', '5x2 | ref: 80kg | alvo RPE 5, velocidade') ], 'RPE 5')
   ]),
   wk('2026-10-28', 'TESTE 5 km', [
     blk('Bloco A — Aquecimento', 'aquecimento', [
+      it('Teste do tendão', '5 subidas na ponta do pé esquerdo. Acima de 2 de 10, o teste vira 5.000 m de remo.'),
       it('Trote leve', '10 min'),
-      it('Tornozelo e panturrilha', '10 elevações de panturrilha e 10 rotações de tornozelo por lado'),
       it('Educativos', '2x 20 m de skipping, 2x 20 m de anfersen e 3 acelerações de 15 s')
     ], 'RPE 3'),
-    blk('Bloco B — TESTE: 5 km (rua) For Time', 'resistencia', [
+    blk('Bloco B — TESTE: 5 km (plano) For Time', 'resistencia', [
       it('Corrida', '5 km no melhor tempo, com ritmo regular'),
       it('Referência', 'seu 5 km mais recente foi 28:00. Saia 10 s por km mais lento que o ritmo alvo e acelere no último km.'),
-      it('Relógio', 'grava a FC máxima de novo e confirma o teste de 08/10.')
+      it('Relógio', 'o pico do último km vira a referência de FC máxima. O maior valor registrado até agora é 177.')
     ], 'RPE 9')
   ]),
   wk('2026-10-29', 'Descanso', [
@@ -3035,11 +3076,10 @@ const MONTH_PROGRAM = [
     blk('Bloco A — Aquecimento', 'aquecimento', [
       it('Mobilidade de ombro', '10 deslocamentos com cabo de vassoura, 10 scap pull-ups, 10 scap push-ups, 30 s pendurado na barra'),
       it('Mobilidade de quadril e tornozelo', '5 world\'s greatest stretch por lado, 10 cossack squats, 30 s no agachamento profundo'),
-      it('Barra vazia', '10 thrusters'),
-      it('Específico', '2 séries de 5 thrusters (30kg) + 5 butterfly pull-ups, no ritmo da prova'),
-      it('Descanso', '5 min completos')
+      it('Barra vazia', '10 thrusters')
     ], 'RPE 3'),
     blk('Bloco B — FRAN For Time', 'metcon', [
+      it('Antes de começar', '2 séries de 5 thrusters (30kg) + 5 butterfly pull-ups no ritmo da prova, depois 5 min completos de descanso'),
       it('Thrusters (43kg)', '21-15-9'),
       it('Pull-ups', '21-15-9'),
       it('Baselines', '11/09: 3:32 · 30/09: 2:52. Mesma prescrição, mesmas condições.')
@@ -3047,9 +3087,9 @@ const MONTH_PROGRAM = [
   ]),
   wk('2026-10-31', 'Zona 2 · fechamento do ciclo', [
     blk('Bloco A — Aquecimento', 'aquecimento', [
-      it('Início da corrida', 'primeiros 5 min bem leves; o ritmo da Zona 2 vem depois disso'),
-      it('Tornozelo e panturrilha', '10 elevações de panturrilha e 10 rotações de tornozelo por lado')
-    ], 'RPE 3'),
+      it('Teste do tendão', '5 subidas na ponta do pé esquerdo. Acima de 2 de 10, troque por 30 min de bike e a comparação fica para novembro.'),
+      it('Tornozelo e panturrilha', '10 rotações de tornozelo por lado')
+    ], 'RPE 2'),
     blk('Bloco B — Zona 2 (rua)', 'resistencia', [
       it('Corrida contínua', '30 min sem caminhar, só pelo nariz, no mesmo percurso de 01/10: 15 min subindo, vira e volta descendo'),
       it('Comparação final', 'em 01/10: 4,29 km a 7:09/km, FC média 156. Mesmo esforço pela respiração, mais distância = base subindo.')
