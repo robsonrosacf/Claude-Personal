@@ -2883,7 +2883,7 @@ const MONTH_PROGRAM = [
       it('3 voltas de 10 min', '4 min de remo, 3 min de bike e 3 min alternando 6 burpees sem salto e 12 air squats'),
       it('Ritmo', 'só pelo nariz o tempo todo, sem parar. Se o nariz não segurar no burpee, diminua o ritmo até segurar.'),
       it('Por quê', 'o burpee foi o limite no chipper de 10/10. Aqui ele entra num ritmo que você mantém, para encurtar a pausa entre as reps.')
-    ], 'RPE 4 · Zona 2'),
+    ], 'RPE 4 · Zona 2', 'feito · Zona 2'),
     blk('Bloco C — EMOM 10 min: barra', 'gym', [
       it('Strict Pull-ups', 'min ímpar: 7'),
       it('Hanging L-sit', 'min par: 20 s (joelhos dobrados se não segurar)'),
@@ -2907,21 +2907,22 @@ const MONTH_PROGRAM = [
       it('Estratégia', 'HSPU fracionado desde o set de 21 (7-7-7). Deadlift em séries grandes, mas solte a barra antes de a coluna arredondar.')
     ], 'RPE 9', '4:56 · DL 10+5+5 / 8+7 / 9 (quebrado por estratégia, guardando fôlego para o HSPU) · HSPU 11+10 / 10+5 / 9 · sessão: 4')
   ]),
-  wk('2026-10-16', 'Volta à corrida + core', [
+  wk('2026-10-16', 'Corrida curta + intervalos de puxada', [
     blk('Bloco A — Aquecimento', 'aquecimento', [
-      it('Teste do tendão', '5 subidas na ponta do pé esquerdo. Acima de 2 de 10, a corrida vira 25 min de bike no mesmo ritmo.'),
+      it('Teste do tendão', '5 subidas na ponta do pé esquerdo. Acima de 2 de 10, a corrida vira 20 min de remo no mesmo ritmo.'),
       it('Tornozelo e quadril', '10 rotações de tornozelo por lado e 5 world\'s greatest stretch por lado')
     ], 'RPE 2'),
     blk('Bloco B — Corrida (esteira a 1% ou trecho plano)', 'resistencia', [
       it('Trote inicial', '5 min bem leve'),
       it('Contínuo', '15 min só pelo nariz, sem caminhar'),
-      it('Volta à calma', '5 min de trote leve'),
-      it('Por quê', 'primeira corrida depois da irritação no tendão de Aquiles. Plano e curto de propósito: a carga sobe na semana 3 se ele seguir em 0.')
+      it('Por quê', 'primeira corrida depois da irritação no tendão de Aquiles. Fica curta e no plano: o desafio do dia vem no Bloco C, sem impacto.')
     ], 'RPE 3-4 · Zona 2'),
-    blk('Bloco C — Core', 'gym', [
-      it('Formato', '3 voltas em circuito, até 10 s de transição e 1 min de descanso por volta'),
-      it('Hollow Rock', '20'), it('Prancha lateral', '40 s por lado'), it('Superman Hold', '40 s')
-    ], 'RPE 6')
+    blk('Bloco C — A cada 3 min, 5 voltas (15 min)', 'metcon', [
+      it('Antes de começar', '5 cal de remo forte, 2 bar muscle-ups e 5 toes-to-bar, depois 2 min de descanso'),
+      it('Remo (calorias)', '15'), it('Bar Muscle-ups', '6'), it('Toes-to-bar', '12'),
+      it('Ritmo', 'cada volta deve fechar entre 1:45 e 2:00, sobrando 1 min de descanso. Anote o tempo da volta mais lenta: é o seu score.'),
+      it('Por quê', 'puxada e remo não cansam o que a Diane usou ontem (ombro empurrando e posterior) nem o tendão.')
+    ], 'RPE 8-9')
   ]),
   wk('2026-10-17', 'Sábado longo · Chipper', [
     blk('Bloco A — Aquecimento', 'aquecimento', [
@@ -2962,7 +2963,12 @@ const MONTH_PROGRAM = [
       it('Antes de começar', '5 cal de remo forte e 5 burpees, depois 2 min de descanso'),
       it('Remo (calorias)', '21-15-9'), it('Burpees', '21-15-9'),
       it('Nota', 'o remo entrou no lugar do KB swing: depois de agachamento pesado, quadril com volume é risco para a lombar.')
-    ], 'RPE 9')
+    ], 'RPE 9'),
+    blk('Bloco D — EMOM 12 min', 'metcon', [
+      it('Antes de começar', '3 min de descanso depois do For Time'),
+      it('Wall Balls (9kg)', 'min ímpar: 15'), it('Toes-to-bar', 'min par: 10'),
+      it('Por quê', 'segunda peça para o dia render. Ritmo constante, RPE 7: ninguém quebra minuto aqui.')
+    ], 'RPE 7')
   ]),
   wk('2026-10-20', 'Zona 2 na corrida + barra', [
     blk('Bloco A — Aquecimento', 'aquecimento', [
