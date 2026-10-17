@@ -486,13 +486,13 @@
 
   <nav class="tabs">
     <button class="active" data-tab="hoje">Treino</button>
-    <button data-tab="running">Running</button>
+    <button data-tab="batata">Batata</button>
     <button data-tab="guia">Guia</button>
     <button data-tab="recalibra">Mídia</button>
   </nav>
 
   <div class="view active" id="view-hoje"></div>
-  <div class="view" id="view-running"></div>
+  <div class="view" id="view-batata"></div>
   <div class="view" id="view-historico"></div>
   <div class="view" id="view-guia"></div>
   <div class="view" id="view-recalibra"></div>
@@ -3108,19 +3108,20 @@ const MONTH_PROGRAM = [
   ])
 ];
 
-/* ---------- PROGRAMA DE CORRIDA (aba RUNNING) ----------
+/* ---------- PROGRAMA DA ABA BATATA ----------
+   Treinos gerais de outra pessoa (não do Robson), com programa próprio.
    Mesmo formato do MONTH_PROGRAM: wk(data, nome, blocos), blk(...), it(...).
-   Conteúdo do chat do treinador. Fica separado do CrossFit e é salvo na chave 'runs'. */
-const RUN_PROGRAM = [
+   Conteúdo do chat do treinador. Fica separado e é salvo na chave 'batata'. */
+const BATATA_PROGRAM = [
 ];
 
-/* programa ativo: 'treino' (abas Treino, Guia e Mídia) ou 'running' (aba Running).
+/* programa ativo: 'treino' (abas Treino, Guia e Mídia) ou 'batata' (aba Batata).
    As telas do dia leem sempre `workouts`, que aponta para o programa ativo. */
 const PROGRAMS = {
   treino:  {key: STORAGE_KEY, source: () => MONTH_PROGRAM, view: 'view-hoje',    tab: 'hoje',    data: [],
             emptyPlanned: 'Nenhum treino planejado', addLabel: '+ Registrar resultado do treino', defaultCat: 'metcon'},
-  running: {key: 'runs',      source: () => RUN_PROGRAM,   view: 'view-running', tab: 'running', data: [],
-            emptyPlanned: 'Nenhuma corrida planejada', addLabel: '+ Registrar corrida', defaultCat: 'resistencia'}
+  batata:  {key: 'batata',    source: () => BATATA_PROGRAM, view: 'view-batata', tab: 'batata',  data: [],
+            emptyPlanned: 'Nenhum treino planejado', addLabel: '+ Registrar resultado do treino', defaultCat: 'metcon'}
 };
 let activeProgram = 'treino';
 function setActiveProgram(name){
@@ -3152,7 +3153,7 @@ function mergeMonthProgram(){
 }
 
 async function loadWorkouts(){
-  for(const name of ['running', 'treino']){   // termina com 'treino' ativo
+  for(const name of ['batata', 'treino']){   // termina com 'treino' ativo
     setActiveProgram(name);
     await loadActiveProgram();
   }
@@ -3187,17 +3188,17 @@ async function persistWorkouts(){
 function getWorkoutByDate(date){ return workouts.find(w => w.date === date); }
 
 /* ---------- TAB SWITCHING ---------- */
-// abas do menu: hoje (TREINO), running (RUNNING), guia (GUIA), recalibra (MÍDIA).
-// historico (lista completa) não tem botão: abre pelo link dentro de TREINO ou RUNNING
+// abas do menu: hoje (TREINO), batata (BATATA), guia (GUIA), recalibra (MÍDIA).
+// historico (lista completa) não tem botão: abre pelo link dentro de TREINO ou BATATA
 // e mostra o programa da aba de onde veio.
 function showTab(tab){
-  if(tab !== 'historico') setActiveProgram(tab === 'running' ? 'running' : 'treino');
+  if(tab !== 'historico') setActiveProgram(tab === 'batata' ? 'batata' : 'treino');
   editingDraft = false;
   const navTab = tab === 'historico' ? PROGRAMS[activeProgram].tab : tab;
   document.querySelectorAll('nav.tabs button').forEach(b=>b.classList.toggle('active', b.dataset.tab === navTab));
   document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));
   document.getElementById('view-'+tab).classList.add('active');
-  if(tab === 'hoje' || tab === 'running') renderHoje();
+  if(tab === 'hoje' || tab === 'batata') renderHoje();
   if(tab === 'historico') renderHistorico();
   if(tab === 'guia') renderGuia();
   if(tab === 'recalibra') renderRecalibraTab();
@@ -3587,12 +3588,12 @@ function renderHistorico(){
   const sorted = [...workouts].sort((a,b)=> a.date.localeCompare(b.date));
 
   if(sorted.length === 0){
-    container.innerHTML = `<button class="quiet-link" id="histBack" style="margin:0 0 14px;">${activeProgram === 'running' ? '‹ voltar ao running' : '‹ voltar ao treino'}</button><div class="card empty"><div class="big">Sem treinos</div><p>A programação vai aparecer aqui.</p></div>`;
+    container.innerHTML = `<button class="quiet-link" id="histBack" style="margin:0 0 14px;">${activeProgram === 'batata' ? '‹ voltar à Batata' : '‹ voltar ao treino'}</button><div class="card empty"><div class="big">Sem treinos</div><p>A programação vai aparecer aqui.</p></div>`;
     document.getElementById('histBack').addEventListener('click', ()=> showTab(PROGRAMS[activeProgram].tab));
     return;
   }
 
-  const backLabel = activeProgram === 'running' ? '‹ voltar ao running' : '‹ voltar ao treino';
+  const backLabel = activeProgram === 'batata' ? '‹ voltar à Batata' : '‹ voltar ao treino';
   container.innerHTML = `<button class="quiet-link" id="histBack" style="margin:0 0 14px;">${backLabel}</button>` + sorted.map(w => `
     <div class="hist-item">
       <div class="hist-head" data-id="${w.id}">
