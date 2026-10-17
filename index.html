@@ -486,11 +486,13 @@
 
   <nav class="tabs">
     <button class="active" data-tab="hoje">Treino</button>
+    <button data-tab="running">Running</button>
     <button data-tab="guia">Guia</button>
     <button data-tab="recalibra">Mídia</button>
   </nav>
 
   <div class="view active" id="view-hoje"></div>
+  <div class="view" id="view-running"></div>
   <div class="view" id="view-historico"></div>
   <div class="view" id="view-guia"></div>
   <div class="view" id="view-recalibra"></div>
@@ -3106,9 +3108,30 @@ const MONTH_PROGRAM = [
   ])
 ];
 
+/* ---------- PROGRAMA DE CORRIDA (aba RUNNING) ----------
+   Mesmo formato do MONTH_PROGRAM: wk(data, nome, blocos), blk(...), it(...).
+   Conteúdo do chat do treinador. Fica separado do CrossFit e é salvo na chave 'runs'. */
+const RUN_PROGRAM = [
+];
+
+/* programa ativo: 'treino' (abas Treino, Guia e Mídia) ou 'running' (aba Running).
+   As telas do dia leem sempre `workouts`, que aponta para o programa ativo. */
+const PROGRAMS = {
+  treino:  {key: STORAGE_KEY, source: () => MONTH_PROGRAM, view: 'view-hoje',    tab: 'hoje',    data: [],
+            emptyPlanned: 'Nenhum treino planejado', addLabel: '+ Registrar resultado do treino', defaultCat: 'metcon'},
+  running: {key: 'runs',      source: () => RUN_PROGRAM,   view: 'view-running', tab: 'running', data: [],
+            emptyPlanned: 'Nenhuma corrida planejada', addLabel: '+ Registrar corrida', defaultCat: 'resistencia'}
+};
+let activeProgram = 'treino';
+function setActiveProgram(name){
+  PROGRAMS[activeProgram].data = workouts;
+  activeProgram = name;
+  workouts = PROGRAMS[name].data;
+}
+
 function mergeMonthProgram(){
   let changed = false;
-  MONTH_PROGRAM.forEach(progW=>{
+  PROGRAMS[activeProgram].source().forEach(progW=>{
     const idx = workouts.findIndex(w=>w.date===progW.date);
     if(idx === -1){
       workouts.push(JSON.parse(JSON.stringify(progW)));
@@ -3129,8 +3152,15 @@ function mergeMonthProgram(){
 }
 
 async function loadWorkouts(){
+  for(const name of ['running', 'treino']){   // termina com 'treino' ativo
+    setActiveProgram(name);
+    await loadActiveProgram();
+  }
+}
+
+async function loadActiveProgram(){
   try{
-    const raw = localStorage.getItem(STORAGE_KEY);
+    const raw = localStorage.getItem(PROGRAMS[activeProgram].key);
     workouts = raw ? JSON.parse(raw) : [];
   }catch(e){
     workouts = [];
@@ -3147,7 +3177,7 @@ async function loadWorkouts(){
 
 async function persistWorkouts(){
   try{
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(workouts));
+    localStorage.setItem(PROGRAMS[activeProgram].key, JSON.stringify(workouts));
   }catch(e){
     showToast('Erro ao salvar');
     console.error(e);
@@ -3157,14 +3187,17 @@ async function persistWorkouts(){
 function getWorkoutByDate(date){ return workouts.find(w => w.date === date); }
 
 /* ---------- TAB SWITCHING ---------- */
-// abas do menu: hoje (TREINO), guia (GUIA), recalibra (MÍDIA).
-// historico (lista completa) não tem botão: abre pelo link dentro de TREINO.
+// abas do menu: hoje (TREINO), running (RUNNING), guia (GUIA), recalibra (MÍDIA).
+// historico (lista completa) não tem botão: abre pelo link dentro de TREINO ou RUNNING
+// e mostra o programa da aba de onde veio.
 function showTab(tab){
-  const navTab = tab === 'historico' ? 'hoje' : tab;
+  if(tab !== 'historico') setActiveProgram(tab === 'running' ? 'running' : 'treino');
+  editingDraft = false;
+  const navTab = tab === 'historico' ? PROGRAMS[activeProgram].tab : tab;
   document.querySelectorAll('nav.tabs button').forEach(b=>b.classList.toggle('active', b.dataset.tab === navTab));
   document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));
   document.getElementById('view-'+tab).classList.add('active');
-  if(tab === 'hoje') renderHoje();
+  if(tab === 'hoje' || tab === 'running') renderHoje();
   if(tab === 'historico') renderHistorico();
   if(tab === 'guia') renderGuia();
   if(tab === 'recalibra') renderRecalibraTab();
@@ -3284,7 +3317,7 @@ function rerenderActiveTab(){
 
 /* ---------- HOJE / TREINO VIEW ---------- */
 function renderHoje(){
-  const container = document.getElementById('view-hoje');
+  const container = document.getElementById(PROGRAMS[activeProgram].view);
   container.innerHTML = '';
   const heroEl = document.createElement('div');
   heroEl.className = 'hero-swipe';
@@ -3384,10 +3417,10 @@ function renderHero(bodyEl){
   if(!w && !editingDraft){
     bodyEl.innerHTML = `
       <div class="card empty">
-        <div class="big">${isFuture ? 'Nenhum treino planejado' : 'Nenhum resultado registrado'}</div>
+        <div class="big">${isFuture ? PROGRAMS[activeProgram].emptyPlanned : 'Nenhum resultado registrado'}</div>
         <p>${isToday ? 'Hoje · ' : ''}${fmtDateLong(selectedDate)}</p>
       </div>
-      <button class="primary" id="btnNewWorkout">+ Registrar resultado do treino</button>
+      <button class="primary" id="btnNewWorkout">${PROGRAMS[activeProgram].addLabel}</button>
     `;
     bodyEl.querySelector('#btnNewWorkout').addEventListener('click', ()=>{ editingDraft = true; renderHoje(); });
     return;
@@ -3444,7 +3477,7 @@ function renderHero(bodyEl){
 function renderWorkoutForm(bodyEl, existing){
   const draft = existing ? JSON.parse(JSON.stringify(existing)) : {
     id: uid(), date: selectedDate, name: '', notes: '',
-    blocks: [{title:'Bloco A', category:'metcon', items:[{exercise:'', prescribed:'', logged:'', done:false}]}]
+    blocks: [{title:'Bloco A', category:PROGRAMS[activeProgram].defaultCat, items:[{exercise:'', prescribed:'', logged:'', done:false}]}]
   };
 
   function renderForm(){
@@ -3464,7 +3497,7 @@ function renderWorkoutForm(bodyEl, existing){
 
     bodyEl.querySelector('#fName').addEventListener('input', e=> draft.name = e.target.value);
     bodyEl.querySelector('#btnAddBlock').addEventListener('click', ()=>{
-      draft.blocks.push({title:'Bloco '+String.fromCharCode(65+draft.blocks.length), category:'metcon', items:[{exercise:'', prescribed:'', logged:'', done:false}]});
+      draft.blocks.push({title:'Bloco '+String.fromCharCode(65+draft.blocks.length), category:PROGRAMS[activeProgram].defaultCat, items:[{exercise:'', prescribed:'', logged:'', done:false}]});
       renderBlocks();
     });
     bodyEl.querySelector('#btnSaveWorkout').addEventListener('click', async ()=>{
@@ -3554,11 +3587,13 @@ function renderHistorico(){
   const sorted = [...workouts].sort((a,b)=> a.date.localeCompare(b.date));
 
   if(sorted.length === 0){
-    container.innerHTML = `<div class="card empty"><div class="big">Sem treinos</div><p>A programação vai aparecer aqui.</p></div>`;
+    container.innerHTML = `<button class="quiet-link" id="histBack" style="margin:0 0 14px;">${activeProgram === 'running' ? '‹ voltar ao running' : '‹ voltar ao treino'}</button><div class="card empty"><div class="big">Sem treinos</div><p>A programação vai aparecer aqui.</p></div>`;
+    document.getElementById('histBack').addEventListener('click', ()=> showTab(PROGRAMS[activeProgram].tab));
     return;
   }
 
-  container.innerHTML = `<button class="quiet-link" id="histBack" style="margin:0 0 14px;">‹ voltar ao treino</button>` + sorted.map(w => `
+  const backLabel = activeProgram === 'running' ? '‹ voltar ao running' : '‹ voltar ao treino';
+  container.innerHTML = `<button class="quiet-link" id="histBack" style="margin:0 0 14px;">${backLabel}</button>` + sorted.map(w => `
     <div class="hist-item">
       <div class="hist-head" data-id="${w.id}">
         <div class="hist-head-left">
@@ -3582,7 +3617,7 @@ function renderHistorico(){
     </div>
   `).join('');
 
-  document.getElementById('histBack').addEventListener('click', ()=> showTab('hoje'));
+  document.getElementById('histBack').addEventListener('click', ()=> showTab(PROGRAMS[activeProgram].tab));
   container.querySelectorAll('.hist-head').forEach(h=>{
     h.addEventListener('click', ()=>{ document.getElementById('hb-'+h.dataset.id).classList.toggle('open'); });
   });

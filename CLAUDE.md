@@ -7,6 +7,7 @@ Documento de passagem para o chat que vai cuidar do app. O conteúdo dos treinos
 App pessoal do Robson, que é atleta de CrossFit. Ele mostra:
 
 - a programação diária de treino, montada por um treinador (Claude) em ciclos mensais;
+- uma periodização separada, só de corrida (aba Running), montada com o mesmo treinador;
 - os resultados que o Robson reporta;
 - ferramentas de apoio: nota da sessão, escala de RPE e técnica de corrida (aba Guia) e um gerador de posts para Instagram Stories (aba Mídia).
 
@@ -31,8 +32,8 @@ Uso principal: abrir no celular Android, ver o treino do dia, navegar entre os d
 
 Os dois chats fazem push no mesmo repositório e no mesmo `index.html`.
 
-- **Chat do treinador:** edita apenas o bloco `MONTH_PROGRAM` (prescrições e resultados) e algumas constantes de conteúdo, como `RC_WEEK_PHASES` e os textos da aba Guia (em `renderRPE`, `SESSION_SCALE`, `RPE_SCALE`, `renderCorrida` e `RUN_CUES`). Ele atualiza o app sempre que o Robson reporta um resultado.
-- **Chat do app:** edita o código, o CSS e as funcionalidades. **Não altere prescrições nem resultados dentro de `MONTH_PROGRAM`.** Se uma mudança de estrutura exigir mexer nos dados, preserve cada valor.
+- **Chat do treinador:** edita apenas os blocos `MONTH_PROGRAM` e `RUN_PROGRAM` (prescrições e resultados) e algumas constantes de conteúdo, como `RC_WEEK_PHASES` e os textos da aba Guia (em `renderRPE`, `SESSION_SCALE`, `RPE_SCALE`, `renderCorrida` e `RUN_CUES`). Ele atualiza o app sempre que o Robson reporta um resultado.
+- **Chat do app:** edita o código, o CSS e as funcionalidades. **Não altere prescrições nem resultados dentro de `MONTH_PROGRAM` nem de `RUN_PROGRAM`.** Se uma mudança de estrutura exigir mexer nos dados, preserve cada valor.
 - **Regras para os dois:**
   - rodar `git pull` antes de editar;
   - fazer commits pequenos;
@@ -47,7 +48,7 @@ Os dois chats fazem push no mesmo repositório e no mesmo `index.html`.
   3. o **app**, a partir de `const STORAGE_KEY`.
 - Dependência externa: html2canvas 1.4.1, pelo cdnjs.
 - Fontes do Google Fonts: Anton (títulos), Work Sans (corpo) e Space Mono (dados e rótulos).
-- Persistência em `localStorage`, na chave `workouts`.
+- Persistência em `localStorage`: chave `workouts` para o CrossFit e `runs` para a corrida.
 
 ## Modelo de dados
 
@@ -59,12 +60,15 @@ wk(date, name, blocks)                       // dia: {id, date:'AAAA-MM-DD', nam
 
 - **Categorias** (em `CATEGORIES`, cada uma com rótulo e cor): `potencia`, `forca`, `metcon`, `gym`, `resistencia`, `aquecimento`, `recovery`, `rest`. Blocos de aquecimento usam `aquecimento` (cinza `--steel`), não `recovery`.
 - **Resultado:** fica no 5º argumento de `blk()`, como texto livre. Exemplos: `'3:32 · RPE 9'`, `'160kg'`, `'6 rounds + 8 reps'`. O campo `logged` dos itens é legado e não é mais usado.
+- **Programa de corrida:** `RUN_PROGRAM`, logo depois do `MONTH_PROGRAM`, no mesmo formato (`wk`, `blk`, `it`) e com as mesmas categorias (para corrida: `aquecimento`, `resistencia`, `recovery`, `rest`). É um programa independente: o merge, as datas e os resultados não se misturam com o CrossFit. **A carga de corrida da semana é a soma dos dois programas** (corridas dentro do `MONTH_PROGRAM` mais o `RUN_PROGRAM`); o treinador precisa contar os dois, por causa do tendão de Aquiles.
 - **Programa:** `MONTH_PROGRAM` é o array com todos os dias do ciclo. Hoje cobre de 31/08 a 31/10/2026. **O programa no código é a fonte da verdade.**
 - **Carga na abertura:** `mergeMonthProgram()` sobrescreve no `localStorage` todo dia que não tenha `logged` preenchido. Na prática, uma edição feita pelo botão "Editar treino" pode ser apagada no próximo carregamento, se o programa do código tiver aquele dia. Isso é conhecido e aceito, porque os resultados entram pelo código.
 
 ## Abas e funcionamento
 
-Menu (`nav.tabs`) com três abas: **TREINO**, **GUIA** e **MÍDIA**. A troca passa por `showTab(tab)`, e cada aba renderiza sob demanda. Os identificadores internos não mudaram: TREINO é `hoje`, MÍDIA é `recalibra`.
+Menu (`nav.tabs`) com quatro abas: **TREINO**, **RUNNING**, **GUIA** e **MÍDIA**. A troca passa por `showTab(tab)`, e cada aba renderiza sob demanda. Identificadores internos: TREINO é `hoje`, RUNNING é `running`, MÍDIA é `recalibra`.
+
+**Programa ativo:** `PROGRAMS` descreve os dois programas (`treino` e `running`: chave de storage, fonte, view, textos do estado vazio e categoria padrão de bloco novo). `setActiveProgram(nome)` troca o array `workouts`, que é o que todas as telas do dia leem (`renderHoje`, `renderHero`, faixa da semana, calendário, formulário de edição, lista completa). `showTab` ativa `running` só na aba Running; Treino, Guia e Mídia usam sempre `treino`.
 
 1. **TREINO (`hoje`)** mostra o treino do dia selecionado.
    - Blocos com título, tag de RPE e tag de categoria, e itens com a prescrição.
@@ -76,12 +80,13 @@ Menu (`nav.tabs`) com três abas: **TREINO**, **GUIA** e **MÍDIA**. A troca pas
      - calendário mensal recolhível.
    - Botão "Editar treino" abre um formulário de edição local.
    - Link discreto "ver lista completa" no fim da aba abre a lista de todos os dias (`historico`).
-2. **Lista completa (`historico`)**, antiga aba Programação: sem botão no menu, abre pelo link da aba Treino e tem "‹ voltar ao treino" no topo. Os dias expandem para mostrar blocos e resultados. Com ela aberta, o menu marca TREINO.
-3. **GUIA (`guia`)**, junção das antigas abas RPE e Corrida. `renderGuia()` chama `renderRPE(container)` e `renderCorrida(container)`, em três seções nesta ordem:
+2. **RUNNING (`running`)** funciona igual à aba Treino (mesmas telas e navegação), mas mostra o `RUN_PROGRAM`. Renderiza em `view-running`. Dia sem corrida mostra "Nenhuma corrida planejada" e o botão "+ Registrar corrida".
+3. **Lista completa (`historico`)**, antiga aba Programação: sem botão no menu, abre pelo link da aba Treino ou da Running e mostra o programa da aba de origem, com "‹ voltar ao treino" ou "‹ voltar ao running" no topo. Os dias expandem para mostrar blocos e resultados. Com ela aberta, o menu marca a aba de origem.
+4. **GUIA (`guia`)**, junção das antigas abas RPE e Corrida. `renderGuia()` chama `renderRPE(container)` e `renderCorrida(container)`, em três seções nesta ordem:
    - **Nota da sessão:** escala de 0 a 10 do treino inteiro (`SESSION_SCALE`);
    - **RPE de série:** escala de 10 a 5 com reps na reserva (`RPE_SCALE`), zonas aeróbicas e "Como usar" a carga de referência com o alvo de RPE;
    - **Técnica de corrida:** pontos técnicos (`RUN_CUES`) e onde a técnica melhora.
-4. **MÍDIA (`recalibra`)**, antiga aba Recalibra, renomeada sem mudança de funcionalidade. Nomes internos (`renderRecalibraTab`, `view-recalibra`, prefixo `rc`) continuam iguais.
+5. **MÍDIA (`recalibra`)**, antiga aba Recalibra, renomeada sem mudança de funcionalidade. Nomes internos (`renderRecalibraTab`, `view-recalibra`, prefixo `rc`) continuam iguais.
    É o gerador de Stories em 1080×1920 a partir do treino do dia.
    - **Montagem do texto:**
      - puxa os blocos do dia, exceto `aquecimento`, `recovery` e `rest`;
