@@ -3107,31 +3107,20 @@ const MONTH_PROGRAM = [
     ], 'RPE 3-4 · Zona 2')
   ])
 ];
-/* ============================================================
-   RUNNING · Preparação HYROX Doubles (amigo do Robson)
-   Prova: HYROX Rio de Janeiro, 21-22/11/2026 (confirmar dia da bateria)
-   Mesmo formato de MONTH_PROGRAM: wk(data, nome, blocos)
-   Paces definidos pelo teste de 3 km de 20/10:
-     Z2 = conversa ou só pelo nariz
-     Limiar = pace do teste de 3 km + 15 s/km
-     Ritmo de prova = pace do teste de 3 km + 30 a 40 s/km
-   Cargas Doubles masculino (confirmar categoria): sled push 152 kg e
-   sled pull 103 kg (com o trenó), farmers 2x24 kg, sandbag 20 kg, wall ball 6 kg.
-   ============================================================ */
-const RUNNING_META = {
-  titulo: 'HYROX Doubles · Rio 21/11',
-  atleta: 'Amigo do Robson (CrossFit)',
-  prova: '2026-11-21',
-  fases: [
-    {inicio:'2026-10-19', fim:'2026-10-25', nome:'Semana 1 · Diagnóstico e técnica'},
-    {inicio:'2026-10-26', fim:'2026-11-01', nome:'Semana 2 · Construção'},
-    {inicio:'2026-11-02', fim:'2026-11-08', nome:'Semana 3 · Pico de volume'},
-    {inicio:'2026-11-09', fim:'2026-11-15', nome:'Semana 4 · Pico de intensidade'},
-    {inicio:'2026-11-16', fim:'2026-11-22', nome:'Semana 5 · Polimento e prova'}
-  ]
-};
 
-const RUNNING_PROGRAM = [
+
+/* ---------- PROGRAMA DA ABA BATATA ----------
+   Treinos gerais de outra pessoa (não do Robson), com programa próprio.
+   Mesmo formato do MONTH_PROGRAM: wk(data, nome, blocos), blk(...), it(...).
+   Conteúdo do chat do treinador. Fica separado e é salvo na chave 'batata'. */
+const BATATA_PROGRAM = [
+  /* Preparação HYROX Doubles · HYROX Rio de Janeiro, 21/11/2026.
+     Paces pelo teste de 3 km de 20/10: limiar = pace do teste + 15 s/km;
+     ritmo de prova = pace do teste + 30 a 40 s/km; Z2 = conversa ou só pelo nariz.
+     Cargas Doubles masculino (confirmar categoria): sled push 152 kg e pull 103 kg
+     com o trenó, farmers 2x24 kg, sandbag 20 kg, wall ball 6 kg.
+     Fases: S1 19-25/10 diagnóstico e técnica · S2 26/10-01/11 construção ·
+     S3 02-08/11 pico de volume · S4 09-15/11 pico de intensidade · S5 16-21/11 polimento e prova. */
   /* ---------- SEMANA 1 · DIAGNÓSTICO E TÉCNICA ---------- */
   wk('2026-10-19', 'HYROX · Sled + estações', [
     blk('Bloco A — Aquecimento', 'aquecimento', [
@@ -3450,14 +3439,6 @@ const RUNNING_PROGRAM = [
       it('Roxzone', 'andar rápido ou trotar, nunca parar. Água nas transições, em goles pequenos.')
     ], 'Prova')
   ])
-];
-
-
-/* ---------- PROGRAMA DA ABA BATATA ----------
-   Treinos gerais de outra pessoa (não do Robson), com programa próprio.
-   Mesmo formato do MONTH_PROGRAM: wk(data, nome, blocos), blk(...), it(...).
-   Conteúdo do chat do treinador. Fica separado e é salvo na chave 'batata'. */
-const BATATA_PROGRAM = [
 ];
 
 /* programa ativo: 'treino' (abas Treino, Guia e Mídia) ou 'batata' (aba Batata).
