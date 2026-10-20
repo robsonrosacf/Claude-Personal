@@ -59,6 +59,7 @@ wk(date, name, blocks)                       // dia: {id, date:'AAAA-MM-DD', nam
 ```
 
 - **Categorias** (em `CATEGORIES`, cada uma com rótulo e cor): `potencia`, `forca`, `metcon`, `gym`, `resistencia`, `aquecimento`, `recovery`, `rest`. Blocos de aquecimento usam `aquecimento` (cinza `--steel`), não `recovery`.
+- **Wall ball em libras:** o box só tem bolas em lb. Prescrever sempre em libras, no nome do exercício: `Wall Balls (20 lb)` para o Robson e `Wall Balls (14 lb)` para a Batata. A exceção é a descrição das regras da prova HYROX, que usa bola oficial de 6 kg.
 - **Resultado:** fica no 5º argumento de `blk()`, como texto livre. Exemplos: `'3:32 · RPE 9'`, `'160kg'`, `'6 rounds + 8 reps'`. O campo `logged` dos itens é legado e não é mais usado.
 - **Programa da aba Batata:** `BATATA_PROGRAM`, logo depois do `MONTH_PROGRAM`, no mesmo formato (`wk`, `blk`, `it`) e com as mesmas categorias. São os treinos gerais de **outra pessoa**, não do Robson: as restrições, RMs e regras de carga do Robson não valem para ela. É um programa independente: o merge, as datas e os resultados não se misturam com os do Robson. O site é público, então só entram dados de treino; nada que identifique a pessoa além do apelido.
 - **Programa:** `MONTH_PROGRAM` é o array com todos os dias do ciclo. Hoje cobre de 31/08 a 31/10/2026. **O programa no código é a fonte da verdade.**
