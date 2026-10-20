@@ -7,7 +7,7 @@ Documento de passagem para o chat que vai cuidar do app. O conteúdo dos treinos
 App pessoal do Robson, que é atleta de CrossFit. Ele mostra:
 
 - a programação diária de treino, montada por um treinador (Claude) em ciclos mensais;
-- os treinos gerais de outra pessoa (não do Robson), num programa próprio (aba Batata), montados com o mesmo treinador;
+- os treinos de outros atletas, cada um com programa próprio (abas Batata e Thomals), montados com o mesmo treinador;
 - os resultados que o Robson reporta;
 - ferramentas de apoio: nota da sessão, escala de RPE e técnica de corrida (aba Guia) e um gerador de posts para Instagram Stories (aba Mídia).
 
@@ -32,8 +32,8 @@ Uso principal: abrir no celular Android, ver o treino do dia, navegar entre os d
 
 Os dois chats fazem push no mesmo repositório e no mesmo `index.html`.
 
-- **Chat do treinador:** edita apenas os blocos `MONTH_PROGRAM` e `BATATA_PROGRAM` (prescrições e resultados) e algumas constantes de conteúdo, como `RC_WEEK_PHASES` e os textos da aba Guia (em `renderRPE`, `SESSION_SCALE`, `RPE_SCALE`, `renderCorrida` e `RUN_CUES`). Ele atualiza o app sempre que o Robson reporta um resultado.
-- **Chat do app:** edita o código, o CSS e as funcionalidades. **Não altere prescrições nem resultados dentro de `MONTH_PROGRAM` nem de `BATATA_PROGRAM`.** Se uma mudança de estrutura exigir mexer nos dados, preserve cada valor.
+- **Chat do treinador:** edita apenas os blocos `MONTH_PROGRAM`, `BATATA_PROGRAM` e `THOMALS_PROGRAM` (prescrições e resultados) e algumas constantes de conteúdo, como `RC_WEEK_PHASES` e os textos da aba Guia (em `renderRPE`, `SESSION_SCALE`, `RPE_SCALE`, `renderCorrida` e `RUN_CUES`). Ele atualiza o app sempre que o Robson reporta um resultado.
+- **Chat do app:** edita o código, o CSS e as funcionalidades. **Não altere prescrições nem resultados dentro de `MONTH_PROGRAM` nem de `BATATA_PROGRAM` e `THOMALS_PROGRAM`.** Se uma mudança de estrutura exigir mexer nos dados, preserve cada valor.
 - **Regras para os dois:**
   - rodar `git pull` antes de editar;
   - fazer commits pequenos;
@@ -48,7 +48,7 @@ Os dois chats fazem push no mesmo repositório e no mesmo `index.html`.
   3. o **app**, a partir de `const STORAGE_KEY`.
 - Dependência externa: html2canvas 1.4.1, pelo cdnjs.
 - Fontes do Google Fonts: Anton (títulos), Work Sans (corpo) e Space Mono (dados e rótulos).
-- Persistência em `localStorage`: chave `workouts` para os treinos do Robson e `batata` para os da aba Batata.
+- Persistência em `localStorage`: chave `workouts` para os treinos do Robson, `batata` para os da aba Batata e `thomals` para os da aba Thomals.
 
 ## Modelo de dados
 
@@ -59,17 +59,17 @@ wk(date, name, blocks)                       // dia: {id, date:'AAAA-MM-DD', nam
 ```
 
 - **Categorias** (em `CATEGORIES`, cada uma com rótulo e cor): `potencia`, `forca`, `metcon`, `gym`, `resistencia`, `aquecimento`, `recovery`, `rest`. Blocos de aquecimento usam `aquecimento` (cinza `--steel`), não `recovery`.
-- **Wall ball em libras:** o box só tem bolas em lb. Prescrever sempre em libras, no nome do exercício: `Wall Balls (20 lb)` para o Robson e `Wall Balls (14 lb)` para a Batata. A exceção é a descrição das regras da prova HYROX, que usa bola oficial de 6 kg.
+- **Wall ball em libras:** o box só tem bolas em lb. Prescrever sempre em libras, no nome do exercício: `Wall Balls (20 lb)` para o Robson e `Wall Balls (14 lb)` para a Batata e o Thomals. A exceção é a descrição das regras da prova HYROX, que usa bola oficial de 6 kg.
 - **Resultado:** fica no 5º argumento de `blk()`, como texto livre. Exemplos: `'3:32 · RPE 9'`, `'160kg'`, `'6 rounds + 8 reps'`. O campo `logged` dos itens é legado e não é mais usado.
-- **Programa da aba Batata:** `BATATA_PROGRAM`, logo depois do `MONTH_PROGRAM`, no mesmo formato (`wk`, `blk`, `it`) e com as mesmas categorias. São os treinos gerais de **outra pessoa**, não do Robson: as restrições, RMs e regras de carga do Robson não valem para ela. É um programa independente: o merge, as datas e os resultados não se misturam com os do Robson. O site é público, então só entram dados de treino; nada que identifique a pessoa além do apelido.
+- **Programas de outros atletas:** `BATATA_PROGRAM` (aba Batata) e `THOMALS_PROGRAM` (aba Thomals), logo depois do `MONTH_PROGRAM`, no mesmo formato (`wk`, `blk`, `it`) e com as mesmas categorias. Cada um é de **outra pessoa**, não do Robson: as restrições, RMs e regras de carga do Robson não valem para eles, e um atleta não herda as do outro. O Thomals começou como cópia do Batata e é ajustado à parte. São programas independentes: o merge, as datas e os resultados não se misturam. O site é público, então só entram dados de treino; nada que identifique a pessoa além do apelido.
 - **Programa:** `MONTH_PROGRAM` é o array com todos os dias do ciclo. Hoje cobre de 31/08 a 31/10/2026. **O programa no código é a fonte da verdade.**
 - **Carga na abertura:** `mergeMonthProgram()` sobrescreve no `localStorage` todo dia que não tenha `logged` preenchido. Na prática, uma edição feita pelo botão "Editar treino" pode ser apagada no próximo carregamento, se o programa do código tiver aquele dia. Isso é conhecido e aceito, porque os resultados entram pelo código.
 
 ## Abas e funcionamento
 
-Menu (`nav.tabs`) com quatro abas: **TREINO**, **BATATA**, **GUIA** e **MÍDIA**. A troca passa por `showTab(tab)`, e cada aba renderiza sob demanda. Identificadores internos: TREINO é `hoje`, BATATA é `batata`, MÍDIA é `recalibra`.
+Menu (`nav.tabs`) com cinco abas: **TREINO**, **BATATA**, **THOMALS**, **GUIA** e **MÍDIA**. A troca passa por `showTab(tab)`, e cada aba renderiza sob demanda. Identificadores internos: TREINO é `hoje`, BATATA é `batata`, THOMALS é `thomals`, MÍDIA é `recalibra`.
 
-**Programa ativo:** `PROGRAMS` descreve os dois programas (`treino` e `batata`: chave de storage, fonte, view, textos do estado vazio e categoria padrão de bloco novo). `setActiveProgram(nome)` troca o array `workouts`, que é o que todas as telas do dia leem (`renderHoje`, `renderHero`, faixa da semana, calendário, formulário de edição, lista completa). `showTab` ativa `batata` só na aba Batata; Treino, Guia e Mídia usam sempre `treino`.
+**Programa ativo:** `PROGRAMS` descreve os programas (`treino`, `batata`, `thomals`: chave de storage, fonte, view, aba, textos do estado vazio, rótulo de volta da lista e categoria padrão de bloco novo). Para um atleta novo: um array `NOME_PROGRAM`, uma entrada em `PROGRAMS`, um botão no `nav.tabs` e uma `div.view`; `programForTab` e `loadWorkouts` pegam o resto sozinhos. `setActiveProgram(nome)` troca o array `workouts`, que é o que todas as telas do dia leem (`renderHoje`, `renderHero`, faixa da semana, calendário, formulário de edição, lista completa). `showTab` ativa o programa do atleta só na aba dele (`programForTab`); Treino, Guia e Mídia usam sempre `treino`.
 
 1. **TREINO (`hoje`)** mostra o treino do dia selecionado.
    - Blocos com título, tag de RPE e tag de categoria, e itens com a prescrição.
@@ -81,8 +81,8 @@ Menu (`nav.tabs`) com quatro abas: **TREINO**, **BATATA**, **GUIA** e **MÍDIA**
      - calendário mensal recolhível.
    - Botão "Editar treino" abre um formulário de edição local.
    - Link discreto "ver lista completa" no fim da aba abre a lista de todos os dias (`historico`).
-2. **BATATA (`batata`)** funciona igual à aba Treino (mesmas telas, textos e navegação), mas mostra o `BATATA_PROGRAM`. Renderiza em `view-batata`. A aba Mídia não usa esse programa.
-3. **Lista completa (`historico`)**, antiga aba Programação: sem botão no menu, abre pelo link da aba Treino ou da Batata e mostra o programa da aba de origem, com "‹ voltar ao treino" ou "‹ voltar à Batata" no topo. Os dias expandem para mostrar blocos e resultados. Com ela aberta, o menu marca a aba de origem.
+2. **BATATA (`batata`) e THOMALS (`thomals`)** funcionam igual à aba Treino (mesmas telas, textos e navegação), cada uma com o próprio programa. Renderizam em `view-batata` e `view-thomals`. A aba Mídia não usa esses programas.
+3. **Lista completa (`historico`)**, antiga aba Programação: sem botão no menu, abre pelo link da aba Treino ou de um atleta e mostra o programa da aba de origem, com o rótulo de volta dela no topo ("‹ voltar ao treino", "‹ voltar à Batata", "‹ voltar ao Thomals"). Os dias expandem para mostrar blocos e resultados. Com ela aberta, o menu marca a aba de origem.
 4. **GUIA (`guia`)**, junção das antigas abas RPE e Corrida. `renderGuia()` chama `renderRPE(container)` e `renderCorrida(container)`, em três seções nesta ordem:
    - **Nota da sessão:** escala de 0 a 10 do treino inteiro (`SESSION_SCALE`);
    - **RPE de série:** escala de 10 a 5 com reps na reserva (`RPE_SCALE`), zonas aeróbicas e "Como usar" a carga de referência com o alvo de RPE;
