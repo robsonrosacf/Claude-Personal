@@ -4420,7 +4420,7 @@ function renderHero(bodyEl){
     html += `
     <div class="day-notes">
       <div class="day-notes-label">Observações</div>
-      <div class="day-notes-text">${escapeHtml(w.notes.trim())}</div>
+      <div class="day-notes-text">${formatDayNotes(w.notes)}</div>
     </div>`;
   }
 
@@ -6122,6 +6122,15 @@ function rcExportVideoRecorder(overlay, status){
 }
 
 /* ---------- UTIL ---------- */
+// Observações do treinador: em cada linha "• Rótulo: texto", o rótulo sai em negrito.
+function formatDayNotes(notes){
+  return String(notes || '').trim().split('\n').map(line => {
+    const m = line.match(/^(\s*•\s*)?([^:•]{1,40}):\s(.*)$/);
+    if(!m) return escapeHtml(line);
+    return escapeHtml(m[1] || '') + '<strong>' + escapeHtml(m[2]) + ':</strong> ' + escapeHtml(m[3]);
+  }).join('\n');
+}
+
 function escapeHtml(str){
   if(str === undefined || str === null) return '';
   return String(str).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
