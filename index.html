@@ -382,7 +382,27 @@
   .rc-frame{width:1080px;height:1920px;position:relative;overflow:hidden;background:#333;}
   .rc-photo-layer{position:absolute;inset:0;overflow:hidden;background-color:#000;}
   .rc-photo-layer img, .rc-photo-layer video{position:absolute;top:0;left:0;user-select:none;pointer-events:none;max-width:none;}
-  .rc-source{margin-bottom:16px;}
+  .rc-source{margin-bottom:12px;}
+  .rc-daybar{display:flex;align-items:center;gap:8px;margin-bottom:14px;}
+  .rc-daybar-arrow{width:44px;height:44px;border-radius:8px;border:1px solid var(--line);background:var(--bg-raised);color:var(--chalk);font-size:22px;cursor:pointer;flex-shrink:0;}
+  .rc-daybar-date{flex:1;text-align:center;font-family:var(--font-display);font-size:18px;text-transform:uppercase;letter-spacing:0.5px;color:var(--chalk);}
+  .rc-daybar-today{border:none;background:none;color:var(--accent);font-family:var(--font-mono);font-size:12px;cursor:pointer;padding:0 4px;flex-shrink:0;}
+  .rc-tap-hint{font-family:var(--font-mono);font-size:11px;color:var(--steel);text-align:center;margin:10px 0 6px;}
+  .rc-hidden-row{display:flex;flex-wrap:wrap;gap:6px;align-items:center;justify-content:center;margin-bottom:14px;}
+  .rc-hidden-row:empty{display:none;}
+  .rc-hidden-label{font-size:11px;text-transform:uppercase;letter-spacing:0.5px;color:var(--steel);margin-right:2px;}
+  .rc-hidden-chip{border:1px dashed var(--line);background:none;color:var(--chalk-dim);border-radius:20px;padding:6px 12px;font-size:12px;cursor:pointer;}
+  .rc-controls{margin-top:4px;}
+  .rc-score-input{font-family:var(--font-display);font-size:22px;letter-spacing:0.5px;padding:12px 14px;}
+  .rc-chips, .rc-bg-row{display:flex;flex-wrap:wrap;gap:8px;}
+  .rc-chip{
+    padding:11px 14px;border-radius:8px;border:1px solid var(--line);background:var(--bg-raised);color:var(--chalk-dim);
+    font-family:var(--font-body);font-size:14px;cursor:pointer;
+  }
+  .rc-chip.on{background:var(--accent);color:#0a0c0b;border-color:var(--accent);font-weight:600;}
+  .rc-media-tools{display:flex;flex-direction:column;gap:12px;margin-top:14px;}
+  .rc-wod-item{cursor:pointer;}
+  .rc-adjusting .rc-wod-item{cursor:move;}
   .rc-source-label{font-size:11px;text-transform:uppercase;letter-spacing:0.5px;color:var(--steel);margin-bottom:6px;}
   .rc-source-btns{display:flex;gap:6px;}
   .rc-source-btn{
@@ -4752,7 +4772,11 @@ const RC_META_LABELS = ['referência','estratégia','baseline','baselines','nota
   'atenção','foco','foco técnico','critério','como fazer','durante os tiros','registrar',
   'progressão','comparar','comparação final','origem','opção','sem push vertical',
   'teste da conversa','volta à calma','descanso','descanso antes do teste','geral','específico',
-  'se quiser mover','relógio'];
+  'se quiser mover','relógio',
+  'por quê','por que','ritmo','tendão','controle','regra','ajuste','antes de começar','score',
+  'ombro','local','argolas altas','sem corrida','tempo','anote','sem parceiro?','meta','técnica',
+  'para que serve','cargas','formato','transições','ensaio','fechar','duração','roxzone',
+  'estação do round','estações'];
 
 function rcSimplifyTitle(name){
   return name
@@ -4847,12 +4871,12 @@ function rcSeedFromDay(){
   rcBlocks = avail.map(block => {
     const cat = catInfo(block.category);
     const label = block.title.replace(/^Bloco\s+\S+\s*—\s*/,'').trim() || block.title;
-    const items = block.items.filter(it => !RC_META_LABELS.includes(it.exercise.trim().toLowerCase()));
     return {
       label, category: block.category, catColor: cat.color,
-      items: items.map(it => {
+      items: block.items.filter(it => it.exercise.trim()).map(it => {
         const split = rcSplitPrescribed(it.exercise, it.prescribed);
-        return {name: split.name, reps: split.qty};
+        const hidden = RC_META_LABELS.includes(it.exercise.trim().toLowerCase());
+        return {name: split.name, reps: split.qty, hidden};
       }),
       rpe: block.rpe || '', done: block.done || '', titleRaw: block.title
     };
@@ -4896,6 +4920,37 @@ function rcMediaMarkup(){
   return `<img id="rcMediaEl" src="${rcPhotoDataUrl}" draggable="false">`;
 }
 
+function rcSetFeatured(idx){
+  rcFeaturedIdx = idx;
+  const featured = rcBlocks[idx];
+  rcScore = rcCleanScore(featured.done);
+  const capMatch = featured.titleRaw.match(/cap\s*(\d+)\s*min/i);
+  rcCap = capMatch ? `cap ${capMatch[1]} min` : '';
+  rcPills = [featured.rpe, catInfo(featured.category).label].filter(Boolean);
+}
+
+// barra de data compacta da Mídia: ‹ sáb, 17/10 ›
+function rcDayBar(){
+  const wrap = document.createElement('div');
+  wrap.className = 'rc-daybar';
+  const isToday = selectedDate === todayISO();
+  const d = dateFromISO(selectedDate);
+  const wd = d.toLocaleDateString('pt-BR', {weekday:'short'}).replace('.', '');
+  wrap.innerHTML = `
+    <button class="rc-daybar-arrow" id="rcDayPrev" aria-label="Dia anterior">‹</button>
+    <div class="rc-daybar-date">${wd}, ${fmtDate(selectedDate).slice(0,5)}${isToday ? ' · hoje' : ''}</div>
+    <button class="rc-daybar-arrow" id="rcDayNext" aria-label="Próximo dia">›</button>`;
+  wrap.querySelector('#rcDayPrev').addEventListener('click', ()=> goToDay(-1));
+  wrap.querySelector('#rcDayNext').addEventListener('click', ()=> goToDay(1));
+  if(!isToday){
+    const t = document.createElement('button');
+    t.className = 'rc-daybar-today'; t.textContent = 'hoje';
+    t.addEventListener('click', ()=>{ selectedDate = todayISO(); weekAnchor = selectedDate; rerenderActiveTab(); });
+    wrap.appendChild(t);
+  }
+  return wrap;
+}
+
 function renderRecalibraTab(){
   const container = document.getElementById('view-recalibra');
   const w = getWorkoutByDate(selectedDate);
@@ -4904,15 +4959,13 @@ function renderRecalibraTab(){
 
   container.innerHTML = '';
   container.appendChild(rcSourceSelector());
-  container.appendChild(renderDayNav());
-  container.appendChild(renderWeekStrip());
-  container.appendChild(renderCalendar());
+  container.appendChild(rcDayBar());
 
   const counterText = rcCounterText(selectedDate);
 
   if(!w || rcBlocks.length === 0){
     const empty = document.createElement('div');
-    empty.innerHTML = `<div class="card empty"><div class="big">Nada pra postar nesse dia</div><p>Dia de descanso ou só recuperação ativa — sem WOD com resultado.</p></div>`;
+    empty.innerHTML = `<div class="card empty"><div class="big">Nada pra postar nesse dia</div><p>Dia de descanso ou só recuperação ativa, sem treino com resultado.</p></div>`;
     container.appendChild(empty);
     return;
   }
@@ -4920,163 +4973,125 @@ function renderRecalibraTab(){
   if(!rcPhotoDataUrl && !rcDefaultBgFailed){ rcUseDefaultBg(); }
 
   const isVideo = rcMediaType === 'video';
+  const hasOwnMedia = rcPhotoDataUrl && !rcIsDefaultBg;
   const zoomPct = rcPhotoMinScale ? Math.round((rcPhotoScale / rcPhotoMinScale) * 100) : 100;
-  const uploadTxt = rcIsDefaultBg
-    ? 'Fundo padrão RBSN · toque para usar foto ou vídeo'
-    : rcPhotoDataUrl ? `${isVideo ? 'Vídeo' : 'Foto'} carregado · toque para trocar` : 'Toque para escolher uma foto ou um vídeo';
+  const multi = rcBlocks.length > 1;
 
   const body = document.createElement('div');
   body.innerHTML = `
-    <div class="rc-layout">
-      <div class="card">
-        <div class="rc-field-group">
-          <div class="rc-field-group-title">Blocos do dia</div>
-          <div id="rcBlocksEditor"></div>
-        </div>
-
-        <div class="rc-field-group">
-          <div class="rc-field-group-title">Resultado em destaque — ${rcBlocks[rcFeaturedIdx] ? escapeHtml(catInfo(rcBlocks[rcFeaturedIdx].category).label) : ''}</div>
-          <select class="text-input" id="rcFeaturedSelect" style="margin-bottom:10px;">
-            ${rcBlocks.map((b,i)=>`<option value="${i}" ${i===rcFeaturedIdx?'selected':''}>${escapeHtml(b.label)}</option>`).join('')}
-          </select>
-          <div class="rc-row2">
-            <div><label class="field-label" style="margin-top:0;">Score (tempo ou reps)</label><input type="text" class="text-input" id="rcScore" value="${rcEscAttr(rcScore)}" placeholder="ex: 12:26, 5 rounds + 8"></div>
-            <div><label class="field-label" style="margin-top:0;">Cap</label><input type="text" class="text-input" id="rcCap" value="${rcEscAttr(rcCap)}" placeholder="cap 18 min"></div>
+    <div class="rc-preview-scaler ${rcAdjustMode ? 'rc-adjusting' : ''}" id="rcPreviewScaler">
+      <div class="rc-preview-inner" id="rcPreviewInner">
+        <div class="rc-frame ${rcIsDefaultBg ? 'rc-bg-default' : ''}" id="rcCaptureFrame">
+          <div class="rc-photo-layer" id="rcPhotoLayer">
+            ${rcMediaMarkup()}
           </div>
-          <label class="field-label">Tags</label>
-          <div id="rcPillRows"></div>
-          <button class="rc-ex-btn" id="rcAddPill">+ adicionar tag</button>
-        </div>
-
-        <div class="rc-field-group">
-          <div class="rc-field-group-title">Foto ou vídeo de fundo</div>
-          <div class="rc-upload-zone ${rcPhotoDataUrl && !rcIsDefaultBg ?'has-photo':''}" id="rcUploadZone">
-            <input type="file" id="rcPhotoInput" accept="image/*,video/*">
-            <div class="txt" id="rcUploadTxt">${uploadTxt}</div>
-          </div>
-          ${rcPhotoDataUrl && !rcIsDefaultBg && !rcDefaultBgFailed ? `<button class="rc-ex-btn" id="rcDefaultBgBtn">Voltar ao fundo padrão</button>` : ''}
-          ${isVideo ? `<div class="rc-hint">Vídeos acima de ${RC_MAX_VIDEO_SECONDS}s são cortados nos primeiros ${RC_MAX_VIDEO_SECONDS}s. A exportação grava em tempo real: mantenha a tela ligada e o app aberto.</div>` : ''}
-        </div>
-
-        <div class="rc-field-group">
-          <div class="rc-field-group-title">Contraste da máscara</div>
-          <div class="rc-slider-row">
-            <input type="range" id="rcMaskSlider" min="0" max="100" value="${rcMaskOpacity}">
-            <span class="rc-slider-val" id="rcMaskVal">${rcMaskOpacity}%</span>
+          <div class="rc-mask" id="rcMaskEl"></div>
+          ${rcIsDefaultBg ? '' : '<img class="rc-selo" src="selo-v1.png" alt="">'}
+          <div class="rc-safe">
+            ${counterText ? `<div class="rc-program-counter">${counterText}</div>` : ''}
+            <div class="rc-kicker">${fmtDate(selectedDate)}</div>
+            <div id="rcOutBlocks"></div>
+            <div class="rc-score-block" id="rcScoreBlockEl">
+              <div class="rc-score-label">Resultado</div>
+              <div class="rc-score-format" id="rcOutFormat"></div>
+              <div class="rc-score-value" id="rcOutScore">${escapeHtml(rcScore)}</div>
+              <div class="rc-score-cap" id="rcOutCap">${escapeHtml(rcCap)}</div>
+            </div>
+            <div class="rc-stat-row" id="rcOutPills"></div>
           </div>
         </div>
-
-        <button class="primary" id="rcExportBtn">${isVideo ? 'Exportar vídeo · 1080×1920' : 'Exportar PNG · 1080×1920'}</button>
-        <div class="rc-export-status" id="rcExportStatus"></div>
       </div>
+    </div>
+    <div class="rc-tap-hint">${rcAdjustMode ? 'Arraste pra mover e belisque pra ampliar.' : 'Toque numa linha da arte pra esconder.'}</div>
+    <div class="rc-hidden-row" id="rcHiddenRow"></div>
 
-      ${rcPhotoDataUrl && !rcIsDefaultBg ? `
-      <div class="rc-adjust-bar">
-        <button class="rc-adjust-btn ${rcAdjustMode ? 'on' : ''}" id="rcAdjustBtn">${rcAdjustMode ? 'Ajustando mídia · toque pra sair' : 'Ajustar posição da mídia'}</button>
+    <div class="card rc-controls">
+      <label class="field-label" for="rcScore" style="margin-top:0;">Resultado</label>
+      <input type="text" class="text-input rc-score-input" id="rcScore" value="${rcEscAttr(rcScore)}" placeholder="tempo ou reps, ex: 12:26 ou 5 rounds + 8">
+
+      ${multi ? `
+      <label class="field-label">Destaque</label>
+      <div class="rc-chips" id="rcFeaturedChips">
+        ${rcBlocks.map((b,i)=>`<button class="rc-chip ${i===rcFeaturedIdx?'on':''}" data-feat="${i}">${escapeHtml(b.label)}</button>`).join('')}
+      </div>` : ''}
+
+      <label class="field-label">Fundo</label>
+      <input type="file" id="rcPhotoInput" accept="image/*,video/*" hidden>
+      <div class="rc-bg-row">
+        <button class="rc-chip" id="rcPickMedia">${hasOwnMedia ? 'Trocar foto ou vídeo' : 'Usar foto ou vídeo'}</button>
+        ${hasOwnMedia && !rcDefaultBgFailed ? `<button class="rc-chip" id="rcDefaultBgBtn">Fundo padrão</button>` : ''}
+      </div>
+      ${hasOwnMedia ? `
+      <div class="rc-media-tools">
+        <div class="rc-slider-row">
+          <span class="rc-zoom-label">Contraste</span>
+          <input type="range" id="rcMaskSlider" min="0" max="100" value="${rcMaskOpacity}">
+          <span class="rc-slider-val" id="rcMaskVal">${rcMaskOpacity}%</span>
+        </div>
+        <button class="rc-adjust-btn ${rcAdjustMode ? 'on' : ''}" id="rcAdjustBtn">${rcAdjustMode ? 'Pronto' : 'Ajustar posição'}</button>
+        ${rcAdjustMode ? `
         <div class="rc-slider-row">
           <span class="rc-zoom-label">Zoom</span>
           <input type="range" id="rcZoomSlider" min="100" max="300" value="${zoomPct}">
           <span class="rc-slider-val" id="rcZoomVal">${zoomPct}%</span>
-        </div>
-        ${rcAdjustMode ? `<div class="rc-hint">Arraste pra mover, belisque pra ampliar. Pra rolar a página, saia do modo de ajuste.</div>` : ''}
+        </div>` : ''}
       </div>` : ''}
+      ${isVideo ? `<div class="rc-hint">Vídeos acima de ${RC_MAX_VIDEO_SECONDS}s são cortados nos primeiros ${RC_MAX_VIDEO_SECONDS}s. A exportação grava em tempo real: mantenha a tela ligada e o app aberto.</div>` : ''}
 
-      <div class="rc-preview-scaler ${rcAdjustMode ? 'rc-adjusting' : ''}" id="rcPreviewScaler">
-        <div class="rc-preview-inner" id="rcPreviewInner">
-          <div class="rc-frame ${rcIsDefaultBg ? 'rc-bg-default' : ''}" id="rcCaptureFrame">
-            <div class="rc-photo-layer" id="rcPhotoLayer">
-              ${rcMediaMarkup()}
-            </div>
-            <div class="rc-mask" id="rcMaskEl"></div>
-            ${rcIsDefaultBg ? '' : '<img class="rc-selo" src="selo-v1.png" alt="">'}
-            <div class="rc-safe">
-              ${counterText ? `<div class="rc-program-counter">${counterText}</div>` : ''}
-              <div class="rc-kicker">${fmtDate(selectedDate)}</div>
-              <div id="rcOutBlocks"></div>
-              <div class="rc-score-block" id="rcScoreBlockEl">
-                <div class="rc-score-label">Resultado</div>
-                <div class="rc-score-format" id="rcOutFormat"></div>
-                <div class="rc-score-value" id="rcOutScore">${escapeHtml(rcScore)}</div>
-                <div class="rc-score-cap" id="rcOutCap">${escapeHtml(rcCap)}</div>
-              </div>
-              <div class="rc-stat-row" id="rcOutPills"></div>
-            </div>
-          </div>
-        </div>
-      </div>
+      <button class="primary" id="rcExportBtn" style="margin-top:18px;">${isVideo ? 'Exportar vídeo' : 'Exportar imagem'}</button>
+      <div class="rc-export-status" id="rcExportStatus"></div>
     </div>
   `;
   container.appendChild(body);
 
   rcApplyMask();
-  rcRenderBlocksEditor();
-  rcRenderPillRows();
   rcUpdatePreview();
   rcFitPreview();
   if(rcPhotoDataUrl) rcApplyPhotoTransform();
 
-  document.getElementById('rcFeaturedSelect').addEventListener('change', (e)=>{
-    rcFeaturedIdx = +e.target.value;
-    const featured = rcBlocks[rcFeaturedIdx];
-    rcScore = rcCleanScore(featured.done);
-    const capMatch = featured.titleRaw.match(/cap\s*(\d+)\s*min/i);
-    rcCap = capMatch ? `cap ${capMatch[1]} min` : '';
-    rcPills = [featured.rpe, catInfo(featured.category).label].filter(Boolean);
+  // toque numa linha da arte esconde a linha (fora do modo de ajuste)
+  document.getElementById('rcCaptureFrame').addEventListener('click', (e)=>{
+    if(rcAdjustMode) return;
+    const row = e.target.closest('.rc-wod-item');
+    if(!row) return;
+    rcBlocks[+row.dataset.bi].items[+row.dataset.ii].hidden = true;
+    rcUpdatePreview();
+  });
+
+  document.getElementById('rcScore').addEventListener('input', (e)=>{
+    rcScore = e.target.value;
+    rcUpdatePreview();
+  });
+
+  body.querySelectorAll('[data-feat]').forEach(b => b.addEventListener('click', ()=>{
+    rcSetFeatured(+b.dataset.feat);
     renderRecalibraTab();
-  });
+  }));
 
-  document.getElementById('rcScore').addEventListener('input', ()=>{
-    rcScore = document.getElementById('rcScore').value;
-    rcUpdatePreview();
+  const photoInput = document.getElementById('rcPhotoInput');
+  document.getElementById('rcPickMedia').addEventListener('click', ()=> photoInput.click());
+  photoInput.addEventListener('change', (e)=>{
+    const file = e.target.files[0];
+    if(file) rcLoadMediaFile(file);
   });
-  document.getElementById('rcCap').addEventListener('input', ()=>{
-    rcCap = document.getElementById('rcCap').value;
-    rcUpdatePreview();
-  });
-
-  document.getElementById('rcAddPill').addEventListener('click', ()=>{
-    if(rcPills.length >= 5) return;
-    rcPills.push('');
-    rcRenderPillRows();
-    rcUpdatePreview();
-  });
+  const defaultBgBtn = document.getElementById('rcDefaultBgBtn');
+  if(defaultBgBtn) defaultBgBtn.addEventListener('click', rcUseDefaultBg);
 
   const maskSlider = document.getElementById('rcMaskSlider');
-  maskSlider.addEventListener('input', ()=>{
+  if(maskSlider) maskSlider.addEventListener('input', ()=>{
     rcMaskOpacity = +maskSlider.value;
     document.getElementById('rcMaskVal').textContent = rcMaskOpacity + '%';
     rcApplyMask();
   });
-
-  const uploadZone = document.getElementById('rcUploadZone');
-  const photoInput = document.getElementById('rcPhotoInput');
-  uploadZone.addEventListener('click', ()=> photoInput.click());
-  photoInput.addEventListener('change', (e)=>{
-    const file = e.target.files[0];
-    if(!file) return;
-    rcLoadMediaFile(file);
-  });
-
   const adjustBtn = document.getElementById('rcAdjustBtn');
-  if(adjustBtn){
-    adjustBtn.addEventListener('click', ()=>{
-      rcAdjustMode = !rcAdjustMode;
-      renderRecalibraTab();
-    });
-  }
-
+  if(adjustBtn) adjustBtn.addEventListener('click', ()=>{ rcAdjustMode = !rcAdjustMode; renderRecalibraTab(); });
   const zoomSlider = document.getElementById('rcZoomSlider');
-  if(zoomSlider){
-    zoomSlider.addEventListener('input', ()=>{
-      const pct = +zoomSlider.value;
-      rcPhotoScale = rcPhotoMinScale * (pct / 100);
-      document.getElementById('rcZoomVal').textContent = pct + '%';
-      rcApplyPhotoTransform();
-    });
-  }
-
-  const defaultBgBtn = document.getElementById('rcDefaultBgBtn');
-  if(defaultBgBtn) defaultBgBtn.addEventListener('click', rcUseDefaultBg);
+  if(zoomSlider) zoomSlider.addEventListener('input', ()=>{
+    const pct = +zoomSlider.value;
+    rcPhotoScale = rcPhotoMinScale * (pct / 100);
+    document.getElementById('rcZoomVal').textContent = pct + '%';
+    rcApplyPhotoTransform();
+  });
 
   document.getElementById('rcExportBtn').addEventListener('click', rcExport);
 
@@ -5085,7 +5100,22 @@ function renderRecalibraTab(){
     window.addEventListener('resize', rcFitPreview);
   }
 
-  if(rcPhotoDataUrl && !rcIsDefaultBg) rcAttachPhotoGestures();
+  if(hasOwnMedia) rcAttachPhotoGestures();
+}
+
+// linhas escondidas aparecem como chips abaixo da arte; tocar mostra de volta
+function rcRenderHidden(){
+  const wrap = document.getElementById('rcHiddenRow');
+  if(!wrap) return;
+  const hidden = [];
+  rcBlocks.forEach((b,bi)=> b.items.forEach((it,ii)=>{ if(it.hidden) hidden.push({bi, ii, name: it.name}); }));
+  if(!hidden.length){ wrap.innerHTML = ''; return; }
+  wrap.innerHTML = `<span class="rc-hidden-label">Escondidas</span>` +
+    hidden.map(h => `<button class="rc-hidden-chip" data-bi="${h.bi}" data-ii="${h.ii}">+ ${escapeHtml(h.name)}</button>`).join('');
+  wrap.querySelectorAll('.rc-hidden-chip').forEach(b => b.addEventListener('click', ()=>{
+    rcBlocks[+b.dataset.bi].items[+b.dataset.ii].hidden = false;
+    rcUpdatePreview();
+  }));
 }
 
 let rcDefaultBgLoading = false;
@@ -5275,97 +5305,28 @@ function rcAttachPhotoGestures(){
   }
 }
 
-function rcRenderBlocksEditor(){
-  const wrap = document.getElementById('rcBlocksEditor');
-  if(!wrap) return;
-  wrap.innerHTML = '';
-  rcBlocks.forEach((block, bi)=>{
-    const section = document.createElement('div');
-    section.className = 'rc-editor-block';
-    section.innerHTML = `
-      <div class="rc-editor-block-label">${escapeHtml(block.label)}</div>
-      <div data-items="${bi}"></div>
-      <button class="rc-ex-btn" data-add-item="${bi}">+ movimento</button>
-    `;
-    wrap.appendChild(section);
-    const itemsWrap = section.querySelector(`[data-items="${bi}"]`);
-    block.items.forEach((it, ii)=>{
-      const row = document.createElement('div');
-      row.className = 'rc-row3';
-      row.innerHTML = `
-        <input type="text" class="text-input" data-bi="${bi}" data-ii="${ii}" data-f="name" value="${rcEscAttr(it.name)}" placeholder="Movimento">
-        <input type="text" class="text-input" data-bi="${bi}" data-ii="${ii}" data-f="reps" value="${rcEscAttr(it.reps)}" placeholder="Reps">
-        <button class="rc-remove-btn" data-remove-item="${bi}-${ii}">✕</button>
-      `;
-      itemsWrap.appendChild(row);
-    });
-    section.querySelector(`[data-add-item="${bi}"]`).addEventListener('click', ()=>{
-      rcBlocks[bi].items.push({name:'', reps:''});
-      rcRenderBlocksEditor();
-      rcUpdatePreview();
-    });
-    section.querySelectorAll('[data-f]').forEach(inp=>{
-      inp.addEventListener('input', e=>{
-        rcBlocks[+e.target.dataset.bi].items[+e.target.dataset.ii][e.target.dataset.f] = e.target.value;
-        rcUpdatePreview();
-      });
-    });
-    section.querySelectorAll('[data-remove-item]').forEach(btn=>{
-      btn.addEventListener('click', e=>{
-        const [b,i] = e.target.dataset.removeItem.split('-').map(Number);
-        rcBlocks[b].items.splice(i,1);
-        rcRenderBlocksEditor();
-        rcUpdatePreview();
-      });
-    });
-  });
-}
 
-function rcRenderPillRows(){
-  const wrap = document.getElementById('rcPillRows');
-  if(!wrap) return;
-  wrap.innerHTML = '';
-  rcPills.forEach((p,i)=>{
-    const row = document.createElement('div');
-    row.className = 'rc-row3';
-    row.style.gridTemplateColumns = '1fr auto';
-    row.innerHTML = `
-      <input type="text" class="text-input" data-i="${i}" value="${rcEscAttr(p)}" placeholder="Tag">
-      <button class="rc-remove-btn" data-remove="${i}">✕</button>
-    `;
-    wrap.appendChild(row);
-  });
-  wrap.querySelectorAll('input').forEach(inp=>{
-    inp.addEventListener('input', e=>{
-      rcPills[+e.target.dataset.i] = e.target.value;
-      rcUpdatePreview();
-    });
-  });
-  wrap.querySelectorAll('[data-remove]').forEach(btn=>{
-    btn.addEventListener('click', e=>{
-      rcPills.splice(+e.target.dataset.remove,1);
-      rcRenderPillRows();
-      rcUpdatePreview();
-    });
-  });
-}
 
 function rcUpdatePreview(){
   const blocksWrap = document.getElementById('rcOutBlocks');
   if(!blocksWrap) return;
-  blocksWrap.innerHTML = rcBlocks.map((block, bi) => `
+  blocksWrap.innerHTML = rcBlocks.map((block, bi) => {
+    const visible = block.items.map((it, ii) => ({it, ii})).filter(x => !x.it.hidden && x.it.name.trim());
+    if(!visible.length) return '';
+    return `
     <div class="rc-block-section ${bi===rcFeaturedIdx ? 'rc-block-featured' : ''}">
       <div class="rc-block-label">${escapeHtml(block.label)}</div>
       <div class="rc-wod-list">
-        ${block.items.filter(it=>it.name.trim()).map(it => `
-          <div class="rc-wod-item">
+        ${visible.map(({it, ii}) => `
+          <div class="rc-wod-item" data-bi="${bi}" data-ii="${ii}">
             <span class="rc-wod-item-name">${escapeHtml(it.name)}</span>
             <span class="rc-wod-item-reps">${escapeHtml(it.reps)}</span>
           </div>
         `).join('')}
       </div>
-    </div>
-  `).join('');
+    </div>`;
+  }).join('');
+  rcRenderHidden();
 
   const featured = rcBlocks[rcFeaturedIdx];
   const scoreBlockEl = document.getElementById('rcScoreBlockEl');
