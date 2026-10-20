@@ -94,14 +94,14 @@ Menu (`nav.tabs`) com cinco abas: **TREINO**, **BATATA**, **THOMALS**, **GUIA** 
    - **Técnica de corrida:** pontos técnicos (`RUN_CUES`) e onde a técnica melhora.
 5. **MÍDIA (`recalibra`)**, antiga aba Recalibra, renomeada sem mudança de funcionalidade. Nomes internos (`renderRecalibraTab`, `view-recalibra`, prefixo `rc`) continuam iguais.
    É o gerador de Stories em 1080×1920 a partir do treino do dia.
-   - **Tela (de cima para baixo):** seletor "Treino de", barra de data compacta (`rcDayBar`: ‹ sáb, 17/10 › e "hoje"), a arte em prévia, a dica "Toque numa linha da arte pra esconder", os chips das linhas escondidas e um card com: **Resultado** (único campo editável, o score), **Destaque** (chips, só quando o dia tem mais de um bloco), **Fundo** ("Usar/Trocar foto ou vídeo" e "Fundo padrão"; contraste e "Ajustar posição" só com foto ou vídeo própria; zoom só durante o ajuste) e **Exportar**. Exercícios, blocos, cap e tags vêm do programa e não são editáveis. Sem faixa da semana e sem calendário nesta aba.
+   - **Tela (de cima para baixo):** seletor "Treino de", barra de data compacta (`rcDayBar`: ‹ seg, 19/10 › e "hoje"), card **Resultados** (um campo por bloco, com o nome do bloco como rótulo; já vem com o resultado do programa limpo por `rcCleanResult`; campo vazio tira a faixa daquele bloco), a arte em prévia, a dica "Toque numa linha da arte pra esconder", os chips das linhas escondidas e um card com **Fundo** ("Fazer upload de mídia"/"Trocar mídia" e "Fundo padrão"; contraste e "Ajustar posição" só com foto ou vídeo própria; zoom só durante o ajuste) e o botão **Exportar mídia**. Exercícios, blocos e prescrições vêm do programa e não são editáveis. Sem destaque único, sem tags, sem faixa da semana e sem calendário nesta aba.
    - **Esconder linhas:** cada item tem `hidden`. Instruções conhecidas (`RC_META_LABELS`) já começam escondidas; tocar numa linha da arte esconde (fora do modo de ajuste); os chips "+ nome" abaixo da arte mostram de volta. Bloco sem linha visível some da arte.
    - **Seletor "Treino de":** no topo da aba, botões Treino, Batata e Thomals (`rcSourceSelector`, `RC_SOURCE_LABELS`). Troca o programa ativo (`rcSource`) e recarrega os blocos; a escolha continua valendo ao sair e voltar à aba. Padrão: Treino.
    - **Montagem do texto:**
      - puxa os blocos do dia, exceto `aquecimento`, `recovery` e `rest`;
      - marca como escondidos os itens de instrução da lista `RC_META_LABELS`;
      - separa quantidade e carga com `rcSplitPrescribed`: a carga vai para o nome do exercício, e a coluna da direita mostra só o esquema ou o número;
-     - destaca por padrão o metcon, com o score limpo por `rcCleanScore` (só tempo ou reps) e o cap extraído do título.
+     - cada bloco fecha com a própria faixa de resultado (`rcResultMarkup`): número grande e o RPE, se houver, menor e em verde. `rcCleanResult` pega o valor antes do primeiro " · ", tira parênteses e acrescenta o RPE: "24:41 · dentro do cap · RPE 8 · sessão: 6" vira "24:41 · RPE 8".
    - **Contador:** `rcCounterText`. No Treino, "Semana N | Dia X" a partir de `RC_WEEK_PHASES` e de `RC_START_DATE = '2026-08-31'`, que é o dia 1. Nos outros atletas, conta a partir do primeiro dia do programa deles, em semanas de 7 dias; antes do início, o contador não aparece.
    - **Mídia de fundo:** foto ou vídeo, com modo de ajuste (arrastar, pinça e slider de zoom de 100 a 300%) e slider de contraste da máscara.
    - **Fundo padrão:** sem foto ou vídeo, usa `recalibra-fundo-v2.jpg` (arte RBSN com o selo já aplicado), sem máscara e sem modo de ajuste.
@@ -126,7 +126,7 @@ Menu (`nav.tabs`) com cinco abas: **TREINO**, **BATATA**, **THOMALS**, **GUIA** 
 - **Tema azul (em teste):** com `?tema=azul` no endereço, `:root[data-tema="azul"]` troca `--accent` e `--done` por `#3d7bff` (e os tons escuros e o fundo do `.result-panel`). Vale para a interface e para os textos da arte da aba Mídia; selo e fundo padrão continuam verdes. Sem o parâmetro, e no app instalado, tudo fica verde.
 - **Tipografia:** Anton em caixa alta para títulos, Work Sans para o corpo e Space Mono para dados.
 - **Preferências de layout do Robson:** poucas cores (verde + branco e cinza), texto grande e margens generosas.
-- **Recalibra:** zona segura do Stories de 320 px em cima e embaixo e 110 px nas laterais; rótulos de bloco em verde, nomes em branco a 34 px e quantidades a 27 px; bloco de resultado só com borda esquerda, em 4 linhas (Resultado / formato / score grande / cap). **Sem a palavra "RECALIBRA" e sem "Treino do dia".**
+- **Recalibra:** zona segura do Stories de 320 px em cima e embaixo e 110 px nas laterais; rótulos de bloco em verde, nomes em branco a 34 px e quantidades a 27 px; cada bloco com resultado termina numa faixa com borda esquerda verde: "RESULTADO" em mono, o valor em Anton 58 px (40 px se longo) e o RPE em mono verde, menor. **Sem a palavra "RECALIBRA" e sem "Treino do dia".**
 - **Ícone:** escudo com as letras RBSN, escudo em verde e letras em branco sobre o fundo escuro.
 
 ## Preferências do Robson para quem trabalha com ele

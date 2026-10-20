@@ -395,6 +395,8 @@
   .rc-hidden-label{font-size:11px;text-transform:uppercase;letter-spacing:0.5px;color:var(--steel);margin-right:2px;}
   .rc-hidden-chip{border:1px dashed var(--line);background:none;color:var(--chalk-dim);border-radius:20px;padding:6px 12px;font-size:12px;cursor:pointer;}
   .rc-controls{margin-top:4px;}
+  .rc-results{margin-bottom:14px;}
+  .rc-results .field-label:first-of-type{margin-top:12px;}
   .rc-score-input{font-family:var(--font-display);font-size:22px;letter-spacing:0.5px;padding:12px 14px;}
   .rc-chips, .rc-bg-row{display:flex;flex-wrap:wrap;gap:8px;}
   .rc-chip{
@@ -443,6 +445,17 @@
     font-family:var(--font-mono);font-size:26px;color:var(--accent);text-transform:uppercase;
     letter-spacing:4px;margin-bottom:22px;
   }
+  .rc-block-result{
+    display:flex;align-items:baseline;gap:18px;margin-top:14px;
+    border-left:5px solid var(--accent);padding:6px 0 6px 20px;
+  }
+  .rc-block-result-label{font-family:var(--font-mono);font-size:20px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--chalk-dim);flex-shrink:0;}
+  .rc-block-result-rpe{font-family:var(--font-mono);font-size:24px;font-weight:700;color:var(--accent);white-space:nowrap;}
+  .rc-block-result-value{font-family:var(--font-display);font-size:58px;line-height:1;color:var(--chalk);}
+  .rc-block-result-value.long{font-size:40px;line-height:1.1;}
+  .rc-compact .rc-block-result{margin-top:10px;}
+  .rc-controls-title{font-family:var(--font-display);font-size:16px;text-transform:uppercase;letter-spacing:0.5px;color:var(--chalk);}
+  .rc-res-input{font-family:var(--font-mono);font-size:16px;}
   .rc-score-block{
     width:100%;border-left:5px solid var(--accent);padding:8px 0 8px 24px;
     position:relative;margin-top:14px;
@@ -5077,11 +5090,7 @@ function rcSplitPrescribed(exerciseName, raw){
 }
 
 let rcBlocks = [];          // all non-recovery/rest blocks of the day, filtered items
-let rcFeaturedIdx = 0;       // index within rcBlocks that gets the hero result treatment
 let rcTitle = '';
-let rcScore = '';
-let rcCap = '';
-let rcPills = [];
 let rcSeededDate = null;
 
 // media state (photo or video)
@@ -5128,37 +5137,43 @@ function rcSeedFromDay(){
         const hidden = RC_META_LABELS.includes(it.exercise.trim().toLowerCase());
         return {name: split.name, reps: split.qty, hidden};
       }),
-      rpe: block.rpe || '', done: block.done || '', titleRaw: block.title
+      rpe: block.rpe || '', done: block.done || '', titleRaw: block.title,
+      result: rcCleanResult(block.done)
     };
   }).filter(b => b.items.length > 0);
-
-  let fIdx = rcBlocks.findIndex(b => b.category === 'metcon');
-  if(fIdx === -1) fIdx = rcBlocks.findIndex(b => b.category === 'resistencia');
-  if(fIdx === -1) fIdx = 0;
-  rcFeaturedIdx = fIdx;
-
-  const featured = rcBlocks[rcFeaturedIdx];
-  rcScore = featured ? rcCleanScore(featured.done) : '';
-  const capMatch = featured ? featured.titleRaw.match(/cap\s*(\d+)\s*min/i) : null;
-  rcCap = capMatch ? `cap ${capMatch[1]} min` : '';
-  rcPills = featured ? [featured.rpe, catInfo(featured.category).label].filter(Boolean) : [];
 }
 
-function rcLooksLikeScore(s){
-  if(!s) return false;
-  const t = s.trim();
-  if(/^\d+:\d{2}$/.test(t)) return true;
-  if(/rounds?/i.test(t)) return true;
-  if(/^\d+\s*reps?$/i.test(t)) return true;
-  if(/^\d+(-\d+)+$/.test(t)) return true;
-  return false;
+// resultado na arte: número grande; o RPE, se vier no fim ("· RPE 8"), menor ao lado
+function rcResultMarkup(result){
+  const t = (result || '').trim();
+  if(!t) return '';
+  const m = t.match(/^(.*?)\s*·\s*(RPE\s*[\d,.\s a-]+)$/i);
+  const main = m ? m[1] : t, rpe = m ? m[2].trim() : '';
+  return `<div class="rc-block-result">
+    <span class="rc-block-result-label">Resultado</span>
+    <span class="rc-block-result-value ${main.length > 16 ? 'long' : ''}">${escapeHtml(main)}</span>
+    ${rpe ? `<span class="rc-block-result-rpe">${escapeHtml(rpe)}</span>` : ''}
+  </div>`;
 }
 
-function rcCleanScore(str){
-  if(!str) return '';
-  let s = str.split(' · ')[0].split(' — ')[0].trim();
-  return rcLooksLikeScore(s) ? s : '';
+// resultado do bloco para a arte: o valor principal (antes do primeiro " · ", sem parênteses)
+// mais o RPE, se houver. Ex.: "24:41 · dentro do cap · RPE 8 · sessão: 6" -> "24:41 · RPE 8"
+function rcCleanResult(done){
+  if(!done || !done.trim()) return '';
+  const parts = done.split(/\s+·\s+/).map(x => x.trim()).filter(Boolean);
+  let main = parts[0].replace(/\s*\([^)]*\)/g, '').trim();
+  if(/^sessão\s*:/i.test(main)) return '';
+  main = main.charAt(0).toUpperCase() + main.slice(1);
+  let rpe = '';
+  for(const x of parts.slice(1)){
+    const m = x.match(/^RPE[^\d]*(\d+(?:[,.]\d+)?(?:\s*(?:a|-)\s*\d+(?:[,.]\d+)?)?)/i);
+    if(m){ rpe = 'RPE ' + m[1]; break; }
+  }
+  if(/RPE/i.test(main)) rpe = '';
+  return rpe ? `${main} · ${rpe}` : main;
 }
+
+
 
 function rcEscAttr(s){ return escapeHtml(s); }
 
@@ -5170,14 +5185,6 @@ function rcMediaMarkup(){
   return `<img id="rcMediaEl" src="${rcPhotoDataUrl}" draggable="false">`;
 }
 
-function rcSetFeatured(idx){
-  rcFeaturedIdx = idx;
-  const featured = rcBlocks[idx];
-  rcScore = rcCleanScore(featured.done);
-  const capMatch = featured.titleRaw.match(/cap\s*(\d+)\s*min/i);
-  rcCap = capMatch ? `cap ${capMatch[1]} min` : '';
-  rcPills = [featured.rpe, catInfo(featured.category).label].filter(Boolean);
-}
 
 // barra de data compacta da Mídia: ‹ sáb, 17/10 ›
 function rcDayBar(){
@@ -5225,10 +5232,18 @@ function renderRecalibraTab(){
   const isVideo = rcMediaType === 'video';
   const hasOwnMedia = rcPhotoDataUrl && !rcIsDefaultBg;
   const zoomPct = rcPhotoMinScale ? Math.round((rcPhotoScale / rcPhotoMinScale) * 100) : 100;
-  const multi = rcBlocks.length > 1;
 
   const body = document.createElement('div');
   body.innerHTML = `
+    <div class="card rc-results">
+      <div class="rc-controls-title">Resultados</div>
+      ${rcBlocks.map((b,bi)=>`
+        <label class="field-label" for="rcRes${bi}">${escapeHtml(b.label)}</label>
+        <input type="text" class="text-input rc-res-input" id="rcRes${bi}" data-res="${bi}" value="${rcEscAttr(b.result)}" placeholder="sem resultado (não aparece na arte)">
+      `).join('')}
+
+    </div>
+
     <div class="rc-preview-scaler ${rcAdjustMode ? 'rc-adjusting' : ''}" id="rcPreviewScaler">
       <div class="rc-preview-inner" id="rcPreviewInner">
         <div class="rc-frame ${rcIsDefaultBg ? 'rc-bg-default' : ''}" id="rcCaptureFrame">
@@ -5241,13 +5256,6 @@ function renderRecalibraTab(){
             ${counterText ? `<div class="rc-program-counter">${counterText}</div>` : ''}
             <div class="rc-kicker">${fmtDate(selectedDate)}</div>
             <div id="rcOutBlocks"></div>
-            <div class="rc-score-block" id="rcScoreBlockEl">
-              <div class="rc-score-label">Resultado</div>
-              <div class="rc-score-format" id="rcOutFormat"></div>
-              <div class="rc-score-value" id="rcOutScore">${escapeHtml(rcScore)}</div>
-              <div class="rc-score-cap" id="rcOutCap">${escapeHtml(rcCap)}</div>
-            </div>
-            <div class="rc-stat-row" id="rcOutPills"></div>
           </div>
         </div>
       </div>
@@ -5256,19 +5264,10 @@ function renderRecalibraTab(){
     <div class="rc-hidden-row" id="rcHiddenRow"></div>
 
     <div class="card rc-controls">
-      <label class="field-label" for="rcScore" style="margin-top:0;">Resultado</label>
-      <input type="text" class="text-input rc-score-input" id="rcScore" value="${rcEscAttr(rcScore)}" placeholder="tempo ou reps, ex: 12:26 ou 5 rounds + 8">
-
-      ${multi ? `
-      <label class="field-label">Destaque</label>
-      <div class="rc-chips" id="rcFeaturedChips">
-        ${rcBlocks.map((b,i)=>`<button class="rc-chip ${i===rcFeaturedIdx?'on':''}" data-feat="${i}">${escapeHtml(b.label)}</button>`).join('')}
-      </div>` : ''}
-
-      <label class="field-label">Fundo</label>
+      <label class="field-label" style="margin-top:0;">Fundo</label>
       <input type="file" id="rcPhotoInput" accept="image/*,video/*" hidden>
       <div class="rc-bg-row">
-        <button class="rc-chip" id="rcPickMedia">${hasOwnMedia ? 'Trocar foto ou vídeo' : 'Usar foto ou vídeo'}</button>
+        <button class="rc-chip" id="rcPickMedia">${hasOwnMedia ? 'Trocar mídia' : 'Fazer upload de mídia'}</button>
         ${hasOwnMedia && !rcDefaultBgFailed ? `<button class="rc-chip" id="rcDefaultBgBtn">Fundo padrão</button>` : ''}
       </div>
       ${hasOwnMedia ? `
@@ -5288,7 +5287,7 @@ function renderRecalibraTab(){
       </div>` : ''}
       ${isVideo ? `<div class="rc-hint">Vídeos acima de ${RC_MAX_VIDEO_SECONDS}s são cortados nos primeiros ${RC_MAX_VIDEO_SECONDS}s. A exportação grava em tempo real: mantenha a tela ligada e o app aberto.</div>` : ''}
 
-      <button class="primary" id="rcExportBtn" style="margin-top:18px;">${isVideo ? 'Exportar vídeo' : 'Exportar imagem'}</button>
+      <button class="primary" id="rcExportBtn" style="margin-top:18px;">Exportar mídia</button>
       <div class="rc-export-status" id="rcExportStatus"></div>
     </div>
   `;
@@ -5308,14 +5307,9 @@ function renderRecalibraTab(){
     rcUpdatePreview();
   });
 
-  document.getElementById('rcScore').addEventListener('input', (e)=>{
-    rcScore = e.target.value;
+  body.querySelectorAll('[data-res]').forEach(inp => inp.addEventListener('input', ()=>{
+    rcBlocks[+inp.dataset.res].result = inp.value;
     rcUpdatePreview();
-  });
-
-  body.querySelectorAll('[data-feat]').forEach(b => b.addEventListener('click', ()=>{
-    rcSetFeatured(+b.dataset.feat);
-    renderRecalibraTab();
   }));
 
   const photoInput = document.getElementById('rcPhotoInput');
@@ -5564,7 +5558,7 @@ function rcUpdatePreview(){
     const visible = block.items.map((it, ii) => ({it, ii})).filter(x => !x.it.hidden && x.it.name.trim());
     if(!visible.length) return '';
     return `
-    <div class="rc-block-section ${bi===rcFeaturedIdx ? 'rc-block-featured' : ''}">
+    <div class="rc-block-section">
       <div class="rc-block-label">${escapeHtml(block.label)}</div>
       <div class="rc-wod-list">
         ${visible.map(({it, ii}) => `
@@ -5574,19 +5568,11 @@ function rcUpdatePreview(){
           </div>
         `).join('')}
       </div>
+      ${rcResultMarkup(block.result)}
     </div>`;
   }).join('');
   rcRenderHidden();
 
-  const featured = rcBlocks[rcFeaturedIdx];
-  const scoreBlockEl = document.getElementById('rcScoreBlockEl');
-  const formatText = featured ? featured.label.replace(/\(cap\s*\d+\s*min\)/i, '').trim() : '';
-  document.getElementById('rcOutFormat').textContent = formatText;
-  document.getElementById('rcOutScore').textContent = rcScore;
-  document.getElementById('rcOutCap').textContent = rcCap;
-  scoreBlockEl.style.borderColor = 'var(--accent)';
-  scoreBlockEl.style.display = rcScore.trim() ? '' : 'none';
-  document.getElementById('rcOutPills').innerHTML = rcPills.filter(p=>p.trim()).map(p=>`<div class="rc-pill">${escapeHtml(p)}</div>`).join('');
   rcAfterLayout();
   if(document.fonts && !rcAfterLayout._bound){
     rcAfterLayout._bound = true;
