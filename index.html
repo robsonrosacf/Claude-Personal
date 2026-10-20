@@ -146,6 +146,8 @@
     color:var(--chalk-dim);margin-bottom:8px;
   }
   .day-notes-text{font-size:14px;line-height:1.55;color:var(--chalk);white-space:pre-line;}
+  .form-done{margin-top:10px;border-color:var(--done);}
+  .form-hint{font-size:12px;color:var(--chalk-dim);margin-top:8px;}
   .notes-field textarea{
     width:100%;background:var(--bg-raised);border:1px solid var(--line);color:var(--chalk);
     font-family:var(--font-body);font-size:13px;padding:10px;border-radius:6px;resize:vertical;min-height:50px;
@@ -3865,6 +3867,13 @@ function mergeMonthProgram(){
         const merged = JSON.parse(JSON.stringify(progW));
         merged.id = existing.id;
         merged.notes = progW.notes || existing.notes || '';   // observação do programa vence a vazia salva no celular
+        // resultado salvo no celular sobrevive enquanto o programa não trouxer um (bloco casado pelo título)
+        merged.blocks.forEach(b => {
+          if(b.done && b.done.trim()) return;
+          const local = existing.blocks.find(x => x.title === b.title);
+          if(local && local.done && local.done.trim()) b.done = local.done;
+        });
+        if(existing.comment) merged.comment = existing.comment;
         workouts[idx] = merged;
         changed = true;
       }
@@ -3905,6 +3914,51 @@ async function persistWorkouts(){
     console.error(e);
   }
 }
+
+/* ---------- CÓPIA DOS RESULTADOS DOS ATLETAS (abas Batata e Thomals) ----------
+   Ao salvar, o dia vai para uma fila no celular e é enviado à planilha do treinador.
+   POST sem cabeçalho (texto simples) não dispara preflight de CORS. mode 'no-cors' evita
+   que a resposta do Google, sem cabeçalho CORS, seja tratada como falha e reenviada. */
+const RESULTS_URL = 'https://script.google.com/macros/s/AKfycbzN1lLcRTrGb20_SdJVml3JcPy9FQmY_fMJI28TJ9sK_zh3F4HanztdjzCPpWb_THM/exec';
+const RESULTS_KEY = 'rbsn-hyrox-k7p2';
+const RESULTS_QUEUE_KEY = 'envio-pendente';
+
+function readResultQueue(){
+  try{ return JSON.parse(localStorage.getItem(RESULTS_QUEUE_KEY) || '[]'); }catch(e){ return []; }
+}
+function writeResultQueue(q){
+  try{ localStorage.setItem(RESULTS_QUEUE_KEY, JSON.stringify(q)); }catch(e){}
+}
+// monta o envio; devolve false se não há resultado nem comentário para mandar
+function queueResultCopy(atleta, w){
+  const linhas = w.blocks.filter(b => b.done && b.done.trim()).map(b => ({bloco: b.title, resultado: b.done.trim()}));
+  const observacoes = (w.comment || '').trim();
+  if(!linhas.length && !observacoes) return false;
+  const q = readResultQueue();
+  q.push({chave: RESULTS_KEY, atleta, data: w.date, treino: w.name, linhas, observacoes});
+  writeResultQueue(q);
+  return true;
+}
+let flushingResults = false;
+async function flushResultQueue(){
+  if(flushingResults) return false;
+  flushingResults = true;
+  let q = readResultQueue();
+  let allSent = true;
+  while(q.length){
+    try{
+      await fetch(RESULTS_URL, {method: 'POST', mode: 'no-cors', body: JSON.stringify(q[0])});
+      q.shift();
+      writeResultQueue(q);
+    }catch(e){
+      allSent = false;   // sem internet: fica na fila e tenta de novo depois
+      break;
+    }
+  }
+  flushingResults = false;
+  return allSent;
+}
+window.addEventListener('online', ()=> flushResultQueue());
 
 function getWorkoutByDate(date){ return workouts.find(w => w.date === date); }
 
@@ -4193,6 +4247,14 @@ function renderHero(bodyEl){
     </div>`;
   }
 
+  if(w.comment && w.comment.trim()){
+    html += `
+    <div class="day-notes">
+      <div class="day-notes-label">Comentário</div>
+      <div class="day-notes-text">${escapeHtml(w.comment.trim())}</div>
+    </div>`;
+  }
+
   html += `
     <div class="save-bar">
       <button class="ghost" id="btnEditWorkout" style="width:100%;">Editar treino</button>
@@ -4217,6 +4279,9 @@ function renderWorkoutForm(bodyEl, existing){
       <input class="text-input" id="fName" type="text" placeholder="ex: Treino 4 — Quinta" value="${escapeAttr(draft.name)}">
       <div id="fBlocks" style="margin-top:16px;"></div>
       <button class="add-link" id="btnAddBlock">+ Adicionar bloco</button>
+      <label class="field-label">Comentário</label>
+      <div class="notes-field"><textarea id="fComment" rows="3" placeholder="como foi o treino, o que sentiu, o que adaptou">${escapeHtml(draft.comment || '')}</textarea></div>
+      ${activeProgram !== 'treino' ? `<div class="form-hint">Ao salvar, o resultado e o comentário também vão para o treinador.</div>` : ''}
       <div class="save-bar">
         <button class="primary" id="btnSaveWorkout">Salvar</button>
         <button class="ghost" id="btnCancelForm">Cancelar</button>
@@ -4226,6 +4291,7 @@ function renderWorkoutForm(bodyEl, existing){
     renderBlocks();
 
     bodyEl.querySelector('#fName').addEventListener('input', e=> draft.name = e.target.value);
+    bodyEl.querySelector('#fComment').addEventListener('input', e=> draft.comment = e.target.value);
     bodyEl.querySelector('#btnAddBlock').addEventListener('click', ()=>{
       draft.blocks.push({title:'Bloco '+String.fromCharCode(65+draft.blocks.length), category:PROGRAMS[activeProgram].defaultCat, items:[{exercise:'', prescribed:'', logged:'', done:false}]});
       renderBlocks();
@@ -4241,7 +4307,12 @@ function renderWorkoutForm(bodyEl, existing){
       await persistWorkouts();
       editingDraft = false;
       renderHoje();
-      showToast('Salvo');
+      if(activeProgram !== 'treino' && queueResultCopy(activeProgram, draft)){
+        const sent = await flushResultQueue();
+        showToast(sent ? 'Salvo · enviado ao treinador' : 'Salvo no celular · envio pendente');
+      } else {
+        showToast('Salvo');
+      }
     });
     bodyEl.querySelector('#btnCancelForm').addEventListener('click', ()=>{ editingDraft = false; renderHoje(); });
   }
@@ -4264,6 +4335,7 @@ function renderWorkoutForm(bodyEl, existing){
         </div>
         <div data-items="${bi}"></div>
         <button class="add-link" data-add-item="${bi}">+ Exercício</button>
+        <input class="text-input form-done" placeholder="Resultado do bloco (ex: 12:26, 5 rounds + 8, 100kg)" data-done="${bi}" value="${escapeAttr(block.done || '')}">
       `;
       wrap.appendChild(div);
 
@@ -4273,7 +4345,7 @@ function renderWorkoutForm(bodyEl, existing){
         row.className = 'form-item-row';
         row.innerHTML = `
           <input class="text-input" placeholder="Exercício" data-ex="${bi}-${ii}" value="${escapeAttr(item.exercise)}">
-          <input class="text-input" placeholder="Resultado (ex: 60kg, 8:24)" data-pre="${bi}-${ii}" value="${escapeAttr(item.prescribed)}">
+          <input class="text-input" placeholder="Prescrição (ex: 3x5, 21-15-9)" data-pre="${bi}-${ii}" value="${escapeAttr(item.prescribed)}">
           <button class="icon" data-remove-item="${bi}-${ii}">✕</button>
         `;
         itemsWrap.appendChild(row);
@@ -4281,6 +4353,7 @@ function renderWorkoutForm(bodyEl, existing){
 
       div.querySelector(`[data-block-title="${bi}"]`).addEventListener('input', e=> block.title = e.target.value);
       div.querySelector(`[data-block-cat="${bi}"]`).addEventListener('change', e=> block.category = e.target.value);
+      div.querySelector(`[data-done="${bi}"]`).addEventListener('input', e=> block.done = e.target.value);
       div.querySelector(`[data-remove-block="${bi}"]`).addEventListener('click', ()=>{ draft.blocks.splice(bi,1); renderBlocks(); });
       div.querySelector(`[data-add-item="${bi}"]`).addEventListener('click', ()=>{
         block.items.push({exercise:'', prescribed:'', logged:'', done:false});
@@ -5885,6 +5958,7 @@ async function init(){
   calMonth = t.getMonth(); calYear = t.getFullYear();
   await loadWorkouts();
   renderHoje();
+  flushResultQueue();   // envia o que ficou pendente de uma abertura anterior
 }
 init();
 if('serviceWorker' in navigator && location.protocol==='https:' && !location.hostname.endsWith('claude.ai')){ navigator.serviceWorker.register('sw.js').catch(()=>{}); }

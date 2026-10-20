@@ -48,7 +48,8 @@ Os dois chats fazem push no mesmo repositório e no mesmo `index.html`.
   3. o **app**, a partir de `const STORAGE_KEY`.
 - Dependência externa: html2canvas 1.4.1, pelo cdnjs.
 - Fontes do Google Fonts: Anton (títulos), Work Sans (corpo) e Space Mono (dados e rótulos).
-- Persistência em `localStorage`: chave `workouts` para os treinos do Robson, `batata` para os da aba Batata e `thomals` para os da aba Thomals.
+- Persistência em `localStorage`: chave `workouts` para os treinos do Robson, `batata` para os da aba Batata, `thomals` para os da aba Thomals e `envio-pendente` para a fila de envios à planilha.
+- Envio externo: só a cópia dos resultados dos atletas para o Google Apps Script do treinador (ver aba Batata e Thomals).
 
 ## Modelo de dados
 
@@ -65,7 +66,8 @@ wk(date, name, blocks, notes)                // dia: {id, date:'AAAA-MM-DD', nam
 - **Resultado:** fica no 5º argumento de `blk()`, como texto livre. Exemplos: `'3:32 · RPE 9'`, `'160kg'`, `'6 rounds + 8 reps'`. O campo `logged` dos itens é legado e não é mais usado.
 - **Programas de outros atletas:** `BATATA_PROGRAM` (aba Batata) e `THOMALS_PROGRAM` (aba Thomals), logo depois do `MONTH_PROGRAM`, no mesmo formato (`wk`, `blk`, `it`) e com as mesmas categorias. Cada um é de **outra pessoa**, não do Robson: as restrições, RMs e regras de carga do Robson não valem para eles, e um atleta não herda as do outro. O Thomals começou como cópia do Batata e é ajustado à parte. São programas independentes: o merge, as datas e os resultados não se misturam. O site é público, então só entram dados de treino; nada que identifique a pessoa além do apelido.
 - **Programa:** `MONTH_PROGRAM` é o array com todos os dias do ciclo. Hoje cobre de 31/08 a 31/10/2026. **O programa no código é a fonte da verdade.**
-- **Carga na abertura:** `mergeMonthProgram()` sobrescreve no `localStorage` todo dia que não tenha `logged` preenchido. Na prática, uma edição feita pelo botão "Editar treino" pode ser apagada no próximo carregamento, se o programa do código tiver aquele dia. Isso é conhecido e aceito, porque os resultados entram pelo código.
+- **Carga na abertura:** `mergeMonthProgram()` sobrescreve no `localStorage` todo dia que não tenha `logged` preenchido, com duas exceções que sobrevivem: o **resultado de um bloco** salvo no celular, enquanto o bloco de mesmo título no programa estiver sem resultado (quando o treinador registra, o do código vence), e o **comentário** do dia (`comment`). Outras edições feitas pelo "Editar treino" (nome, prescrição, blocos) continuam sendo apagadas se o programa tiver aquele dia.
+- **Comentário do dia:** campo `comment` do dia, escrito pelo atleta no formulário. Aparece na seção "Comentário", depois das "Observações" do treinador. Não confundir com `notes`, que é do treinador.
 
 ## Abas e funcionamento
 
@@ -81,9 +83,10 @@ Menu (`nav.tabs`) com cinco abas: **TREINO**, **BATATA**, **THOMALS**, **GUIA** 
      - botões "‹ Anterior / Próximo ›" e "ir para hoje";
      - faixa da semana, com ponto verde para dia com resultado e cinza para dia planejado;
      - calendário mensal recolhível.
-   - Botão "Editar treino" abre um formulário de edição local.
+   - Botão "Editar treino" abre um formulário de edição local: nome, blocos, exercícios com a prescrição, **resultado de cada bloco** (`done`) e **comentário** do dia.
    - Link discreto "ver lista completa" no fim da aba abre a lista de todos os dias (`historico`).
-2. **BATATA (`batata`) e THOMALS (`thomals`)** funcionam igual à aba Treino (mesmas telas, textos e navegação), cada uma com o próprio programa. Renderizam em `view-batata` e `view-thomals`. A aba Mídia usa esses programas quando escolhidos no seletor dela.
+2. **BATATA (`batata`) e THOMALS (`thomals`)** funcionam igual à aba Treino (mesmas telas, textos e navegação), cada uma com o próprio programa.
+   - **Cópia para o treinador:** ao salvar pelo formulário nessas abas, o dia vai para a planilha do treinador (Google Apps Script em `RESULTS_URL`) com `{chave: RESULTS_KEY, atleta, data, treino, linhas: [{bloco, resultado}], observacoes}`; `observacoes` é o comentário do atleta. Só envia se houver ao menos um resultado ou comentário. `fetch` POST sem cabeçalho (texto simples, sem preflight) e com `mode: 'no-cors'`. Sem internet, fica na fila `envio-pendente` do `localStorage` e sai na próxima abertura ou quando a conexão volta. A aba Treino não envia nada. Cada salvamento gera um envio (salvar duas vezes = duas linhas na planilha). A chave fica no código público: serve para filtrar envios, não é segredo. Renderizam em `view-batata` e `view-thomals`. A aba Mídia usa esses programas quando escolhidos no seletor dela.
 3. **Lista completa (`historico`)**, antiga aba Programação: sem botão no menu, abre pelo link da aba Treino ou de um atleta e mostra o programa da aba de origem, com o rótulo de volta dela no topo ("‹ voltar ao treino", "‹ voltar à Batata", "‹ voltar ao Thomals"). Os dias expandem para mostrar blocos e resultados. Com ela aberta, o menu marca a aba de origem.
 4. **GUIA (`guia`)**, junção das antigas abas RPE e Corrida. `renderGuia()` chama `renderRPE(container)` e `renderCorrida(container)`, em três seções nesta ordem:
    - **Nota da sessão:** escala de 0 a 10 do treino inteiro (`SESSION_SCALE`);
