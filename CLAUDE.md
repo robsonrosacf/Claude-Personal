@@ -55,11 +55,12 @@ Os dois chats fazem push no mesmo repositório e no mesmo `index.html`.
 ```js
 it(exercise, prescribed)                     // item: {exercise, prescribed, logged:'', done:false}
 blk(title, category, items, rpe, done)       // bloco; `done` = texto do RESULTADO do bloco
-wk(date, name, blocks)                       // dia: {id, date:'AAAA-MM-DD', name, notes, blocks}
+wk(date, name, blocks, notes)                // dia: {id, date:'AAAA-MM-DD', name, notes, blocks}; notes = observações do dia (opcional)
 ```
 
 - **Categorias** (em `CATEGORIES`, cada uma com rótulo e cor): `potencia`, `forca`, `metcon`, `gym`, `resistencia`, `aquecimento`, `recovery`, `rest`. Blocos de aquecimento usam `aquecimento` (cinza `--steel`), não `recovery`.
 - **Wall ball em libras:** o box só tem bolas em lb. Prescrever sempre em libras, no nome do exercício: `Wall Balls (20 lb)` para o Robson e `Wall Balls (14 lb)` para a Batata e o Thomals. A exceção é a descrição das regras da prova HYROX, que usa bola oficial de 6 kg.
+- **Observações do dia:** 4º argumento do `wk()`, texto livre. Aparecem no fim do dia, depois do último bloco, na seção "Observações" (`.day-notes`), só quando existem, nas abas Treino, Batata e Thomals. No merge, a observação do programa vence a salva no celular (`progW.notes || existing.notes || ''`).
 - **Resultado:** fica no 5º argumento de `blk()`, como texto livre. Exemplos: `'3:32 · RPE 9'`, `'160kg'`, `'6 rounds + 8 reps'`. O campo `logged` dos itens é legado e não é mais usado.
 - **Programas de outros atletas:** `BATATA_PROGRAM` (aba Batata) e `THOMALS_PROGRAM` (aba Thomals), logo depois do `MONTH_PROGRAM`, no mesmo formato (`wk`, `blk`, `it`) e com as mesmas categorias. Cada um é de **outra pessoa**, não do Robson: as restrições, RMs e regras de carga do Robson não valem para eles, e um atleta não herda as do outro. O Thomals começou como cópia do Batata e é ajustado à parte. São programas independentes: o merge, as datas e os resultados não se misturam. O site é público, então só entram dados de treino; nada que identifique a pessoa além do apelido.
 - **Programa:** `MONTH_PROGRAM` é o array com todos os dias do ciclo. Hoje cobre de 31/08 a 31/10/2026. **O programa no código é a fonte da verdade.**

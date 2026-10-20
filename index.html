@@ -140,6 +140,12 @@
   .exercise-log input::placeholder{color:var(--steel);}
   .exercise-log-label{font-size:9px;color:var(--steel);text-transform:uppercase;letter-spacing:0.5px;display:block;margin-bottom:3px;text-align:right;}
 
+  .day-notes{margin-top:22px;padding-top:16px;border-top:1px solid var(--line);}
+  .day-notes-label{
+    font-family:var(--font-display);font-size:11px;text-transform:uppercase;letter-spacing:1.2px;
+    color:var(--chalk-dim);margin-bottom:8px;
+  }
+  .day-notes-text{font-size:14px;line-height:1.55;color:var(--chalk);white-space:pre-line;}
   .notes-field textarea{
     width:100%;background:var(--bg-raised);border:1px solid var(--line);color:var(--chalk);
     font-family:var(--font-body);font-size:13px;padding:10px;border-radius:6px;resize:vertical;min-height:50px;
@@ -2461,7 +2467,7 @@ function showToast(msg){
 function uid(){ return Date.now().toString(36) + Math.random().toString(36).slice(2,7); }
 function it(exercise, prescribed){ return {exercise, prescribed, logged:'', done:false}; }
 function blk(title, category, items, rpe, done){ return {title, category, items, rpe: rpe || '', done: done || ''}; }
-function wk(date, name, blocks){ return {id: uid(), date, name, notes:'', blocks}; }
+function wk(date, name, blocks, notes){ return {id: uid(), date, name, notes: notes || '', blocks}; }
 
 /* ---------- MONTH PROGRAM: Setembro 2026 ---------- */
 const MONTH_PROGRAM = [
@@ -3830,7 +3836,7 @@ function mergeMonthProgram(){
       if(!hasResults){
         const merged = JSON.parse(JSON.stringify(progW));
         merged.id = existing.id;
-        merged.notes = existing.notes || '';
+        merged.notes = progW.notes || existing.notes || '';   // observação do programa vence a vazia salva no celular
         workouts[idx] = merged;
         changed = true;
       }
@@ -4150,6 +4156,14 @@ function renderHero(bodyEl){
     }
     html += `</div>`;
   });
+
+  if(w.notes && w.notes.trim()){
+    html += `
+    <div class="day-notes">
+      <div class="day-notes-label">Observações</div>
+      <div class="day-notes-text">${escapeHtml(w.notes.trim())}</div>
+    </div>`;
+  }
 
   html += `
     <div class="save-bar">
