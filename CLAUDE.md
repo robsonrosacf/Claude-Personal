@@ -70,7 +70,7 @@ wk(date, name, blocks, notes)                // dia: {id, date:'AAAA-MM-DD', nam
 
 Menu (`nav.tabs`) com cinco abas: **TREINO**, **BATATA**, **THOMALS**, **GUIA** e **MÍDIA**. A troca passa por `showTab(tab)`, e cada aba renderiza sob demanda. Identificadores internos: TREINO é `hoje`, BATATA é `batata`, THOMALS é `thomals`, MÍDIA é `recalibra`.
 
-**Programa ativo:** `PROGRAMS` descreve os programas (`treino`, `batata`, `thomals`: chave de storage, fonte, view, aba, textos do estado vazio, rótulo de volta da lista e categoria padrão de bloco novo). Para um atleta novo: um array `NOME_PROGRAM`, uma entrada em `PROGRAMS`, um botão no `nav.tabs` e uma `div.view`; `programForTab` e `loadWorkouts` pegam o resto sozinhos. `setActiveProgram(nome)` troca o array `workouts`, que é o que todas as telas do dia leem (`renderHoje`, `renderHero`, faixa da semana, calendário, formulário de edição, lista completa). `showTab` ativa o programa do atleta só na aba dele (`programForTab`); Treino, Guia e Mídia usam sempre `treino`.
+**Programa ativo:** `PROGRAMS` descreve os programas (`treino`, `batata`, `thomals`: chave de storage, fonte, view, aba, textos do estado vazio, rótulo de volta da lista e categoria padrão de bloco novo). Para um atleta novo: um array `NOME_PROGRAM`, uma entrada em `PROGRAMS`, um botão no `nav.tabs` e uma `div.view`; `programForTab` e `loadWorkouts` pegam o resto sozinhos. `setActiveProgram(nome)` troca o array `workouts`, que é o que todas as telas do dia leem (`renderHoje`, `renderHero`, faixa da semana, calendário, formulário de edição, lista completa). `showTab` ativa o programa do atleta só na aba dele (`programForTab`); Treino e Guia usam sempre `treino`, e Mídia usa o programa escolhido no seletor dela (`rcSource`).
 
 1. **TREINO (`hoje`)** mostra o treino do dia selecionado.
    - Blocos com título, tag de RPE e tag de categoria, e itens com a prescrição.
@@ -82,7 +82,7 @@ Menu (`nav.tabs`) com cinco abas: **TREINO**, **BATATA**, **THOMALS**, **GUIA** 
      - calendário mensal recolhível.
    - Botão "Editar treino" abre um formulário de edição local.
    - Link discreto "ver lista completa" no fim da aba abre a lista de todos os dias (`historico`).
-2. **BATATA (`batata`) e THOMALS (`thomals`)** funcionam igual à aba Treino (mesmas telas, textos e navegação), cada uma com o próprio programa. Renderizam em `view-batata` e `view-thomals`. A aba Mídia não usa esses programas.
+2. **BATATA (`batata`) e THOMALS (`thomals`)** funcionam igual à aba Treino (mesmas telas, textos e navegação), cada uma com o próprio programa. Renderizam em `view-batata` e `view-thomals`. A aba Mídia usa esses programas quando escolhidos no seletor dela.
 3. **Lista completa (`historico`)**, antiga aba Programação: sem botão no menu, abre pelo link da aba Treino ou de um atleta e mostra o programa da aba de origem, com o rótulo de volta dela no topo ("‹ voltar ao treino", "‹ voltar à Batata", "‹ voltar ao Thomals"). Os dias expandem para mostrar blocos e resultados. Com ela aberta, o menu marca a aba de origem.
 4. **GUIA (`guia`)**, junção das antigas abas RPE e Corrida. `renderGuia()` chama `renderRPE(container)` e `renderCorrida(container)`, em três seções nesta ordem:
    - **Nota da sessão:** escala de 0 a 10 do treino inteiro (`SESSION_SCALE`);
@@ -90,12 +90,13 @@ Menu (`nav.tabs`) com cinco abas: **TREINO**, **BATATA**, **THOMALS**, **GUIA** 
    - **Técnica de corrida:** pontos técnicos (`RUN_CUES`) e onde a técnica melhora.
 5. **MÍDIA (`recalibra`)**, antiga aba Recalibra, renomeada sem mudança de funcionalidade. Nomes internos (`renderRecalibraTab`, `view-recalibra`, prefixo `rc`) continuam iguais.
    É o gerador de Stories em 1080×1920 a partir do treino do dia.
+   - **Seletor "Treino de":** no topo da aba, botões Treino, Batata e Thomals (`rcSourceSelector`, `RC_SOURCE_LABELS`). Troca o programa ativo (`rcSource`) e recarrega os blocos; a escolha continua valendo ao sair e voltar à aba. Padrão: Treino.
    - **Montagem do texto:**
      - puxa os blocos do dia, exceto `aquecimento`, `recovery` e `rest`;
      - remove itens de instrução usando a lista `RC_META_LABELS`;
      - separa quantidade e carga com `rcSplitPrescribed`: a carga vai para o nome do exercício, e a coluna da direita mostra só o esquema ou o número;
      - destaca por padrão o metcon, com o score limpo por `rcCleanScore` (só tempo ou reps) e o cap extraído do título.
-   - **Contador:** mostra "Semana N | Dia X", a partir de `RC_WEEK_PHASES` e de `RC_START_DATE = '2026-08-31'`, que é o dia 1.
+   - **Contador:** `rcCounterText`. No Treino, "Semana N | Dia X" a partir de `RC_WEEK_PHASES` e de `RC_START_DATE = '2026-08-31'`, que é o dia 1. Nos outros atletas, conta a partir do primeiro dia do programa deles, em semanas de 7 dias; antes do início, o contador não aparece.
    - **Mídia de fundo:** foto ou vídeo, com modo de ajuste (arrastar, pinça e slider de zoom de 100 a 300%) e slider de contraste da máscara.
    - **Fundo padrão:** sem foto ou vídeo, usa `recalibra-fundo-v2.jpg` (arte RBSN com o selo já aplicado), sem máscara e sem modo de ajuste.
    - **Selo:** `selo-v1.png` (escudo RBSN + "A vida é f▭da!") vai na camada de texto em foto e vídeo, em x 766, y 1449, 161 px de largura, a mesma posição do selo da arte padrão. É PNG porque o html2canvas desenha o SVG errado.
