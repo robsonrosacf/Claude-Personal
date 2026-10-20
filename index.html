@@ -146,6 +146,26 @@
     color:var(--chalk-dim);margin-bottom:8px;
   }
   .day-notes-text{font-size:14px;line-height:1.55;color:var(--chalk);white-space:pre-line;}
+  .add-result{
+    display:block;width:100%;margin-top:12px;padding:10px;border:1px dashed var(--line);border-radius:8px;
+    background:none;color:var(--chalk-dim);font-family:var(--font-mono);font-size:12px;letter-spacing:0.5px;cursor:pointer;text-align:left;
+  }
+  .add-result:hover{border-color:var(--accent);color:var(--accent);}
+  .athlete-result-form{margin-top:12px;}
+  .athlete-result-actions{display:flex;gap:10px;margin-top:10px;}
+  .athlete-result-actions button{flex:1;}
+  .result-edit{float:right;background:none;border:none;color:var(--steel);font-family:var(--font-mono);font-size:10px;text-transform:none;letter-spacing:0;cursor:pointer;padding:0;}
+  .howwas{margin-top:22px;padding-top:16px;border-top:1px solid var(--line);}
+  .howwas-sub{font-size:12px;color:var(--chalk-dim);margin:-2px 0 12px;}
+  .howwas-scale{display:grid;grid-template-columns:repeat(11,1fr);gap:4px;margin-bottom:12px;}
+  .howwas-n{
+    padding:10px 0;border-radius:6px;border:1px solid var(--line);background:var(--bg-raised);color:var(--chalk);
+    font-family:var(--font-display);font-size:16px;cursor:pointer;
+  }
+  .howwas-n.on{background:var(--accent);border-color:var(--accent);color:#0a0c0b;}
+  .howwas-comment{width:100%;resize:vertical;min-height:70px;font-family:var(--font-body);font-size:14px;margin-bottom:12px;
+    background:var(--bg-raised);color:var(--chalk);border:1px solid var(--line);border-radius:6px;padding:10px 12px;}
+  .howwas-status{font-family:var(--font-mono);font-size:11px;color:var(--steel);text-align:center;margin-top:8px;min-height:14px;}
   .form-done{margin-top:10px;border-color:var(--done);}
   .form-hint{font-size:12px;color:var(--chalk-dim);margin-top:8px;}
   .notes-field textarea{
@@ -4064,6 +4084,8 @@ function mergeMonthProgram(){
           if(local && local.done && local.done.trim()) b.done = local.done;
         });
         if(existing.comment) merged.comment = existing.comment;
+        if(existing.nota === 0 || existing.nota) merged.nota = existing.nota;
+        if(existing.sentAt) merged.sentAt = existing.sentAt;
         workouts[idx] = merged;
         changed = true;
       }
@@ -4119,6 +4141,11 @@ function readResultQueue(){
 function writeResultQueue(q){
   try{ localStorage.setItem(RESULTS_QUEUE_KEY, JSON.stringify(q)); }catch(e){}
 }
+function queueAthletePayload(payload){
+  const q = readResultQueue();
+  q.push(Object.assign({chave: RESULTS_KEY}, payload));
+  writeResultQueue(q);
+}
 // monta o envio; devolve false se não há resultado nem comentário para mandar
 function queueResultCopy(atleta, w){
   const linhas = w.blocks.filter(b => b.done && b.done.trim()).map(b => ({bloco: b.title, resultado: b.done.trim()}));
@@ -4159,6 +4186,7 @@ function getWorkoutByDate(date){ return workouts.find(w => w.date === date); }
 function showTab(tab){
   if(tab !== 'historico') setActiveProgram(tab === 'recalibra' ? rcSource : programForTab(tab));
   editingDraft = false;
+  athleteEditing = null;
   const navTab = tab === 'historico' ? PROGRAMS[activeProgram].tab : tab;
   document.querySelectorAll('nav.tabs button').forEach(b=>b.classList.toggle('active', b.dataset.tab === navTab));
   document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));
@@ -4302,6 +4330,7 @@ function renderHoje(){
 
 /* ---------- NAVEGAÇÃO ENTRE DIAS ---------- */
 function goToDay(delta){
+  athleteEditing = null;
   selectedDate = addDays(selectedDate, delta);
   weekAnchor = selectedDate;
   const d = dateFromISO(selectedDate);
@@ -4379,6 +4408,7 @@ function renderHero(bodyEl){
   const w = getWorkoutByDate(selectedDate);
   const isFuture = selectedDate > todayISO();
   const isToday = selectedDate === todayISO();
+  const athlete = activeProgram !== 'treino';   // Batata e Thomals: registro direto na tela, sem "Editar treino"
 
   if(!w && !editingDraft){
     bodyEl.innerHTML = `
@@ -4386,13 +4416,14 @@ function renderHero(bodyEl){
         <div class="big">${isFuture ? PROGRAMS[activeProgram].emptyPlanned : 'Nenhum resultado registrado'}</div>
         <p>${isToday ? 'Hoje · ' : ''}${fmtDateLong(selectedDate)}</p>
       </div>
-      <button class="primary" id="btnNewWorkout">${PROGRAMS[activeProgram].addLabel}</button>
+      ${athlete ? '' : `<button class="primary" id="btnNewWorkout">${PROGRAMS[activeProgram].addLabel}</button>`}
     `;
-    bodyEl.querySelector('#btnNewWorkout').addEventListener('click', ()=>{ editingDraft = true; renderHoje(); });
+    const nb = bodyEl.querySelector('#btnNewWorkout');
+    if(nb) nb.addEventListener('click', ()=>{ editingDraft = true; renderHoje(); });
     return;
   }
 
-  if(editingDraft){ renderWorkoutForm(bodyEl, w); return; }
+  if(editingDraft && !athlete){ renderWorkoutForm(bodyEl, w); return; }
 
   let html = `<div class="card">
     <div class="workout-name">${escapeHtml(w.name)}</div>
@@ -4419,12 +4450,24 @@ function renderHero(bodyEl){
           </div>
         </div>`;
     });
-    if(block.done){
+    const scorable = !['aquecimento','recovery','rest'].includes(block.category);
+    if(athlete && scorable && athleteEditing === bi){
+      html += `
+        <div class="athlete-result-form">
+          <input class="text-input" id="arInput" placeholder="tempo, reps ou carga (ex: 12:26, 5 rounds + 8, 100kg)" value="${escapeAttr(block.done || '')}">
+          <div class="athlete-result-actions">
+            <button class="primary" id="arSave">Salvar</button>
+            <button class="ghost" id="arCancel">Cancelar</button>
+          </div>
+        </div>`;
+    } else if(block.done){
       html += `
         <div class="result-panel">
-          <div class="result-label">Resultado</div>
+          <div class="result-label">Resultado${athlete && scorable ? `<button class="result-edit" data-ar="${bi}">alterar</button>` : ''}</div>
           <div class="result-value">${escapeHtml(block.done)}</div>
         </div>`;
+    } else if(athlete && scorable){
+      html += `<button class="add-result" data-ar="${bi}">+ Resultado</button>`;
     }
     html += `</div>`;
   });
@@ -4437,24 +4480,86 @@ function renderHero(bodyEl){
     </div>`;
   }
 
-  if(w.comment && w.comment.trim()){
+  if(athlete){
+    const nota = (w.nota === 0 || w.nota) ? +w.nota : null;
     html += `
+    <div class="howwas">
+      <div class="day-notes-label">Como foi</div>
+      <div class="howwas-sub">Nota do treino inteiro, de 0 a 10 (escala na aba Guia)</div>
+      <div class="howwas-scale">
+        ${[0,1,2,3,4,5,6,7,8,9,10].map(n=>`<button class="howwas-n ${nota===n?'on':''}" data-nota="${n}">${n}</button>`).join('')}
+      </div>
+      <textarea class="text-input howwas-comment" id="hwComment" rows="3" placeholder="como foi, o que sentiu, o que adaptou">${escapeHtml(w.comment || '')}</textarea>
+      <button class="primary" id="hwSend">Enviar</button>
+      <div class="howwas-status">${w.sentAt ? 'Enviado' : ''}</div>
+    </div>
+  </div>`;
+  } else {
+    if(w.comment && w.comment.trim()){
+      html += `
     <div class="day-notes">
       <div class="day-notes-label">Comentário</div>
       <div class="day-notes-text">${escapeHtml(w.comment.trim())}</div>
     </div>`;
-  }
-
-  html += `
+    }
+    html += `
     <div class="save-bar">
       <button class="ghost" id="btnEditWorkout" style="width:100%;">Editar treino</button>
     </div>
   </div>`;
+  }
 
   bodyEl.innerHTML = html;
 
-  bodyEl.querySelector('#btnEditWorkout').addEventListener('click', ()=>{ editingDraft = true; renderHoje(); });
+  if(!athlete){
+    bodyEl.querySelector('#btnEditWorkout').addEventListener('click', ()=>{ editingDraft = true; renderHoje(); });
+    return;
+  }
+
+  // atletas: + Resultado / alterar em cada bloco
+  bodyEl.querySelectorAll('[data-ar]').forEach(b => b.addEventListener('click', ()=>{
+    athleteEditing = +b.dataset.ar; renderHoje();
+    const inp = document.getElementById('arInput'); if(inp) inp.focus();
+  }));
+  const arSave = bodyEl.querySelector('#arSave');
+  if(arSave){
+    const save = async ()=>{
+      const block = w.blocks[athleteEditing];
+      const val = document.getElementById('arInput').value.trim();
+      block.done = val;
+      athleteEditing = null;
+      await persistWorkouts();
+      renderHoje();
+      if(!val){ showToast('Resultado removido'); return; }
+      queueAthletePayload({atleta: activeProgram, data: w.date, treino: w.name, linhas: [{bloco: block.title, resultado: val}], observacoes: ''});
+      showToast(await flushResultQueue() ? 'Salvo · enviado ao treinador' : 'Salvo no celular · envio pendente');
+    };
+    arSave.addEventListener('click', save);
+    document.getElementById('arInput').addEventListener('keydown', e=>{ if(e.key === 'Enter') save(); });
+    bodyEl.querySelector('#arCancel').addEventListener('click', ()=>{ athleteEditing = null; renderHoje(); });
+  }
+
+  // atletas: Como foi (nota + comentário)
+  bodyEl.querySelectorAll('[data-nota]').forEach(b => b.addEventListener('click', ()=>{
+    bodyEl.querySelectorAll('[data-nota]').forEach(x => x.classList.toggle('on', x === b));
+  }));
+  bodyEl.querySelector('#hwSend').addEventListener('click', async ()=>{
+    const on = bodyEl.querySelector('.howwas-n.on');
+    const comment = document.getElementById('hwComment').value.trim();
+    if(!on && !comment){ showToast('Escolha a nota ou escreva um comentário'); return; }
+    w.nota = on ? +on.dataset.nota : null;
+    w.comment = comment;
+    w.sentAt = new Date().toISOString();
+    await persistWorkouts();
+    const payload = {atleta: activeProgram, data: w.date, treino: w.name, linhas: [], observacoes: comment};
+    if(w.nota !== null) payload.nota = w.nota;
+    queueAthletePayload(payload);
+    const ok = await flushResultQueue();
+    renderHoje();
+    showToast(ok ? 'Enviado ao treinador' : 'Salvo no celular · envio pendente');
+  });
 }
+let athleteEditing = null;   // índice do bloco com o campo "+ Resultado" aberto
 
 function renderWorkoutForm(bodyEl, existing){
   const draft = existing ? JSON.parse(JSON.stringify(existing)) : {
