@@ -3149,7 +3149,7 @@ const BATATA_PROGRAM = [
       it('Wall Balls (14 lb)', '20'), it('Sandbag Lunges (20kg)', '20 m'), it('Corrida', '200 m leve'),
       it('Por quê', 'primeiro contato com as estações da segunda metade da prova, sem pressa: a semana 1 é para aprender o movimento.')
     ], 'RPE 6-7', '10:15 · joelho 2 de 10 nas wall balls')
-  ]),
+  ], 'Joelho 2 de 10 nas wall balls: sinal verde, o plano segue. Limite: acima de 3 de 10, ou se voltar o formigamento, trocar a wall ball por agachamento até um caixote na altura da paralela, mantendo o arremesso. Avaliação com fisioterapeuta recomendada antes das semanas de carga. Sled a +20% foi tranquilo: em 26/10 a carga sobe para +30%.'),
   wk('2026-10-20', 'HYROX · Teste de 3 km', [
     blk('Bloco A — Aquecimento', 'aquecimento', [
       it('Trote', '10 min leve'),
@@ -3160,7 +3160,7 @@ const BATATA_PROGRAM = [
       it('Para que serve', 'o pace médio desse teste define todos os ritmos do plano: limiar = pace + 15 s/km; ritmo de prova (pace do teste de 3 km + 30 a 40 s/km, firme, frases curtas) = pace + 30 a 40 s/km. Anote o tempo.')
     ], 'RPE 9'),
     blk('Bloco C — Volta à calma', 'recovery', [ it('Trote', '10 min bem leve') ], 'RPE 2')
-  ]),
+  ], 'O que mandar depois do teste: tempo total, tempo de cada km, onde correu (pista, rua plana ou esteira e a inclinação) e o esforço no fim, de 0 a 10. O esperado é perto de 9; se ficar bem abaixo, o teste saiu leve e os ritmos ficam lentos. Para que serve: o pace médio define o ritmo de todas as corridas do plano (limiar, ritmo de prova e os tiros mais rápidos). Ele não muda o sled nem as estações. Na prova de dupla, os dois correm juntos: nas simulações e no dia da prova, o ritmo de prova é o do mais lento dos dois. Nos treinos individuais, cada um usa o próprio teste.'),
   wk('2026-10-21', 'HYROX · Aeróbico misto', [
     blk('Bloco A — Aquecimento', 'aquecimento', [ it('Mobilidade', '5 min: quadril, tornozelo e ombro') ], 'RPE 2'),
     blk('Bloco B — 40 min contínuos em Zona 2', 'resistencia', [
@@ -3222,7 +3222,7 @@ const BATATA_PROGRAM = [
       it('Wall Balls (14 lb)', 'min ímpar: 15'), it('Burpee Broad Jump', 'min par: 8'),
       it('Por quê', 'as duas estações que mais destroem a perna na prova, em ritmo controlado.')
     ], 'RPE 7')
-  ]),
+  ], 'Carga subiu para +30% porque +20% foi tranquilo em 19/10. Se algum tiro de 12,5 m passar de 25 s, voltar para +20% nos seguintes.'),
   wk('2026-10-27', 'HYROX · Limiar', [
     blk('Bloco A — Aquecimento', 'aquecimento', [
       it('Trote', '10 min'),
@@ -3458,6 +3458,341 @@ const BATATA_PROGRAM = [
    Treinos de outro atleta (não do Robson nem da Batata), com programa próprio.
    Mesmo formato do MONTH_PROGRAM. Conteúdo do chat do treinador, salvo na chave 'thomals'. */
 const THOMALS_PROGRAM = [
+  /* Preparação HYROX Doubles · HYROX Rio de Janeiro, 21/11/2026.
+     Paces pelo teste de 3 km de 20/10: limiar = pace do teste + 15 s/km;
+     ritmo de prova = pace do teste + 30 a 40 s/km; Z2 = conversa ou só pelo nariz.
+     Cargas Doubles masculino (confirmado): sled push 152 kg e pull 103 kg
+     com o trenó, farmers 2x24 kg, sandbag 20 kg, wall ball 6 kg.
+     Fases: S1 19-25/10 diagnóstico e técnica · S2 26/10-01/11 construção ·
+     S3 02-08/11 pico de volume · S4 09-15/11 pico de intensidade · S5 16-21/11 polimento e prova. */
+  /* ---------- SEMANA 1 · DIAGNÓSTICO E TÉCNICA ---------- */
+  wk('2026-10-19', 'HYROX · Sled + estações', [
+    blk('Antes de começar · Como ler o plano', 'aquecimento', [
+      it('Ritmos de corrida', 'Zona 2: dá para conversar ou respirar só pelo nariz. Limiar: pace do teste de 3 km (20/10) + 15 s/km, forte, fala no máximo 2 ou 3 palavras. Ritmo de prova: pace do teste + 30 a 40 s/km, firme, dá para falar frases curtas.'),
+      it('RPE', 'esforço de 0 a 10 indicado em cada bloco: 3 é leve, 7 é forte mas controlado, 9 é quase o máximo.'),
+      it('Cargas de prova (Doubles masculino)', 'sled push 152 kg e sled pull 103 kg, os dois contando o trenó · farmers carry 2x24 kg · sandbag 20 kg · wall ball 6 kg em alvo de 3 m.'),
+      it('Padrões', 'wall ball: agachamento abaixo da paralela e bola acima da linha do alvo · burpee broad jump: peito no chão e salto para a frente com os dois pés juntos · lunges: joelho de trás encosta no chão · sled: a pista da prova tem 12,5 m, por isso os tiros de treino são de 12,5 m.'),
+      it('Formato dos blocos', 'sem pausa = emenda a corrida na estação e a estação na corrida · a cada 3 min = começa uma volta a cada 3 min e descansa o que sobrar · Round 1, Round 2 = ordem das estações.'),
+      it('Mobilidade diária', 'todo dia, 5 min: 10 mobilizações de tornozelo por lado (joelho à frente da ponta do pé, calcanhar no chão) e 5 world\'s greatest stretch por lado. Agachar forçando vem de tornozelo e quadril travados.'),
+      it('Sem algum aparelho?', 'sem SkiErg, use o remo com a mesma distância · se o trenó deslizar fácil demais no piso, aumente a carga até os 12,5 m levarem de 15 a 20 s.'),
+      it('Registro', 'depois de cada treino, mande para o Robson os tempos e splits pedidos no dia e, uns 30 min depois, a nota do treino inteiro de 0 a 10.')
+    ], ''),
+    blk('Bloco A — Aquecimento', 'aquecimento', [
+      it('Remo', '5 min leve'),
+      it('Mobilidade', '5 world\'s greatest stretch por lado, 10 mobilizações de tornozelo com o joelho indo à frente da ponta do pé (por lado), 10 rotações de tornozelo'),
+      it('Sled leve', '2x 12,5 m de push e 2x 12,5 m de pull só com o trenó, focando na posição')
+    ], 'RPE 3'),
+    blk('Bloco B — Técnica e força de sled', 'forca', [
+      it('Sled Push', '6x 12,5 m | carga de prova + 20%: cerca de 180 kg com o trenó | 90 s de descanso'),
+      it('Sled Pull', '6x 12,5 m | carga de prova + 20%: cerca de 125 kg com o trenó | 90 s de descanso'),
+      it('Técnica', 'push: braços estendidos, tronco a 45°, passos curtos e rápidos. Pull: corda passando mão sobre mão, quadril baixo, andando para trás sem parar.')
+    ], 'RPE 7'),
+    blk('Bloco C — 3 rounds, ritmo constante', 'metcon', [
+      it('Wall Balls (14 lb)', '20'), it('Sandbag Lunges (20kg)', '20 m'), it('Corrida', '200 m leve'),
+      it('Por quê', 'primeiro contato com as estações da segunda metade da prova, sem pressa: a semana 1 é para aprender o movimento.')
+    ], 'RPE 6-7')
+  ]),
+  wk('2026-10-20', 'HYROX · Teste de 3 km', [
+    blk('Bloco A — Aquecimento', 'aquecimento', [
+      it('Trote', '10 min leve'),
+      it('Educativos', '2x 20 m de skipping, 2x 20 m de anfersen e 3 acelerações de 15 s')
+    ], 'RPE 3'),
+    blk('Bloco B — TESTE: 3 km For Time', 'resistencia', [
+      it('Corrida (plano ou esteira a 1%)', '3 km no melhor tempo possível, com ritmo regular'),
+      it('Para que serve', 'o pace médio desse teste define todos os ritmos do plano: limiar = pace + 15 s/km; ritmo de prova (pace do teste de 3 km + 30 a 40 s/km, firme, frases curtas) = pace + 30 a 40 s/km. Anote o tempo.')
+    ], 'RPE 9'),
+    blk('Bloco C — Volta à calma', 'recovery', [ it('Trote', '10 min bem leve') ], 'RPE 2')
+  ], 'O que mandar depois do teste: tempo total, tempo de cada km, onde correu (pista, rua plana ou esteira e a inclinação) e o esforço no fim, de 0 a 10. O esperado é perto de 9; se ficar bem abaixo, o teste saiu leve e os ritmos ficam lentos. Para que serve: o pace médio define o ritmo de todas as corridas do plano (limiar, ritmo de prova e os tiros mais rápidos). Ele não muda o sled nem as estações. Na prova de dupla, os dois correm juntos: nas simulações e no dia da prova, o ritmo de prova é o do mais lento dos dois. Nos treinos individuais, cada um usa o próprio teste.'),
+  wk('2026-10-21', 'HYROX · Aeróbico misto', [
+    blk('Bloco A — Aquecimento', 'aquecimento', [ it('Mobilidade', '5 min: quadril, tornozelo e ombro') ], 'RPE 2'),
+    blk('Bloco B — 40 min contínuos em Zona 2', 'resistencia', [
+      it('SkiErg', '10 min'), it('Corrida', '10 min'), it('Remo', '10 min'), it('Corrida', '10 min'),
+      it('Ritmo', 'Zona 2: dá para conversar ou respirar só pelo nariz. Troca de aparelho sem parar o relógio.')
+    ], 'RPE 4 · Zona 2')
+  ]),
+  wk('2026-10-22', 'HYROX · Corrida comprometida', [
+    blk('Bloco A — Aquecimento', 'aquecimento', [
+      it('Trote', '5 min'),
+      it('Específico', '1 round leve: 100 m de SkiErg, 5 m de sled push, 5 m de sled pull, 3 burpee broad jumps')
+    ], 'RPE 3'),
+    blk('Bloco B — 4 rounds sem pausa', 'metcon', [
+      it('Corrida', '1 km em ritmo de prova (pace do teste de 3 km + 30 a 40 s/km, firme, frases curtas)'),
+      it('Estação do round', 'Round 1: 500 m de SkiErg · Round 2: 25 m de sled push · Round 3: 25 m de sled pull · Round 4: 40 m de burpee broad jump'),
+      it('Anote', 'o tempo de cada 1 km. O objetivo é o 4º sair igual ao 1º: é isso que a prova cobra.'),
+      it('Cargas', 'sled com a carga de prova (push 152 kg, pull 103 kg, com o trenó).')
+    ], 'RPE 8')
+  ]),
+  wk('2026-10-23', 'HYROX · Corrida leve + força de pegada', [
+    blk('Bloco A — Aquecimento', 'aquecimento', [ it('Mobilidade', '5 min: tornozelo, quadril e punho') ], 'RPE 2'),
+    blk('Bloco B — Corrida Zona 2', 'resistencia', [ it('Corrida contínua', '25 min, conversando ou só pelo nariz') ], 'RPE 3-4 · Zona 2'),
+    blk('Bloco C — Força de pegada e tronco', 'forca', [
+      it('Farmers Carry', '4x 50 m | 2x 32kg (mais pesado que a prova) | 60 s de descanso'),
+      it('Wall Balls (14 lb)', '3x 25 unbroken | 60 s de descanso | treine respirar a cada 3 reps'),
+      it('Prancha', '3x 40 s')
+    ], 'RPE 6')
+  ]),
+  wk('2026-10-24', 'HYROX · Meia simulação em dupla', [
+    blk('Bloco A — Aquecimento', 'aquecimento', [
+      it('Trote', '8 min'),
+      it('Específico', '1 round leve de cada estação: 100 m de SkiErg, 5 m de push, 5 m de pull, 3 burpee broad jumps')
+    ], 'RPE 3'),
+    blk('Bloco B — Primeira metade da prova, formato Doubles', 'metcon', [
+      it('Formato', 'os dois correm cada 1 km juntos; nas estações, só um trabalha por vez e vocês dividem como quiserem.'),
+      it('Round 1', '1 km + 1.000 m de SkiErg (troca a cada 250 m)'),
+      it('Round 2', '1 km + 50 m de sled push (troca a cada 12,5 m)'),
+      it('Round 3', '1 km + 50 m de sled pull (troca a cada 12,5 m)'),
+      it('Round 4', '1 km + 80 m de burpee broad jump (troca a cada 10 m)'),
+      it('Ritmo', 'ritmo de prova (pace do teste de 3 km + 30 a 40 s/km, firme, frases curtas) na corrida. Registre o tempo total e quanto tempo levou cada estação.'),
+      it('Sem parceiro?', 'faça sozinho com metade do volume de cada estação.')
+    ], 'RPE 8')
+  ]),
+  wk('2026-10-25', 'Descanso', [
+    blk('Sem treino programado', 'rest', [ it('Descanso', 'caminhada leve, se quiser') ], 'RPE 0')
+  ]),
+  /* ---------- SEMANA 2 · CONSTRUÇÃO ---------- */
+  wk('2026-10-26', 'HYROX · Sled pesado + EMOM', [
+    blk('Bloco A — Aquecimento', 'aquecimento', [
+      it('Remo', '5 min leve'),
+      it('Sled leve', '2x 12,5 m de push e pull só com o trenó')
+    ], 'RPE 3'),
+    blk('Bloco B — Força de sled', 'forca', [
+      it('Sled Push', '8x 12,5 m | carga de prova + 20%: cerca de 180 kg com o trenó | 90 s de descanso'),
+      it('Sled Pull', '8x 12,5 m | carga de prova + 20%: cerca de 125 kg com o trenó | 90 s de descanso')
+    ], 'RPE 7-8'),
+    blk('Bloco C — EMOM 10 min', 'metcon', [
+      it('Wall Balls (14 lb)', 'min ímpar: 15'), it('Burpee Broad Jump', 'min par: 8'),
+      it('Por quê', 'as duas estações que mais destroem a perna na prova, em ritmo controlado.')
+    ], 'RPE 7')
+  ]),
+  wk('2026-10-27', 'HYROX · Limiar', [
+    blk('Bloco A — Aquecimento', 'aquecimento', [
+      it('Trote', '10 min'),
+      it('Educativos', '2x 20 m de skipping e 3 acelerações de 15 s')
+    ], 'RPE 3'),
+    blk('Bloco B — 5x 1 km no limiar', 'resistencia', [
+      it('Corrida', '5x 1 km no limiar (pace do teste + 15 s/km) | 90 s de trote leve entre eles'),
+      it('Ritmo', 'todos no mesmo tempo. Se o último sair mais de 10 s mais lento, o ritmo estava forte demais.')
+    ], 'RPE 8'),
+    blk('Bloco C — Volta à calma', 'recovery', [ it('Trote', '5 min bem leve') ], 'RPE 2')
+  ]),
+  wk('2026-10-28', 'HYROX · Aeróbico misto', [
+    blk('Bloco A — Aquecimento', 'aquecimento', [ it('Mobilidade', '5 min: quadril, tornozelo e ombro') ], 'RPE 2'),
+    blk('Bloco B — 45 min contínuos em Zona 2', 'resistencia', [
+      it('3 voltas de 15 min', '5 min de SkiErg, 5 min de remo e 5 min de corrida'),
+      it('Ritmo', 'Zona 2, sem parar entre os aparelhos.')
+    ], 'RPE 4 · Zona 2')
+  ]),
+  wk('2026-10-29', 'HYROX · Corrida comprometida', [
+    blk('Bloco A — Aquecimento', 'aquecimento', [
+      it('Trote', '5 min'),
+      it('Específico', '1 round leve: 5 wall balls, 5 m de lunges, 20 m de farmers, 100 m de remo')
+    ], 'RPE 3'),
+    blk('Bloco B — 5 rounds sem pausa', 'metcon', [
+      it('Corrida', '800 m em ritmo de prova (pace do teste de 3 km + 30 a 40 s/km, firme, frases curtas)'),
+      it('Estação do round', 'Round 1: 25 wall balls · Round 2: 25 m de sandbag lunges · Round 3: 100 m de farmers carry · Round 4: 500 m de remo · Round 5: 25 wall balls'),
+      it('Anote', 'o tempo de cada 800 m. Saída da estação direto para a corrida, sem parar para respirar.')
+    ], 'RPE 8')
+  ]),
+  wk('2026-10-30', 'HYROX · Força de perna + corrida leve', [
+    blk('Bloco A — Aquecimento', 'aquecimento', [
+      it('Remo', '5 min leve'),
+      it('Rampa do box squat', 'barra x10, 50% x5, 65% x3, sentando num caixote na altura da paralela')
+    ], 'RPE 3'),
+    blk('Bloco B — Força', 'forca', [
+      it('Box Squat', '4x6 | caixote na altura da paralela, senta sem relaxar e sobe | alvo RPE 7'),
+      it('Afundo búlgaro', '3x 8 por perna, descendo só até a coxa da frente ficar paralela ao chão'),
+      it('Por quê', 'perna mais forte deixa o sled e os lunges mais baratos. O caixote limita a profundidade: agachar fundo forçando é o que dispara o choque atrás do joelho.')
+    ], 'RPE 7'),
+    blk('Bloco C — Corrida leve', 'resistencia', [ it('Corrida', '2 km bem leve para soltar') ], 'RPE 3')
+  ]),
+  wk('2026-10-31', 'HYROX · Segunda metade em dupla', [
+    blk('Bloco A — Aquecimento', 'aquecimento', [
+      it('Trote', '8 min'),
+      it('Específico', '1 round leve: 100 m de remo, 20 m de farmers, 5 m de lunges, 5 wall balls')
+    ], 'RPE 3'),
+    blk('Bloco B — Segunda metade da prova, formato Doubles', 'metcon', [
+      it('Round 1', '1 km + 1.000 m de remo (troca a cada 250 m)'),
+      it('Round 2', '1 km + 200 m de farmers carry (troca a cada 50 m)'),
+      it('Round 3', '1 km + 100 m de sandbag lunges (troca a cada 25 m)'),
+      it('Round 4', '1 km + 100 wall balls (troca a cada 10 ou 15 reps)'),
+      it('Ritmo', 'ritmo de prova (pace do teste de 3 km + 30 a 40 s/km, firme, frases curtas). Compare o tempo das estações com o de 24/10 e teste outra divisão onde vocês perderam mais tempo.'),
+      it('Sem parceiro?', 'faça sozinho com metade do volume de cada estação.')
+    ], 'RPE 8-9')
+  ]),
+  wk('2026-11-01', 'Descanso', [
+    blk('Sem treino programado', 'rest', [ it('Descanso', 'caminhada leve, se quiser') ], 'RPE 0')
+  ]),
+  /* ---------- SEMANA 3 · PICO DE VOLUME ---------- */
+  wk('2026-11-02', 'HYROX · Sled na carga de prova', [
+    blk('Bloco A — Aquecimento', 'aquecimento', [
+      it('Remo', '5 min leve'),
+      it('Sled leve', '2x 12,5 m de push e pull com metade da carga')
+    ], 'RPE 3'),
+    blk('Bloco B — Sled em distância de prova', 'forca', [
+      it('Sled Push', '4x 25 m | carga de prova: 152 kg com o trenó | 1 min de descanso'),
+      it('Sled Pull', '4x 25 m | carga de prova: 103 kg com o trenó | 1 min de descanso'),
+      it('Meta', 'cada 25 m sem parar. Se parar, encurte a passada em vez de descansar.')
+    ], 'RPE 8'),
+    blk('Bloco C — 3 rounds', 'metcon', [
+      it('Corrida', '400 m em ritmo de prova (pace do teste de 3 km + 30 a 40 s/km, firme, frases curtas)'), it('Wall Balls (14 lb)', '20'),
+      it('Por quê', 'correr com a perna cansada do sled, como na prova.')
+    ], 'RPE 8')
+  ]),
+  wk('2026-11-03', 'HYROX · Limiar longo', [
+    blk('Bloco A — Aquecimento', 'aquecimento', [
+      it('Trote', '10 min'),
+      it('Educativos', '2x 20 m de skipping e 3 acelerações de 15 s')
+    ], 'RPE 3'),
+    blk('Bloco B — 3x 2 km no limiar (pace do teste de 3 km + 15 s/km, forte, 2 ou 3 palavras)', 'resistencia', [
+      it('Corrida', '3x 2 km no limiar | 2 min de trote leve entre eles'),
+      it('Ritmo', 'o mesmo pace nos três.')
+    ], 'RPE 8'),
+    blk('Bloco C — Volta à calma', 'recovery', [ it('Trote', '5 min bem leve') ], 'RPE 2')
+  ]),
+  wk('2026-11-04', 'HYROX · Aeróbico misto', [
+    blk('Bloco A — Aquecimento', 'aquecimento', [ it('Mobilidade', '5 min: quadril, tornozelo e ombro') ], 'RPE 2'),
+    blk('Bloco B — 45 min contínuos em Zona 2', 'resistencia', [
+      it('3 voltas de 15 min', '5 min de corrida, 5 min de SkiErg e 5 min de remo'),
+      it('Ritmo', 'Zona 2, sem parar entre os aparelhos.')
+    ], 'RPE 4 · Zona 2')
+  ]),
+  wk('2026-11-05', 'HYROX · Corrida comprometida + transições', [
+    blk('Bloco A — Aquecimento', 'aquecimento', [
+      it('Trote', '5 min'),
+      it('Específico', '1 round leve de cada estação do dia')
+    ], 'RPE 3'),
+    blk('Bloco B — 6 rounds sem pausa', 'metcon', [
+      it('Corrida', '1 km em ritmo de prova (pace do teste de 3 km + 30 a 40 s/km, firme, frases curtas)'),
+      it('Estação do round', 'Round 1: 500 m de SkiErg · Round 2: 25 m de sled push · Round 3: 25 m de sled pull · Round 4: 40 m de burpee broad jump · Round 5: 500 m de remo · Round 6: 50 wall balls'),
+      it('Transições', 'entre a corrida e a estação, menos de 20 s: é o tempo que se perde na Roxzone.')
+    ], 'RPE 8-9')
+  ]),
+  wk('2026-11-06', 'HYROX · Leve, véspera de simulação', [
+    blk('Bloco A — Aquecimento', 'aquecimento', [ it('Mobilidade', '5 min: quadril, tornozelo e punho') ], 'RPE 2'),
+    blk('Bloco B — Corrida Zona 2', 'resistencia', [ it('Corrida contínua', '25 min, conversando') ], 'RPE 3 · Zona 2'),
+    blk('Bloco C — Técnica', 'gym', [ it('Wall Balls (14 lb)', '3x 15 bem feitas, alvo sempre no mesmo ponto') ], 'RPE 4')
+  ]),
+  wk('2026-11-07', 'HYROX · Simulação de 3/4 em dupla', [
+    blk('Bloco A — Aquecimento', 'aquecimento', [
+      it('Trote', '8 min'),
+      it('Específico', '1 round leve: 100 m de SkiErg, 5 m de push, 5 m de pull, 3 burpee broad jumps, 100 m de remo')
+    ], 'RPE 3'),
+    blk('Bloco B — 6 rounds da prova, formato Doubles', 'metcon', [
+      it('Rounds', '1 km + SkiErg 1.000 m · 1 km + sled push 50 m · 1 km + sled pull 50 m · 1 km + burpee broad jump 80 m · 1 km + remo 1.000 m · 1 km + farmers 200 m'),
+      it('Ritmo', 'ritmo de prova (pace do teste de 3 km + 30 a 40 s/km, firme, frases curtas), com a divisão de estações que vocês decidiram nas semanas 1 e 2.'),
+      it('Ensaio', 'roupa, tênis e o que vão comer antes: tudo como no dia da prova.'),
+      it('Anote', 'o tempo total e o de cada 1 km.')
+    ], 'RPE 8-9')
+  ]),
+  wk('2026-11-08', 'Descanso', [
+    blk('Sem treino programado', 'rest', [ it('Descanso', 'caminhada leve, se quiser') ], 'RPE 0')
+  ]),
+  /* ---------- SEMANA 4 · PICO DE INTENSIDADE ---------- */
+  wk('2026-11-09', 'HYROX · Sled em formato de prova', [
+    blk('Bloco A — Aquecimento', 'aquecimento', [
+      it('Remo', '5 min leve'),
+      it('Sled leve', '2x 12,5 m de push e pull com metade da carga')
+    ], 'RPE 3'),
+    blk('Bloco B — Sled como na prova', 'metcon', [
+      it('2 voltas', '50 m de sled push + 50 m de sled pull, carga de prova (push 152 kg, pull 103 kg, com o trenó), revezando a cada 12,5 m com o parceiro | 3 min de descanso entre as voltas'),
+      it('Sozinho?', '2x (25 m push + 25 m pull), 3 min de descanso')
+    ], 'RPE 8'),
+    blk('Bloco C — Wall balls', 'metcon', [ it('Wall Balls (14 lb)', '3x 25 unbroken | 60 s de descanso') ], 'RPE 7')
+  ]),
+  wk('2026-11-10', 'HYROX · Mais rápido que a prova', [
+    blk('Bloco A — Aquecimento', 'aquecimento', [
+      it('Trote', '10 min'),
+      it('Educativos', '3 acelerações de 15 s')
+    ], 'RPE 3'),
+    blk('Bloco B — 6x 1 km', 'resistencia', [
+      it('Corrida', '6x 1 km 10 s/km mais rápido que o ritmo de prova (pace do teste de 3 km + 30 a 40 s/km, firme, frases curtas) | 60 s de descanso parado'),
+      it('Por quê', 'correr acima do ritmo de prova faz o ritmo de prova parecer mais confortável no dia.')
+    ], 'RPE 8-9'),
+    blk('Bloco C — Volta à calma', 'recovery', [ it('Trote', '5 min bem leve') ], 'RPE 2')
+  ]),
+  wk('2026-11-11', 'HYROX · Aeróbico misto', [
+    blk('Bloco A — Aquecimento', 'aquecimento', [ it('Mobilidade', '5 min') ], 'RPE 2'),
+    blk('Bloco B — 40 min contínuos em Zona 2', 'resistencia', [
+      it('Aparelhos', '10 min de remo, 10 min de corrida, 10 min de SkiErg, 10 min de corrida'),
+      it('Ritmo', 'Zona 2.')
+    ], 'RPE 4 · Zona 2')
+  ]),
+  wk('2026-11-12', 'HYROX · Comprometida curta e forte', [
+    blk('Bloco A — Aquecimento', 'aquecimento', [
+      it('Trote', '5 min'),
+      it('Específico', '1 round leve de cada estação do dia')
+    ], 'RPE 3'),
+    blk('Bloco B — 4 rounds sem pausa', 'metcon', [
+      it('Corrida', '1 km 5 s/km mais rápido que o ritmo de prova (pace do teste de 3 km + 30 a 40 s/km, firme, frases curtas)'),
+      it('Estação do round', 'Round 1: 500 m de SkiErg · Round 2: 25 m de sled push · Round 3: 40 m de burpee broad jump · Round 4: 50 wall balls'),
+      it('Meta', 'último km no mesmo tempo do primeiro.')
+    ], 'RPE 9')
+  ]),
+  wk('2026-11-13', 'HYROX · Leve', [
+    blk('Bloco A — Aquecimento', 'aquecimento', [ it('Mobilidade', '5 min') ], 'RPE 2'),
+    blk('Bloco B — Corrida Zona 2', 'resistencia', [ it('Corrida contínua', '25 min, conversando') ], 'RPE 3 · Zona 2')
+  ]),
+  wk('2026-11-14', 'HYROX · Ensaio de estratégia em dupla', [
+    blk('Bloco A — Aquecimento', 'aquecimento', [
+      it('Trote', '8 min'),
+      it('Específico', '1 round leve: 100 m de remo, 20 m de farmers, 5 m de lunges, 5 wall balls')
+    ], 'RPE 3'),
+    blk('Bloco B — Segunda metade da prova, como no dia', 'metcon', [
+      it('Rounds', '1 km + remo 1.000 m · 1 km + farmers 200 m · 1 km + sandbag lunges 100 m · 1 km + 100 wall balls'),
+      it('Ritmo', 'ritmo de prova (pace do teste de 3 km + 30 a 40 s/km, firme, frases curtas) exato, sem passar dele. É a metade em que a prova se decide.'),
+      it('Fechar', 'a divisão final de cada estação e quem começa cada uma.')
+    ], 'RPE 8')
+  ]),
+  wk('2026-11-15', 'Descanso', [
+    blk('Sem treino programado', 'rest', [ it('Descanso', 'caminhada leve, se quiser') ], 'RPE 0')
+  ]),
+  /* ---------- SEMANA 5 · POLIMENTO E PROVA ---------- */
+  wk('2026-11-16', 'HYROX · Polimento: sled e corrida curta', [
+    blk('Bloco A — Aquecimento', 'aquecimento', [ it('Remo', '5 min leve') ], 'RPE 3'),
+    blk('Bloco B — Sled técnico', 'forca', [
+      it('Sled Push', '3x 12,5 m | 80% da carga de prova: cerca de 120 kg com o trenó'),
+      it('Sled Pull', '3x 12,5 m | 80% da carga de prova: cerca de 80 kg com o trenó')
+    ], 'RPE 6'),
+    blk('Bloco C — 3 rounds', 'metcon', [ it('Corrida', '400 m em ritmo de prova (pace do teste de 3 km + 30 a 40 s/km, firme, frases curtas)'), it('Wall Balls (14 lb)', '15') ], 'RPE 7')
+  ]),
+  wk('2026-11-17', 'HYROX · Polimento: ritmo de prova', [
+    blk('Bloco A — Aquecimento', 'aquecimento', [ it('Trote', '10 min e 3 acelerações de 15 s') ], 'RPE 3'),
+    blk('Bloco B — 4x 1 km', 'resistencia', [
+      it('Corrida', '4x 1 km no ritmo de prova (pace do teste de 3 km + 30 a 40 s/km) | 2 min de trote leve'),
+      it('Por quê', 'menos volume e a mesma intensidade: o corpo descansa sem perder o ritmo.')
+    ], 'RPE 7')
+  ]),
+  wk('2026-11-18', 'HYROX · Leve', [
+    blk('Bloco A — Aquecimento', 'aquecimento', [ it('Mobilidade', '5 min') ], 'RPE 2'),
+    blk('Bloco B — Corrida Zona 2', 'resistencia', [ it('Corrida contínua', '20 min, conversando') ], 'RPE 3 · Zona 2')
+  ]),
+  wk('2026-11-19', 'HYROX · Ativação', [
+    blk('Bloco A — Aquecimento', 'aquecimento', [ it('Trote', '10 min') ], 'RPE 3'),
+    blk('Bloco B — Ativação curta', 'resistencia', [
+      it('Corrida', '4x 200 m no ritmo de prova (pace do teste de 3 km + 30 a 40 s/km, firme, frases curtas) | 1 min parado'),
+      it('Estações', '2 rounds leves: 5 burpee broad jumps e 10 wall balls'),
+      it('Duração', 'o treino inteiro em até 25 min. Sair com vontade de fazer mais.')
+    ], 'RPE 5')
+  ]),
+  wk('2026-11-20', 'Descanso · véspera', [
+    blk('Sem treino programado', 'rest', [
+      it('Descanso', 'dia de viagem e descanso. Hidratação ao longo do dia e jantar com o que já costuma comer.'),
+      it('Separar', 'tênis, roupa, luvas para o sled pull (se usar) e o lanche de antes da prova')
+    ], 'RPE 0')
+  ]),
+  wk('2026-11-21', 'HYROX RIO · PROVA (Doubles)', [
+    blk('Bloco A — Aquecimento (30 min antes da largada)', 'aquecimento', [
+      it('Trote', '8 min leve'),
+      it('Mobilidade', 'quadril, tornozelo e ombro'),
+      it('Ativação', '3 acelerações de 15 s e 5 burpee broad jumps')
+    ], 'RPE 3'),
+    blk('Bloco B — HYROX Doubles', 'metcon', [
+      it('Corrida', '8x 1 km juntos, no ritmo de prova (pace do teste de 3 km + 30 a 40 s/km, firme, frases curtas). O primeiro km mais lento que o planejado: a prova se perde saindo rápido.'),
+      it('Estações', 'SkiErg 1.000 m · sled push 50 m · sled pull 50 m · burpee broad jump 80 m · remo 1.000 m · farmers 200 m · sandbag lunges 100 m · 100 wall balls'),
+      it('Estratégia', 'a divisão ensaiada em 14/11. Quem não está trabalhando respira e já se posiciona para a troca.'),
+      it('Roxzone', 'andar rápido ou trotar, nunca parar. Água nas transições, em goles pequenos.')
+    ], 'Prova')
+  ])
 ];
 
 /* programa ativo: 'treino' (abas Treino, Guia e Mídia) ou o de um atleta (abas Batata e Thomals).
