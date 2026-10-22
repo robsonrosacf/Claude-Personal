@@ -5792,6 +5792,12 @@ async function rcExport(){
   rcExporting = true;
   btn.disabled = true;
   status.textContent = 'Preparando...';
+  if(rcMediaType === 'video'){
+    if(rcPrimedVideo){ try{ rcPrimedVideo.remove(); }catch(e){} }
+    rcPrimedVideo = rcNewExportVideo();
+    const pl = rcPrimedVideo.play();   // ainda dentro do toque
+    if(pl && pl.then) pl.then(()=>{ try{ rcPrimedVideo && rcPrimedVideo.pause(); }catch(e){} }).catch(()=>{});
+  }
 
   try{
     const overlay = await rcCaptureOverlay();
@@ -5803,6 +5809,7 @@ async function rcExport(){
   }catch(err){
     status.textContent = 'Erro ao exportar.';
   }
+  if(rcPrimedVideo){ try{ rcPrimedVideo.pause(); rcPrimedVideo.removeAttribute('src'); rcPrimedVideo.load(); rcPrimedVideo.remove(); }catch(e){} rcPrimedVideo = null; }
   rcExporting = false;
   btn.disabled = false;
   rcFitPreview();
@@ -5830,12 +5837,67 @@ function rcExportImage(overlay, status){
   });
 }
 
-async function rcExportVideo(overlay, status){
-  const ok = await rcExportVideoMp4(overlay, status);
-  if(!ok){
-    status.textContent = 'Usando método alternativo de gravação...';
-    await rcExportVideoRecorder(overlay, status);
+// vídeo escondido usado na exportação (dentro da página: fora dela o navegador pode parar de decodificar)
+function rcNewExportVideo(){
+  const v = document.createElement('video');
+  v.src = rcPhotoDataUrl;
+  v.muted = true;
+  v.playsInline = true;
+  v.setAttribute('playsinline','');
+  v.setAttribute('webkit-playsinline','');
+  v.preload = 'auto';
+  v.style.cssText = 'position:fixed;left:0;top:0;width:2px;height:2px;opacity:0.01;pointer-events:none;z-index:-1;';
+  document.body.appendChild(v);
+  return v;
+}
+
+// iPhone (Safari) não carrega o vídeo só com preload: precisa de um play(). Toca mudo, espera ter
+// dados, pausa e volta ao início. Devolve true quando o vídeo está pronto para desenhar.
+async function rcWaitVideoReady(v){
+  const ready = await new Promise(res=>{
+    if(v.readyState >= 2) return res(true);
+    let done = false;
+    const end = ok => { if(done) return; done = true; clearTimeout(to); res(ok); };
+    const to = setTimeout(()=> end(v.readyState >= 2), 15000);
+    v.addEventListener('loadeddata', ()=> end(true), {once:true});
+    v.addEventListener('canplay', ()=> end(true), {once:true});
+    v.addEventListener('error', ()=> end(false), {once:true});
+    const wasMuted = v.muted;
+    v.muted = true;
+    const pl = v.play();
+    if(pl && pl.catch) pl.catch(()=>{});
+    v._restoreMuted = wasMuted;
+  });
+  try{ v.pause(); }catch(e){}
+  if(!ready) return false;
+  if(v.currentTime > 0){
+    await new Promise(res=>{
+      const to = setTimeout(res, 3000);
+      v.addEventListener('seeked', ()=>{ clearTimeout(to); res(); }, {once:true});
+      try{ v.currentTime = 0; }catch(e){ clearTimeout(to); res(); }
+    });
   }
+  return true;
+}
+
+// vídeo preparado no toque do botão: no iPhone, só um vídeo tocado dentro do toque pode tocar com som depois
+let rcPrimedVideo = null;
+
+async function rcExportVideo(overlay, status){
+  const r1 = await rcExportVideoMp4(overlay, status, {requireAudio: true});
+  if(r1 === 'ok') return;
+  if(r1 === 'needs-audio'){
+    // o vídeo tem som, mas este navegador não codifica áudio em AAC: grava pelo método que mantém o som
+    status.textContent = 'Gravando com áudio...';
+    if(await rcExportVideoRecorder(overlay, status)) return;
+    status.textContent = 'Gerando sem áudio...';
+    const r2 = await rcExportVideoMp4(overlay, status, {requireAudio: false});
+    if(r2 === 'ok') status.textContent += ' Saiu sem áudio: este aparelho não conseguiu gravar o som.';
+    else status.textContent = 'Não consegui gerar o vídeo neste aparelho.';
+    return;
+  }
+  status.textContent = 'Usando método alternativo de gravação...';
+  await rcExportVideoRecorder(overlay, status);
 }
 
 async function rcPickAvcConfig(){
@@ -5863,8 +5925,10 @@ async function rcDecodeAudio(url){
 }
 
 // Gera MP4 padrão (não fragmentado, com duração no cabeçalho): compatível com galeria e Instagram
-function rcExportVideoMp4(overlay, status){
-  return new Promise(async (resolve)=>{
+function rcExportVideoMp4(overlay, status, opt){
+  const requireAudio = !!(opt && opt.requireAudio);
+  return new Promise(async (done)=>{
+    const resolve = ok => done(ok === true ? 'ok' : ok);
     if(typeof VideoEncoder === 'undefined' || typeof VideoFrame === 'undefined' || typeof Mp4Muxer === 'undefined'){
       resolve(false); return;
     }
@@ -5876,14 +5940,7 @@ function rcExportVideoMp4(overlay, status){
     let wakeLock = null;
     try{ if(navigator.wakeLock) wakeLock = await navigator.wakeLock.request('screen'); }catch(e){}
 
-    const v = document.createElement('video');
-    v.src = rcPhotoDataUrl;
-    v.muted = true;
-    v.playsInline = true;
-    v.setAttribute('playsinline','');
-    v.preload = 'auto';
-    v.style.cssText = 'position:fixed;left:0;top:0;width:2px;height:2px;opacity:0.01;pointer-events:none;z-index:-1;';
-    document.body.appendChild(v);
+    const v = rcNewExportVideo();
 
     const cleanup = ()=>{
       try{ v.pause(); v.removeAttribute('src'); v.load(); v.remove(); }catch(e){}
@@ -5891,12 +5948,8 @@ function rcExportVideoMp4(overlay, status){
       if(preview && preview.play) preview.play().catch(()=>{});
     };
 
-    const ready = await new Promise(res=>{
-      if(v.readyState >= 2) return res(true);
-      const to = setTimeout(()=>res(false), 10000);
-      v.oncanplay = ()=>{ clearTimeout(to); res(true); };
-      v.onerror = ()=>{ clearTimeout(to); res(false); };
-    });
+    status.textContent = 'Abrindo o vídeo...';
+    const ready = await rcWaitVideoReady(v);
     if(!ready){ cleanup(); resolve(false); return; }
 
     const total = Math.min(isFinite(v.duration) && v.duration > 0 ? v.duration : RC_MAX_VIDEO_SECONDS, RC_MAX_VIDEO_SECONDS);
@@ -5910,6 +5963,8 @@ function rcExportVideoMp4(overlay, status){
       const cand = { codec:'mp4a.40.2', sampleRate: audio.sampleRate, numberOfChannels: ch, bitrate:128000 };
       try{ const s = await AudioEncoder.isConfigSupported(cand); if(s && s.supported) acfg = cand; }catch(e){}
     }
+    // tem som mas não dá para codificar aqui: deixa o outro método gravar com áudio
+    if(audio && !acfg && requireAudio){ cleanup(); resolve('needs-audio'); return; }
 
     let muxer;
     try{
@@ -6052,7 +6107,9 @@ function rcExportVideoMp4(overlay, status){
 }
 
 function rcExportVideoRecorder(overlay, status){
-  return new Promise(async (resolve)=>{
+  return new Promise(async (done)=>{
+    let success = false;
+    const resolve = ()=> done(success);
     const mime = rcPickVideoMime();
     if(mime === null){
       status.textContent = 'Este navegador não grava vídeo. Tente pelo Chrome atualizado.';
@@ -6066,15 +6123,9 @@ function rcExportVideoRecorder(overlay, status){
     let wakeLock = null;
     try{ if(navigator.wakeLock) wakeLock = await navigator.wakeLock.request('screen'); }catch(e){}
 
-    // vídeo de gravação dentro da página (fora da página o Chrome pode parar de decodificar)
-    const v = document.createElement('video');
-    v.src = rcPhotoDataUrl;
-    v.playsInline = true;
-    v.setAttribute('playsinline','');
-    v.preload = 'auto';
-    v.muted = false;
-    v.style.cssText = 'position:fixed;left:0;top:0;width:2px;height:2px;opacity:0.01;pointer-events:none;z-index:-1;';
-    document.body.appendChild(v);
+    // usa o vídeo preparado no toque do botão (no iPhone, só ele pode tocar com som)
+    const v = rcPrimedVideo || rcNewExportVideo();
+    rcPrimedVideo = null;
 
     const cleanup = ()=>{
       try{ v.pause(); v.removeAttribute('src'); v.load(); v.remove(); }catch(e){}
@@ -6082,17 +6133,13 @@ function rcExportVideoRecorder(overlay, status){
       if(preview && preview.play) preview.play().catch(()=>{});
     };
 
-    const ready = await new Promise(res=>{
-      if(v.readyState >= 2) return res(true);
-      const to = setTimeout(()=>res(false), 10000);
-      v.oncanplay = ()=>{ clearTimeout(to); res(true); };
-      v.onerror = ()=>{ clearTimeout(to); res(false); };
-    });
+    const ready = await rcWaitVideoReady(v);
     if(!ready){
       cleanup();
       status.textContent = 'Não consegui abrir o vídeo para gravar.';
       resolve(); return;
     }
+    v.muted = false;   // grava com o som do vídeo
 
     const canvas = document.createElement('canvas');
     canvas.width = 1080; canvas.height = 1920;
@@ -6148,6 +6195,7 @@ function rcExportVideoRecorder(overlay, status){
       await rcSaveBlob(blob, `recalibra-${selectedDate}.${ext}`, status);
       if(stallNote) status.textContent += ' ' + stallNote;
       if(ext === 'webm') status.textContent += ' Formato WebM: se o Instagram recusar, me avisa.';
+      success = true;
       resolve();
     };
 

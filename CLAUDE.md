@@ -115,6 +115,7 @@ Menu (`nav.tabs`) com cinco abas: **TREINO**, **BATATA**, **THOMALS**, **GUIA** 
      - PNG por composição em canvas: mídia + overlay capturado por html2canvas;
      - vídeo em MP4 padrão, não fragmentado, com H.264 e AAC via WebCodecs + mp4-muxer (`fastStart: 'in-memory'`), para funcionar na galeria e no Instagram;
      - fallback para MediaRecorder;
+     - **iPhone (Safari):** um vídeo criado pelo app só carrega depois de um `play()`. `rcWaitVideoReady` toca mudo, espera dados, pausa e volta ao início. O vídeo do MediaRecorder é criado e tocado dentro do toque em "Exportar mídia" (`rcPrimedVideo`), porque só assim o iPhone deixa tocar com som depois. Se o vídeo tem som mas o navegador não tem `AudioEncoder` para AAC, o MP4 devolve `'needs-audio'` e a gravação vai para o MediaRecorder, que mantém o som; só se ele falhar sai MP4 sem áudio, com aviso;
      - wake lock ligado durante a gravação e limite de 60 s.
    - **Salvamento:** `rcSaveBlob` tenta a capability `downloads` do claude.ai e, fora dele, cai no download normal por `<a download>`. **No GitHub Pages vale o download normal. Isso ainda não foi testado no celular.**
 
