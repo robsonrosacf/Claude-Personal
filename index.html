@@ -5797,6 +5797,11 @@ async function rcExport(){
     rcPrimedVideo = rcNewExportVideo();
     const pl = rcPrimedVideo.play();   // ainda dentro do toque
     if(pl && pl.then) pl.then(()=>{ try{ rcPrimedVideo && rcPrimedVideo.pause(); }catch(e){} }).catch(()=>{});
+    try{
+      if(rcPrimedAudioCtx){ try{ rcPrimedAudioCtx.close(); }catch(e){} }
+      rcPrimedAudioCtx = new (window.AudioContext || window.webkitAudioContext)();
+      const rs = rcPrimedAudioCtx.resume(); if(rs && rs.catch) rs.catch(()=>{});
+    }catch(e){ rcPrimedAudioCtx = null; }
   }
 
   try{
@@ -5810,6 +5815,7 @@ async function rcExport(){
     status.textContent = 'Erro ao exportar.';
   }
   if(rcPrimedVideo){ try{ rcPrimedVideo.pause(); rcPrimedVideo.removeAttribute('src'); rcPrimedVideo.load(); rcPrimedVideo.remove(); }catch(e){} rcPrimedVideo = null; }
+  if(rcPrimedAudioCtx){ try{ rcPrimedAudioCtx.close(); }catch(e){} rcPrimedAudioCtx = null; }
   rcExporting = false;
   btn.disabled = false;
   rcFitPreview();
@@ -5882,6 +5888,11 @@ async function rcWaitVideoReady(v){
 
 // vídeo preparado no toque do botão: no iPhone, só um vídeo tocado dentro do toque pode tocar com som depois
 let rcPrimedVideo = null;
+let rcPrimedAudioCtx = null;   // AudioContext criado e ligado dentro do toque (no iPhone, resume() fora do toque nunca termina)
+// espera uma promessa por no máximo ms; devolve o resultado ou 'timeout'
+function rcWithTimeout(promise, ms){
+  return Promise.race([Promise.resolve(promise).catch(()=>'erro'), new Promise(r=>setTimeout(()=>r('timeout'), ms))]);
+}
 
 async function rcExportVideo(overlay, status){
   const r1 = await rcExportVideoMp4(overlay, status, {requireAudio: true});
@@ -5905,7 +5916,7 @@ async function rcPickAvcConfig(){
   for(const codec of codecs){
     const cfg = { codec, width:1080, height:1920, bitrate:6000000, framerate:30, avc:{format:'avc'} };
     try{
-      const s = await VideoEncoder.isConfigSupported(cfg);
+      const s = await rcWithTimeout(VideoEncoder.isConfigSupported(cfg), 2000);
       if(s && s.supported) return cfg;
     }catch(e){}
   }
@@ -5956,12 +5967,13 @@ function rcExportVideoMp4(overlay, status, opt){
 
     // áudio: decodificado do arquivo original, codificado em AAC
     status.textContent = 'Preparando o áudio...';
-    const audio = await rcDecodeAudio(rcPhotoDataUrl);
+    let audio = await rcWithTimeout(rcDecodeAudio(rcPhotoDataUrl), 8000);
+    if(audio === 'timeout' || audio === 'erro') audio = null;
     let acfg = null;
     if(audio && typeof AudioEncoder !== 'undefined' && typeof AudioData !== 'undefined'){
       const ch = Math.min(audio.numberOfChannels, 2);
       const cand = { codec:'mp4a.40.2', sampleRate: audio.sampleRate, numberOfChannels: ch, bitrate:128000 };
-      try{ const s = await AudioEncoder.isConfigSupported(cand); if(s && s.supported) acfg = cand; }catch(e){}
+      try{ const s = await rcWithTimeout(AudioEncoder.isConfigSupported(cand), 2000); if(s && s.supported) acfg = cand; }catch(e){}
     }
     // tem som mas não dá para codificar aqui: deixa o outro método gravar com áudio
     if(audio && !acfg && requireAudio){ cleanup(); resolve('needs-audio'); return; }
@@ -6121,7 +6133,7 @@ function rcExportVideoRecorder(overlay, status){
 
     // mantém a tela ligada durante a gravação
     let wakeLock = null;
-    try{ if(navigator.wakeLock) wakeLock = await navigator.wakeLock.request('screen'); }catch(e){}
+    try{ if(navigator.wakeLock){ const wl = await rcWithTimeout(navigator.wakeLock.request('screen'), 1500); if(wl && wl.release) wakeLock = wl; } }catch(e){}
 
     // usa o vídeo preparado no toque do botão (no iPhone, só ele pode tocar com som)
     const v = rcPrimedVideo || rcNewExportVideo();
@@ -6133,6 +6145,7 @@ function rcExportVideoRecorder(overlay, status){
       if(preview && preview.play) preview.play().catch(()=>{});
     };
 
+    status.textContent = 'Abrindo o vídeo para gravar...';
     const ready = await rcWaitVideoReady(v);
     if(!ready){
       cleanup();
@@ -6152,16 +6165,27 @@ function rcExportVideoRecorder(overlay, status){
     };
     draw();
 
+    if(!canvas.captureStream){ cleanup(); status.textContent = 'Este navegador não grava vídeo a partir da arte.'; resolve(); return; }
     const stream = canvas.captureStream(30);
-    let audioCtx = null;
+    status.textContent = 'Preparando o áudio...';
+    let audioCtx = rcPrimedAudioCtx;
+    rcPrimedAudioCtx = null;
+    let noAudioNote = '';
     try{
-      audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-      const src = audioCtx.createMediaElementSource(v);
-      const dest = audioCtx.createMediaStreamDestination();
-      src.connect(dest);
-      dest.stream.getAudioTracks().forEach(t => stream.addTrack(t));
-      if(audioCtx.state === 'suspended') await audioCtx.resume();
-    }catch(e){ audioCtx = null; }
+      if(!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+      if(audioCtx.state === 'suspended') await rcWithTimeout(audioCtx.resume(), 1500);
+      if(audioCtx.state === 'running'){
+        const src = audioCtx.createMediaElementSource(v);
+        const dest = audioCtx.createMediaStreamDestination();
+        src.connect(dest);
+        dest.stream.getAudioTracks().forEach(t => stream.addTrack(t));
+      } else {
+        try{ audioCtx.close(); }catch(e){}
+        audioCtx = null;
+        noAudioNote = 'Saiu sem áudio: o aparelho não liberou o som para a gravação.';
+      }
+    }catch(e){ audioCtx = null; noAudioNote = 'Saiu sem áudio.'; }
+    status.textContent = 'Iniciando a gravação...';
 
     const opts = { videoBitsPerSecond: 6000000 };
     if(mime) opts.mimeType = mime;
@@ -6194,6 +6218,7 @@ function rcExportVideoRecorder(overlay, status){
       status.textContent = 'Salvando...';
       await rcSaveBlob(blob, `recalibra-${selectedDate}.${ext}`, status);
       if(stallNote) status.textContent += ' ' + stallNote;
+      if(noAudioNote) status.textContent += ' ' + noAudioNote;
       if(ext === 'webm') status.textContent += ' Formato WebM: se o Instagram recusar, me avisa.';
       success = true;
       resolve();
@@ -6227,11 +6252,12 @@ function rcExportVideoRecorder(overlay, status){
 
     recorder.start(500);
     try{ v.currentTime = 0; }catch(e){}
-    try{
-      await v.play();
-    }catch(e){
+    let pr = await rcWithTimeout(v.play(), 4000);
+    if(pr === 'erro' || pr === 'timeout' || v.paused){
       v.muted = true;
-      try{ await v.play(); }catch(e2){ finish(); return; }
+      if(!noAudioNote) noAudioNote = 'Saiu sem áudio: o aparelho não deixou tocar o vídeo com som.';
+      pr = await rcWithTimeout(v.play(), 4000);
+      if(pr === 'erro' || pr === 'timeout' || v.paused){ status.textContent = 'O vídeo não começou a tocar.'; finish(); return; }
     }
     requestAnimationFrame(tick);
   });
