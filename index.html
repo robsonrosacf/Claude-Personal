@@ -3610,7 +3610,7 @@ const THOMALS_PROGRAM = [
   /* ---------- SEMANA 1 · DIAGNÓSTICO E TÉCNICA ---------- */
   wk('2026-10-19', 'HYROX · Sled + estações', [
     blk('Antes de começar · Como ler o plano', 'aquecimento', [
-      it('Ritmos de corrida', 'Zona 2: dá para conversar ou respirar só pelo nariz. Limiar: 4:45/km (teste de 20/10: 4:30/km + 15 s/km), forte, fala no máximo 2 ou 3 palavras. Ritmo de prova: 5:00 a 5:10/km (confirmado em 22/10: o 1º km saiu em 4:53 e os seguintes caíram para 5:10 a 5:32 depois das estações), firme, dá para falar frases curtas.'),
+      it('Ritmos de corrida', 'Zona 2: dá para conversar ou respirar só pelo nariz. Limiar: 4:20/km (os 5x 1 km de 27/10 saíram entre 4:14 e 4:20 com RPE 8; o teste de 20/10 subestimou), forte, fala no máximo 2 ou 3 palavras. Ritmo de prova: 5:00 a 5:10/km (confirmado em 22/10: o 1º km saiu em 4:53 e os seguintes caíram para 5:10 a 5:32 depois das estações), firme, dá para falar frases curtas.'),
       it('RPE', 'esforço de 0 a 10 indicado em cada bloco: 3 é leve, 7 é forte mas controlado, 9 é quase o máximo.'),
       it('Cargas de prova (Doubles masculino)', 'sled push 152 kg e sled pull 103 kg, os dois contando o trenó · farmers carry 2x24 kg · sandbag 20 kg · wall ball 6 kg em alvo de 3 m.'),
       it('Padrões', 'wall ball: agachamento abaixo da paralela e bola acima da linha do alvo · burpee broad jump: peito no chão e salto para a frente com os dois pés juntos · lunges: joelho de trás encosta no chão · sled: a pista da prova tem 12,5 m, por isso os tiros de treino são de 12,5 m.'),
@@ -3703,11 +3703,11 @@ const THOMALS_PROGRAM = [
     blk('Bloco B — Força de sled', 'forca', [
       it('Sled Push', '8x 12,5 m · 180 kg'),
       it('Sled Pull', '8x 12,5 m · 125 kg')
-    ], 'RPE 7-8'),
+    ], 'RPE 7-8', 'push 180 kg muito leve, sem precisar dos 90 s de descanso'),
     blk('Bloco C — EMOM 10 min', 'metcon', [
       it('Wall Balls (14 lb)', 'min ímpar: 15'),
       it('Burpee Broad Jump (vaivém)', 'min par: 8')
-    ], 'RPE 7')
+    ], 'RPE 7', '75 wall balls e 40 burpee broad jumps')
   ], '• Sled: +20% da carga de prova, contando o trenó\n• Descanso: 90 s entre os tiros\n• Se ficar tranquilo: avise, a carga sobe na semana seguinte\n• Se travar: tiro de 12,5 m acima de 25 s, baixe 10%\n• EMOM: ritmo controlado, são as estações que mais cansam a perna na prova\n• Burpee broad jump: em vaivém, num espaço de uns 4 m; salte para a frente, vire e salte de volta'),
   wk('2026-10-27', 'HYROX · Limiar', [
     blk('Bloco A — Aquecimento', 'aquecimento', [
@@ -3716,7 +3716,7 @@ const THOMALS_PROGRAM = [
     ], 'RPE 3'),
     blk('Bloco B — Limiar', 'resistencia', [
       it('Corrida', '5x 1 km')
-    ], 'RPE 8'),
+    ], 'RPE 8', '4:20, 4:18, 4:19, 4:17, 4:14'),
     blk('Bloco C — Volta à calma', 'recovery', [
       it('Trote', '5 min bem leve')
     ], 'RPE 2')
@@ -3747,15 +3747,9 @@ const THOMALS_PROGRAM = [
       it('Remo', '250 m')
     ], 'RPE 6')
   ], '• Ajuste: a corrida comprometida de 5x 800 m saiu; com o simulado no sábado, hoje é só lembrar o ritmo\n• Ritmo: os 400 m no ritmo de prova, 5:00 a 5:10/km, nunca mais rápido\n• Descanso: 1 min parado depois de cada estação; não é For Time\n• Estações: leves e técnicas, sem acelerar'),
-  wk('2026-10-30', 'HYROX · Leve, véspera do simulado', [
-    blk('Bloco A — Corrida leve', 'resistencia', [
-      it('Corrida', '15 min'),
-      it('Acelerações', '3x 15 s')
-    ], 'RPE 3'),
-    blk('Bloco B — Mobilidade', 'recovery', [
-      it('Mobilidade', '10 min: quadril, tornozelo e ombro')
-    ], 'RPE 1')
-  ], '• Ajuste: o box squat e o afundo saíram desta semana, perna pesada na véspera estraga o simulado\n• Corrida: bem leve, conversando; pode ser bike se a perna estiver cansada\n• Acelerações: soltas, não é sprint\n• Véspera: jante bem, durma cedo e tome água ao longo do dia'),
+  wk('2026-10-30', 'Descanso', [
+    blk('Sem treino programado', 'rest', [ it('Descanso', 'caminhada leve, se quiser') ], 'RPE 0')
+  ], '• Sexta é descanso fixo, a seu pedido\n• Amanhã é o simulado: jante bem, durma cedo e beba água ao longo do dia'),
   wk('2026-10-31', 'HYROX · Simulado completo no box', [
     blk('Bloco A — Aquecimento', 'aquecimento', [
       it('Trote', '8 min'),
@@ -3789,7 +3783,7 @@ const THOMALS_PROGRAM = [
       it('Corrida', '400 m'),
       it('Wall Balls (14 lb)', '20')
     ], 'RPE 8')
-  ], '• Sled: carga de prova, contando o trenó, 1 min de descanso\n• Meta: cada 25 m sem parar; se travar, encurte a passada em vez de descansar\n• Bloco C: corrida em ritmo de prova (5:00 a 5:10/km)\n• Por quê: correr com a perna cansada do sled, como na prova'),
+  ], '• Sled: carga de prova, contando o trenó, 1 min de descanso\n• Meta: cada 25 m sem parar; se travar, encurte a passada em vez de descansar\n• Bloco C: corrida em ritmo de prova (5:00 a 5:10/km)\n• Por quê: correr com a perna cansada do sled, como na prova\n• Sled leve: os 180 kg de 26/10 ficaram leves; aqui o desafio é velocidade na carga de prova, cada 25 m sem parar e mais rápido que na meia simulação (push 2:25 e pull 3:19 nos 50 m)'),
   wk('2026-11-03', 'HYROX · Limiar longo', [
     blk('Bloco A — Aquecimento', 'aquecimento', [
       it('Trote', '10 min leve'),
@@ -3801,7 +3795,7 @@ const THOMALS_PROGRAM = [
     blk('Bloco C — Volta à calma', 'recovery', [
       it('Trote', '5 min bem leve')
     ], 'RPE 2')
-  ], '• Ritmo: limiar = 4:45/km (forte, fala no máximo 2 ou 3 palavras)\n• Descanso: 2 min de trote leve entre os tiros\n• Meta: o mesmo pace nos três'),
+  ], '• Ajuste: o limiar passou para 4:20/km, pelos 5x 1 km de 27/10 (4:14 a 4:20 com RPE 8)\n• Ritmo: 4:20 a 4:25/km nos tiros de 2 km (forte, fala no máximo 2 ou 3 palavras)\n• Descanso: 2 min de trote leve entre os tiros\n• Meta: o mesmo pace nos três'),
   wk('2026-11-04', 'HYROX · Aeróbico misto', [
     blk('Bloco A — Aquecimento', 'aquecimento', [
       it('Mobilidade', '5 min: quadril, tornozelo e ombro')
@@ -3832,17 +3826,9 @@ const THOMALS_PROGRAM = [
       it('Wall Balls (14 lb)', '50')
     ], 'RPE 8-9')
   ], '• Ritmo: ritmo de prova = 5:00 a 5:10/km (firme, dá para falar frases curtas)\n• Sem pausa: emende a corrida na estação e a estação na corrida seguinte\n• Sled: carga de prova, push 152 kg e pull 103 kg, contando o trenó\n• Transições: menos de 20 s entre a corrida e a estação, é o tempo que se perde na Roxzone\n• Burpee broad jump: em vaivém, num espaço de uns 4 m; salte para a frente, vire e salte de volta; 40 reps valem os 40 m (cerca de 1 m por salto)'),
-  wk('2026-11-06', 'HYROX · Leve, véspera de simulação', [
-    blk('Bloco A — Aquecimento', 'aquecimento', [
-      it('Mobilidade', '5 min: quadril, tornozelo e punho')
-    ], 'RPE 2'),
-    blk('Bloco B — Corrida Zona 2', 'resistencia', [
-      it('Corrida', '25 min')
-    ], 'RPE 3 · Zona 2'),
-    blk('Bloco C — Técnica', 'gym', [
-      it('Wall Balls (14 lb)', '3x 15')
-    ], 'RPE 4')
-  ], '• Corrida: conversando\n• Wall balls: bem feitas, acertando sempre o mesmo ponto do alvo'),
+  wk('2026-11-06', 'Descanso', [
+    blk('Sem treino programado', 'rest', [ it('Descanso', 'caminhada leve, se quiser') ], 'RPE 0')
+  ], '• Sexta é descanso fixo, a seu pedido\n• Amanhã é a simulação de 3/4: jante bem e durma cedo'),
   wk('2026-11-07', 'HYROX · Simulação de 3/4 em dupla', [
     blk('Bloco A — Aquecimento', 'aquecimento', [
       it('Trote', '8 min'),
@@ -3918,14 +3904,9 @@ const THOMALS_PROGRAM = [
       it('Wall Balls (14 lb)', '50')
     ], 'RPE 9')
   ], '• Ritmo: 5 s/km mais rápido que o ritmo de prova, 4:55 a 5:05/km\n• Sem pausa: emende a corrida na estação e a estação na corrida seguinte\n• Sled: carga de prova, push 152 kg e pull 103 kg, contando o trenó\n• Meta: último km no mesmo tempo do primeiro\n• Burpee broad jump: em vaivém, num espaço de uns 4 m; salte para a frente, vire e salte de volta; 40 reps valem os 40 m (cerca de 1 m por salto)'),
-  wk('2026-11-13', 'HYROX · Leve', [
-    blk('Bloco A — Aquecimento', 'aquecimento', [
-      it('Mobilidade', '5 min')
-    ], 'RPE 2'),
-    blk('Bloco B — Corrida Zona 2', 'resistencia', [
-      it('Corrida', '25 min')
-    ], 'RPE 3 · Zona 2')
-  ], '• Corrida: conversando'),
+  wk('2026-11-13', 'Descanso', [
+    blk('Sem treino programado', 'rest', [ it('Descanso', 'caminhada leve, se quiser') ], 'RPE 0')
+  ], '• Sexta é descanso fixo, a seu pedido\n• Amanhã é o ensaio de estratégia em dupla'),
   wk('2026-11-14', 'HYROX · Ensaio de estratégia em dupla', [
     blk('Bloco A — Aquecimento', 'aquecimento', [
       it('Trote', '8 min'),
