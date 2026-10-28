@@ -3303,63 +3303,58 @@ const BATATA_PROGRAM = [
       it('Corrida', '400 m')
     ], 'RPE 8', '12:19')
   ], '• Ajuste: fez o treino do box no lugar do limiar de 5x 1 km\n• Sem repor: o limiar volta na terça que vem (03/11), com o limiar longo'),
-  wk('2026-10-28', 'HYROX · Aeróbico misto', [
+  wk('2026-10-28', 'HYROX · Aeróbico sem impacto', [
     blk('Bloco A — Aquecimento', 'aquecimento', [
       it('Mobilidade', '5 min: quadril, tornozelo e ombro')
     ], 'RPE 2'),
     blk('Bloco B — 3 voltas, 45 min contínuos em Zona 2', 'resistencia', [
+      it('Bike', '5 min'),
       it('SkiErg', '5 min'),
-      it('Remo', '5 min'),
-      it('Corrida', '5 min')
+      it('Remo', '5 min')
     ], 'RPE 4 · Zona 2')
-  ], '• Ritmo: Zona 2, conversando ou respirando só pelo nariz\n• Troque de aparelho sem parar o relógio\n• Costas e pegada: depois do volume de puxada de ontem, SkiErg e remo bem soltos; se a lombar ou o antebraço reclamarem, troque esses 5 min por corrida'),
-  wk('2026-10-29', 'HYROX · Corrida comprometida', [
-    blk('Bloco A — Aquecimento', 'aquecimento', [
-      it('Trote', '5 min'),
-      it('Específico', '1 round leve: 5 wall balls, 5 m de lunges, 20 m de farmers, 100 m de remo')
-    ], 'RPE 3'),
-    blk('Bloco B — For Time: 5x (800 m + estação)', 'metcon', [
-      it('Corrida', '800 m'),
-      it('Wall Balls (14 lb)', '25'),
-      it('Corrida', '800 m'),
-      it('Sandbag Lunges (20kg)', '25 m'),
-      it('Corrida', '800 m'),
-      it('Farmers Carry (2x24kg)', '100 m'),
-      it('Corrida', '800 m'),
-      it('Remo', '500 m'),
-      it('Corrida', '800 m'),
-      it('Wall Balls (14 lb)', '25')
-    ], 'RPE 8')
-  ], '• Ritmo: ritmo de prova = 5:07 a 5:17/km (firme, dá para falar frases curtas)\n• Sem pausa: emende a corrida na estação e a estação na corrida seguinte\n• Anote: o tempo de cada 800 m\n• Atenção: saia da estação direto para a corrida, sem parar para respirar'),
-  wk('2026-10-30', 'HYROX · Força de perna + corrida leve', [
-    blk('Bloco A — Aquecimento', 'aquecimento', [
-      it('Remo', '5 min leve'),
-      it('Rampa do box squat', 'barra x10, 50% x5, 65% x3')
-    ], 'RPE 3'),
-    blk('Bloco B — Força', 'forca', [
-      it('Box Squat', '4x6'),
-      it('Afundo búlgaro', '3x 8 por perna')
-    ], 'RPE 7'),
-    blk('Bloco C — Corrida leve', 'resistencia', [
-      it('Corrida', '2 km')
-    ], 'RPE 3')
-  ], '• Box squat: caixote na altura da paralela, senta sem relaxar e sobe\n• Descanso: 2 a 3 min entre as séries\n• Afundo búlgaro: desça só até a coxa da frente ficar paralela ao chão\n• Corrida: bem leve, só para soltar\n• Por quê: perna mais forte deixa o sled e os lunges mais baratos\n• Joelho: o caixote limita a profundidade, que é o que dispara o choque atrás do joelho'),
-  wk('2026-10-31', 'HYROX · Segunda metade em dupla', [
+  ], '• Ajuste: a corrida da Zona 2 virou bike, para a perna chegar inteira ao simulado de sábado\n• Ritmo: Zona 2, conversando ou respirando só pelo nariz\n• Troque de aparelho sem parar o relógio\n• Costas e pegada: depois do volume de puxada de 27/10, SkiErg e remo bem soltos; se a lombar ou o antebraço reclamarem, fique mais tempo na bike'),
+  wk('2026-10-29', 'HYROX · Ritmo de prova curto', [
     blk('Bloco A — Aquecimento', 'aquecimento', [
       it('Trote', '8 min'),
-      it('Específico', '1 round leve: 100 m de remo, 20 m de farmers, 5 m de lunges, 5 wall balls')
+      it('Acelerações', '3x 15 s')
     ], 'RPE 3'),
-    blk('Bloco B — Segunda metade da prova (Doubles)', 'metcon', [
-      it('Corrida', '1 km'),
+    blk('Bloco B — 4x (400 m + estação leve)', 'metcon', [
+      it('Corrida', '400 m'),
+      it('Wall Balls (14 lb)', '10'),
+      it('Corrida', '400 m'),
+      it('Sandbag Lunges (20kg)', '10 m'),
+      it('Corrida', '400 m'),
+      it('Farmers Carry (2x24kg)', '50 m'),
+      it('Corrida', '400 m'),
+      it('Remo', '250 m')
+    ], 'RPE 6')
+  ], '• Ajuste: a corrida comprometida de 5x 800 m saiu; com o simulado no sábado, hoje é só lembrar o ritmo\n• Ritmo: os 400 m no ritmo de prova, 5:07 a 5:17/km, nunca mais rápido\n• Descanso: 1 min parado depois de cada estação; não é For Time\n• Estações: leves e técnicas, sem acelerar\n• Wall balls: se o joelho passar de 3 de 10, use alvo de caixa'),
+  wk('2026-10-30', 'HYROX · Leve, véspera do simulado', [
+    blk('Bloco A — Corrida leve', 'resistencia', [
+      it('Corrida', '15 min'),
+      it('Acelerações', '3x 15 s')
+    ], 'RPE 3'),
+    blk('Bloco B — Mobilidade', 'recovery', [
+      it('Mobilidade', '10 min: quadril, tornozelo e ombro')
+    ], 'RPE 1')
+  ], '• Ajuste: o box squat e o afundo saíram desta semana, perna pesada na véspera estraga o simulado\n• Corrida: bem leve, conversando; pode ser bike se a perna estiver cansada\n• Acelerações: soltas, não é sprint\n• Véspera: jante bem, durma cedo e tome água ao longo do dia'),
+  wk('2026-10-31', 'HYROX · Simulado no box (corridas de 500 m)', [
+    blk('Bloco A — Aquecimento', 'aquecimento', [
+      it('Trote', '8 min'),
+      it('Específico', '1 round leve: 100 m de SkiErg, 5 m de push, 5 m de pull, 3 burpee broad jumps')
+    ], 'RPE 3'),
+    blk('Bloco B — Simulado HYROX (8x 500 m + estação)', 'metcon', [
+      it('Corrida', '8x 500 m'),
+      it('SkiErg', '1.000 m'),
+      it('Sled Push', '50 m'),
+      it('Sled Pull', '50 m'),
+      it('Burpee Broad Jump', '80 m'),
       it('Remo', '1.000 m'),
-      it('Corrida', '1 km'),
       it('Farmers Carry (2x24kg)', '200 m'),
-      it('Corrida', '1 km'),
       it('Sandbag Lunges (20kg)', '100 m'),
-      it('Corrida', '1 km'),
       it('Wall Balls (14 lb)', '100')
     ], 'RPE 8-9')
-  ], '• Formato: os dois correm cada 1 km juntos; nas estações, só um trabalha por vez\n• Trocas sugeridas: remo a cada 250 m, farmers a cada 50 m, lunges a cada 25 m, wall balls a cada 10 ou 15 reps\n• Ritmo: ritmo de prova = 5:07 a 5:17/km (firme, dá para falar frases curtas)\n• Compare: o tempo das estações com o de 24/10 e teste outra divisão onde perderam mais tempo\n• Sem parceiro: faça sozinho com metade do volume de cada estação'),
+  ], '• Ajuste: o treino de HYROX do box entra no lugar da segunda metade em dupla\n• Estações: as que o box definir; se o volume for diferente do listado, anote o que fez\n• Ritmo: cada 500 m em 2:34 a 2:39, o ritmo de prova; o primeiro nunca mais rápido que isso\n• Roxzone: trote entre corrida e estação, sem parar\n• Joelho: as wall balls são o ponto de maior carga; se passar de 3 de 10, use alvo de caixa ou pare\n• Lombar: no sled pull e no farmers, tronco firme; se a lombar passar de 3 de 10, tire carga\n• Anote: tempo total, o de cada 500 m e o de cada estação'),
   wk('2026-11-01', 'Descanso', [
     blk('Sem treino programado', 'rest', [ it('Descanso', 'caminhada leve, se quiser') ], 'RPE 0')
   ]),
@@ -3723,63 +3718,58 @@ const THOMALS_PROGRAM = [
       it('Trote', '5 min bem leve')
     ], 'RPE 2')
   ], '• Ritmo: limiar = 4:45/km (forte, fala no máximo 2 ou 3 palavras)\n• Descanso: 90 s de trote leve entre os tiros\n• Meta: todos no mesmo tempo\n• Se o último sair 10 s mais lento: o ritmo estava forte demais'),
-  wk('2026-10-28', 'HYROX · Aeróbico misto', [
+  wk('2026-10-28', 'HYROX · Aeróbico sem impacto', [
     blk('Bloco A — Aquecimento', 'aquecimento', [
       it('Mobilidade', '5 min: quadril, tornozelo e ombro')
     ], 'RPE 2'),
     blk('Bloco B — 3 voltas, 45 min contínuos em Zona 2', 'resistencia', [
+      it('Bike', '5 min'),
       it('SkiErg', '5 min'),
-      it('Remo', '5 min'),
-      it('Corrida', '5 min')
+      it('Remo', '5 min')
     ], 'RPE 4 · Zona 2')
-  ], '• Ritmo: Zona 2, conversando ou respirando só pelo nariz\n• Troque de aparelho sem parar o relógio'),
-  wk('2026-10-29', 'HYROX · Corrida comprometida', [
-    blk('Bloco A — Aquecimento', 'aquecimento', [
-      it('Trote', '5 min'),
-      it('Específico', '1 round leve: 5 wall balls, 5 m de lunges, 20 m de farmers, 100 m de remo')
-    ], 'RPE 3'),
-    blk('Bloco B — For Time: 5x (800 m + estação)', 'metcon', [
-      it('Corrida', '800 m'),
-      it('Wall Balls (14 lb)', '25'),
-      it('Corrida', '800 m'),
-      it('Sandbag Lunges (20kg)', '25 m'),
-      it('Corrida', '800 m'),
-      it('Farmers Carry (2x24kg)', '100 m'),
-      it('Corrida', '800 m'),
-      it('Remo', '500 m'),
-      it('Corrida', '800 m'),
-      it('Wall Balls (14 lb)', '25')
-    ], 'RPE 8')
-  ], '• Ritmo: ritmo de prova = 5:00 a 5:10/km (firme, dá para falar frases curtas)\n• Sem pausa: emende a corrida na estação e a estação na corrida seguinte\n• Anote: o tempo de cada 800 m\n• Atenção: saia da estação direto para a corrida, sem parar para respirar'),
-  wk('2026-10-30', 'HYROX · Força de perna + corrida leve', [
-    blk('Bloco A — Aquecimento', 'aquecimento', [
-      it('Remo', '5 min leve'),
-      it('Rampa do box squat', 'barra x10, 50% x5, 65% x3')
-    ], 'RPE 3'),
-    blk('Bloco B — Força', 'forca', [
-      it('Box Squat', '4x6'),
-      it('Afundo búlgaro', '3x 8 por perna')
-    ], 'RPE 7'),
-    blk('Bloco C — Corrida leve', 'resistencia', [
-      it('Corrida', '2 km')
-    ], 'RPE 3')
-  ], '• Box squat: caixote na altura da paralela, senta sem relaxar e sobe\n• Descanso: 2 a 3 min entre as séries\n• Afundo búlgaro: desça só até a coxa da frente ficar paralela ao chão\n• Corrida: bem leve, só para soltar\n• Por quê: perna mais forte deixa o sled e os lunges mais baratos'),
-  wk('2026-10-31', 'HYROX · Segunda metade em dupla', [
+  ], '• Ajuste: a corrida da Zona 2 virou bike, para a perna chegar inteira ao simulado de sábado\n• Ritmo: Zona 2, conversando ou respirando só pelo nariz\n• Troque de aparelho sem parar o relógio\n• SkiErg: é o seu ponto fraco; use estes minutos para a técnica, puxando com quadril e pernas, sem subir o esforço'),
+  wk('2026-10-29', 'HYROX · Ritmo de prova curto', [
     blk('Bloco A — Aquecimento', 'aquecimento', [
       it('Trote', '8 min'),
-      it('Específico', '1 round leve: 100 m de remo, 20 m de farmers, 5 m de lunges, 5 wall balls')
+      it('Acelerações', '3x 15 s')
     ], 'RPE 3'),
-    blk('Bloco B — Segunda metade da prova (Doubles)', 'metcon', [
-      it('Corrida', '1 km'),
+    blk('Bloco B — 4x (400 m + estação leve)', 'metcon', [
+      it('Corrida', '400 m'),
+      it('Wall Balls (14 lb)', '10'),
+      it('Corrida', '400 m'),
+      it('Sandbag Lunges (20kg)', '10 m'),
+      it('Corrida', '400 m'),
+      it('Farmers Carry (2x24kg)', '50 m'),
+      it('Corrida', '400 m'),
+      it('Remo', '250 m')
+    ], 'RPE 6')
+  ], '• Ajuste: a corrida comprometida de 5x 800 m saiu; com o simulado no sábado, hoje é só lembrar o ritmo\n• Ritmo: os 400 m no ritmo de prova, 5:00 a 5:10/km, nunca mais rápido\n• Descanso: 1 min parado depois de cada estação; não é For Time\n• Estações: leves e técnicas, sem acelerar'),
+  wk('2026-10-30', 'HYROX · Leve, véspera do simulado', [
+    blk('Bloco A — Corrida leve', 'resistencia', [
+      it('Corrida', '15 min'),
+      it('Acelerações', '3x 15 s')
+    ], 'RPE 3'),
+    blk('Bloco B — Mobilidade', 'recovery', [
+      it('Mobilidade', '10 min: quadril, tornozelo e ombro')
+    ], 'RPE 1')
+  ], '• Ajuste: o box squat e o afundo saíram desta semana, perna pesada na véspera estraga o simulado\n• Corrida: bem leve, conversando; pode ser bike se a perna estiver cansada\n• Acelerações: soltas, não é sprint\n• Véspera: jante bem, durma cedo e tome água ao longo do dia'),
+  wk('2026-10-31', 'HYROX · Simulado completo no box', [
+    blk('Bloco A — Aquecimento', 'aquecimento', [
+      it('Trote', '8 min'),
+      it('Específico', '1 round leve: 100 m de SkiErg, 5 m de push, 5 m de pull, 3 burpee broad jumps')
+    ], 'RPE 3'),
+    blk('Bloco B — Simulado HYROX (8x 1 km + estação)', 'metcon', [
+      it('Corrida', '8x 1 km'),
+      it('SkiErg', '1.000 m'),
+      it('Sled Push', '50 m'),
+      it('Sled Pull', '50 m'),
+      it('Burpee Broad Jump', '80 m'),
       it('Remo', '1.000 m'),
-      it('Corrida', '1 km'),
       it('Farmers Carry (2x24kg)', '200 m'),
-      it('Corrida', '1 km'),
       it('Sandbag Lunges (20kg)', '100 m'),
-      it('Corrida', '1 km'),
       it('Wall Balls (14 lb)', '100')
-    ], 'RPE 8-9')
-  ], '• Formato: os dois correm cada 1 km juntos; nas estações, só um trabalha por vez\n• Trocas sugeridas: remo a cada 250 m, farmers a cada 50 m, lunges a cada 25 m, wall balls a cada 10 ou 15 reps\n• Ritmo: ritmo de prova = 5:00 a 5:10/km (firme, dá para falar frases curtas)\n• Compare: o tempo das estações com o de 24/10 e teste outra divisão onde perderam mais tempo\n• Sem parceiro: faça sozinho com metade do volume de cada estação'),
+    ], 'RPE 9')
+  ], '• Ajuste: o treino de HYROX do box entra no lugar da segunda metade em dupla\n• Estações: as que o box definir; se o volume for diferente do listado, anote o que fez\n• Ritmo: sozinho cansa mais que em dupla, corra a 5:10 a 5:20/km\n• Largada: o 1º km nunca abaixo de 5:10; em 24/10 você saiu em 4:29 e pagou nos km seguintes\n• SkiErg: puxe com quadril e pernas, ritmo constante, sem sprint no começo\n• Roxzone: trote entre corrida e estação, sem parar\n• Anote: tempo total, o de cada 1 km e o de cada estação'),
   wk('2026-11-01', 'Descanso', [
     blk('Sem treino programado', 'rest', [ it('Descanso', 'caminhada leve, se quiser') ], 'RPE 0')
   ]),
