@@ -3169,7 +3169,7 @@ const MONTH_PROGRAM = [
     blk('Bloco A — Soltar as pernas', 'recovery', [
       it('Bike (minutos)', '30'),
       it('Mobilidade de ombro e quadril', '10 min')
-    ], 'RPE 2')
+    ], 'RPE 2', '30 min · FC média 115, pico 138 · RPE 2 · sessão: 1')
   ], '• Ritmo: só pelo nariz, sem olhar o relógio. Se as pernas estiverem pesadas da Fran, pare aos 20 min.\n• Sem corrida: guarde o tendão e o pé esquerdo para o simulado.\n• Por quê: amanhã tem o simulado de Hyrox. Hoje é para soltar, não para treinar.'),
   wk('2026-10-31', 'HYROX · Simulado em dupla no box', [
     blk('Bloco A — Aquecimento', 'aquecimento', [
@@ -4956,6 +4956,9 @@ function renderRPE(container){
           <div class="rpe-desc">${r.desc}</div>
         </div>
       `).join('')}
+      <p class="rpe-note" style="margin-top:12px;">
+        <strong>Cardio leve?</strong> Esta escala começa no 5 porque é para séries de força. Bike, trote ou remo leves usam as zonas aeróbicas logo abaixo: Zona 1 é RPE 1 a 2, e Zona 2 é RPE 3 a 4.
+      </p>
     </div>
     <div class="card">
       <label class="field-label" style="margin-top:0;">Zonas aeróbicas (corrida, remo, bike)</label>
