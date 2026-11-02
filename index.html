@@ -3188,7 +3188,303 @@ const MONTH_PROGRAM = [
       it('Sandbag Lunges', '100 m'),
       it('Wall Balls', '100')
     ], 'RPE 8-9', '1:28:19 · em dupla, 8x 1 km · FC média 180, pico 196 · ritmo controlado do início ao fim, sem acelerar · a corrida foi o que mais pesou; wall ball com bola leve · RPE 8 · sessão: 6')
-  ], '• Formato: os dois correm cada 1 km juntos; nas estações, dividem o trabalho como combinarem. Cargas e volumes: os que o box definir; se mudar, anote o que fez.\n• Largada: o 1º km mais lento do que dá vontade, nunca abaixo de 6:00/km. No 5 km de quarta você saiu a 5:20 e pagou depois dos 3 km.\n• Corrida: sem caminhar. Se precisar, diminua o passo. Acelere só nos 2 últimos km.\n• Tendão: dor acima de 3 de 10 em qualquer momento, pare de correr e termine as corridas andando ou na bike.\n• Roxzone: trote entre corrida e estação, sem parar.\n• Anote: tempo total, RPE, nota da sessão e o tendão no domingo de manhã.\n• Zona 2 de fechamento: fica para novembro.')
+  ], '• Formato: os dois correm cada 1 km juntos; nas estações, dividem o trabalho como combinarem. Cargas e volumes: os que o box definir; se mudar, anote o que fez.\n• Largada: o 1º km mais lento do que dá vontade, nunca abaixo de 6:00/km. No 5 km de quarta você saiu a 5:20 e pagou depois dos 3 km.\n• Corrida: sem caminhar. Se precisar, diminua o passo. Acelere só nos 2 últimos km.\n• Tendão: dor acima de 3 de 10 em qualquer momento, pare de correr e termine as corridas andando ou na bike.\n• Roxzone: trote entre corrida e estação, sem parar.\n• Anote: tempo total, RPE, nota da sessão e o tendão no domingo de manhã.\n• Zona 2 de fechamento: fica para novembro.'),
+  /* ===================== NOVEMBRO 2026 · CICLO 03 · MOTOR E CORRIDA ===================== */
+  /* Semana: Seg agachamento pesado + metcon curto | Ter C&J + motor sem impacto | Qua corrida no condomínio | Qui deadlift ou snatch + ginástica de puxada | Sex HSPU + metcon | Sáb treino longo | Dom descanso.
+     Empurrar nunca em dias seguidos (ter e sex; na semana 4, ter, qui e sáb). Quinta sem BMU, porque o press do BMU encosta no HSPU de sexta.
+     Corrida às quartas, com teste do tendão antes; sábado só na semana 1 (comparação da Zona 2) e na 4 (Murph). Semana 4 = testes: C&J, 5 km, Diane e Murph. */
+
+  /* ---------- SEMANA 1 · RETOMADA ---------- */
+  wk('2026-11-02', 'Descanso · feriado', [
+    blk('Sem treino programado', 'rest', [ it('Descanso', 'feriado, box fechado') ], 'RPE 0')
+  ]),
+  wk('2026-11-03', 'Back Squat + For Time curto', [
+    blk('Bloco A — Aquecimento', 'aquecimento', [
+      it('Remo ou bike', '5 min leve'),
+      it('Mobilidade de quadril e tornozelo', '5 world\'s greatest stretch por lado, 10 cossack squats, 30 s no agachamento profundo'),
+      it('Rampa do back squat', 'barra x10, 60kg x5, 100kg x3, 120kg x2')
+    ], 'RPE 3'),
+    blk('Bloco B — Força: Back Squat', 'forca', [ it('Back Squat', '5x3 | ref: 140kg | alvo RPE 7') ], 'RPE 7'),
+    blk('Bloco C — For Time (cap 8 min)', 'metcon', [
+      it('Antes de começar', '5 cal de remo e 3 bar muscle-ups, depois 2 min de descanso'),
+      it('Remo (calorias)', '21-15-9'),
+      it('Bar Muscle-ups', '12-9-6')
+    ], 'RPE 9')
+  ], '• Por quê: o feriado tirou a segunda, então o agachamento vem hoje. Primeira semana depois do Hyrox: carga firme, sem ir ao limite.\n• Agachamento: 3 min de descanso entre as séries. Se a 1ª passar de RPE 8, as outras vão com 130kg.\n• For Time: remo forte desde o 21 e BMU em séries grandes. Meta: abaixo de 6 min.\n• Anote: carga, RPE, tempo e nota da sessão.'),
+  wk('2026-11-04', 'Corrida Zona 2 no condomínio', [
+    blk('Bloco A — Aquecimento', 'aquecimento', [ it('Teste do tendão', '5 subidas na ponta do pé esquerdo'), it('Tornozelo e panturrilha', '10 rotações de tornozelo por lado e 10 elevações de panturrilha com as duas pernas') ], 'RPE 2'),
+    blk('Bloco B — Zona 2 (volta de 1 km no condomínio)', 'resistencia', [ it('Corrida contínua (minutos)', '35') ], 'RPE 3-4 · Zona 2')
+  ], '• Regra: só pelo nariz, sem caminhar. Se precisar abrir a boca, diminua o passo. Os primeiros 5 min bem leves.\n• Por quê: o Hyrox mostrou que a corrida é o que te limita. A base cresce com tempo correndo leve, e 5 min a mais por semana é o aumento que o tendão aguenta.\n• Tendão: acima de 2 de 10 no teste, troque por 35 min de bike leve.\n• Relógio: modo Corrida, alerta de zona desligado.\n• Anote: como se sentiu, o RPE e a nota. FC e ritmo eu leio no Strava.'),
+  wk('2026-11-05', 'Deadlift + ginástica de puxada', [
+    blk('Bloco A — Aquecimento', 'aquecimento', [
+      it('Remo ou bike', '5 min leve'),
+      it('Check da lombar', '10 good mornings com a barra'),
+      it('Rampa do deadlift', 'barra x10, 60kg x5, 100kg x3, 130kg x2')
+    ], 'RPE 3'),
+    blk('Bloco B — Força: Deadlift', 'forca', [ it('Deadlift', '5x3 | ref: 150kg | alvo RPE 7') ], 'RPE 7'),
+    blk('Bloco C — AMRAP 12 min', 'metcon', [
+      it('Antes de começar', '1 round leve: 3 chest-to-bar, 5 toes-to-bar e 5 air squats'),
+      it('Chest-to-bar Pull-ups', '7'),
+      it('Toes-to-bar', '10'),
+      it('Air Squats', '15')
+    ], 'RPE 8')
+  ], '• Por quê: puxada pesada e ginástica num dia sem empurrar. Amanhã é dia de HSPU, e o ombro precisa chegar descansado. Por isso o C2B entra no lugar do BMU.\n• Lombar: se os good mornings incomodarem, o deadlift para em 130kg.\n• Deadlift: 2 min de descanso entre as séries.\n• AMRAP: ritmo que dê para sustentar os 12 min, sem quebrar o C2B depois da metade.\n• Anote: carga, RPE, rounds + reps e nota.'),
+  wk('2026-11-06', 'HSPU + For Time de empurrar', [
+    blk('Bloco A — Aquecimento', 'aquecimento', [
+      it('Remo ou bike', '5 min leve'),
+      it('Mobilidade de ombro', '10 deslocamentos com cabo de vassoura, 10 scap pull-ups, 10 scap push-ups, 30 s pendurado na barra'),
+      it('Rotação externa', '2x10 com elástico, devagar')
+    ], 'RPE 3'),
+    blk('Bloco B — EMOM 8 min (técnica do HSPU)', 'gym', [ it('Kipping HSPU', '4 por minuto') ], 'RPE 6'),
+    blk('Bloco C — 3 Rounds For Time (cap 13 min)', 'metcon', [
+      it('Antes de começar', '3 min de descanso depois do EMOM'),
+      it('Remo (calorias)', '20'),
+      it('Kipping HSPU', '12'),
+      it('Wall Balls (20 lb)', '20')
+    ], 'RPE 8-9')
+  ], '• HSPU, os três pontos: 1) cabeça forma um triângulo com as mãos, à frente da linha delas; 2) quadril encostado na parede e joelhos no peito antes do chute; 3) chute explosivo e empurra no mesmo instante, nem antes nem depois.\n• EMOM: 4 reps limpas por minuto, pensando nos três pontos. É preparação para o metcon, não teste.\n• Metcon: HSPU em 6+6 desde o 1º round. Quebrar cedo e curto gasta menos fôlego que ir até a falha.\n• Ombro: acima de 3 de 10, troque o HSPU por push-ups (o dobro de reps) e registre.\n• Anote: tempo, como quebrou o HSPU, RPE e nota.'),
+  wk('2026-11-07', 'Zona 2 de comparação + AMRAP', [
+    blk('Bloco A — Aquecimento', 'aquecimento', [ it('Teste do tendão', '5 subidas na ponta do pé esquerdo'), it('Tornozelo e panturrilha', '10 rotações de tornozelo por lado e 10 elevações de panturrilha com as duas pernas') ], 'RPE 2'),
+    blk('Bloco B — Zona 2 (rua, percurso de 01/10)', 'resistencia', [ it('Corrida contínua (minutos)', '30') ], 'RPE 3-4 · Zona 2'),
+    blk('Bloco C — AMRAP 15 min', 'metcon', [
+      it('Pull-ups', '10'),
+      it('Remo (calorias)', '15'),
+      it('Air Squats', '20')
+    ], 'RPE 7')
+  ], '• Corrida: o mesmo percurso de 01/10, 15 min de ida subindo e volta descendo. Em 01/10 foram 4,29 km a 7:09/km com FC média de 156. Mesmo esforço pela respiração: se a distância subir, a base subiu.\n• Regra: só pelo nariz, sem caminhar, alerta de zona desligado.\n• Tendão: acima de 2 de 10, troque a corrida por 30 min de bike e a comparação fica para outro sábado.\n• Box: abre só 1 h no sábado. Saia para correr assim que chegar e deixe o remo pronto.\n• AMRAP: comece 3 min depois de voltar, em ritmo que dê para manter os 15 min. Sem empurrar: ontem foi dia de HSPU.\n• Relógio: corrida no modo Corrida; pare ao voltar e grave o AMRAP como outro treino.\n• Anote: distância da corrida, rounds + reps, RPE e nota.'),
+  wk('2026-11-08', 'Descanso', [
+    blk('Sem treino programado', 'rest', [ it('Descanso', 'se for ao aulão do box pela turma, faça em RPE 6 e me conte o que foi') ], 'RPE 0')
+  ]),
+
+  /* ---------- SEMANA 2 · PROGRESSÃO ---------- */
+  wk('2026-11-09', 'Back Squat + For Time curto', [
+    blk('Bloco A — Aquecimento', 'aquecimento', [
+      it('Remo ou bike', '5 min leve'),
+      it('Teste do tendão', '5 subidas na ponta do pé esquerdo'),
+      it('Mobilidade de quadril e tornozelo', '5 world\'s greatest stretch por lado, 10 cossack squats, 30 s no agachamento profundo'),
+      it('Rampa do back squat', 'barra x10, 60kg x5, 100kg x3, 130kg x1')
+    ], 'RPE 3'),
+    blk('Bloco B — Força: Back Squat', 'forca', [ it('Back Squat', '4x3 | ref: 150kg | alvo RPE 8') ], 'RPE 8'),
+    blk('Bloco C — 3 Rounds For Time (cap 9 min)', 'metcon', [
+      it('Antes de começar', '5 cal de remo, 15 double unders e 3 toes-to-bar, depois 2 min de descanso'),
+      it('Remo (calorias)', '15'),
+      it('Double Unders', '30'),
+      it('Toes-to-bar', '10')
+    ], 'RPE 9')
+  ], '• Agachamento: 3 min de descanso. Se a 1ª série passar de RPE 9, as outras vão com 140kg.\n• Double unders: 90 no total, abaixo do limite de 100 por treino. Corda e corrida somam carga no tendão.\n• Tendão: acima de 2 de 10 no teste, troque os double unders por 10 cal de remo a mais por round.\n• For Time: meta abaixo de 6 min.\n• Anote: carga, RPE, tempo e nota.'),
+  wk('2026-11-10', 'Clean & Jerk + Zona 2 sem impacto', [
+    blk('Bloco A — Aquecimento', 'aquecimento', [
+      it('Bike', '5 min leve'),
+      it('Mobilidade de ombro', '10 deslocamentos com cabo de vassoura, 10 scap pull-ups, 10 scap push-ups, 30 s pendurado na barra'),
+      it('Rampa do C&J', 'barra: 5 hang power cleans e 5 push press; 60kg x2, 80kg x1, 90kg x1')
+    ], 'RPE 3'),
+    blk('Bloco B — EMOM 10 min: Clean & Jerk', 'potencia', [ it('Clean & Jerk', '1 por minuto | ref: 100kg | alvo RPE 7') ], 'RPE 7'),
+    blk('Bloco C — Zona 2 (bike e remo)', 'resistencia', [
+      it('Bike (minutos)', '10'),
+      it('Remo (minutos)', '10')
+    ], 'RPE 4 · Zona 2')
+  ], '• C&J: 100kg é 77% do seu RM. Cada rep tem que sair rápida e igual. Se uma sair lenta ou o jerk desalinhar, as próximas vão com 90kg.\n• Zona 2: só pelo nariz, troque de aparelho sem parar o relógio.\n• Por quê: amanhã é a corrida mais forte da semana, então o motor de hoje é leve e sem impacto.\n• Anote: carga, RPE e nota.'),
+  wk('2026-11-11', 'Corrida de ritmo no condomínio', [
+    blk('Bloco A — Aquecimento', 'aquecimento', [
+      it('Teste do tendão', '5 subidas na ponta do pé esquerdo'),
+      it('Tornozelo e panturrilha', '10 rotações de tornozelo por lado e 10 elevações de panturrilha com as duas pernas'),
+      it('Trote leve', '10 min, só pelo nariz')
+    ], 'RPE 3'),
+    blk('Bloco B — 5 voltas fortes de 1 km', 'resistencia', [ it('Corrida (voltas de 1 km)', '5') ], 'RPE 7-8')
+  ], '• Formato: 5 voltas de 1 km fortes, com 2 min andando entre elas.\n• Ritmo: forte e controlado, dá para falar palavras soltas, não frases. A última volta tem que sair igual ou mais rápida que a primeira. Se a primeira for a mais rápida, você saiu forte demais.\n• Por quê: o 5 km de outubro quebrou depois do 3º km. O tiro de 1 km ensina o ritmo que você aguenta, com pausa para chegar inteiro no fim.\n• Tendão: acima de 2 de 10 no teste, troque por 5x 3 min fortes na bike, com 2 min leves.\n• Relógio: modo Corrida; o tempo de cada volta eu leio no Strava.\n• Anote: RPE, nota e se a última volta foi a mais rápida.'),
+  wk('2026-11-12', 'Snatch + ginástica de puxada', [
+    blk('Bloco A — Aquecimento', 'aquecimento', [
+      it('Remo ou bike', '5 min leve'),
+      it('Mobilidade de ombro', '10 deslocamentos com cabo de vassoura, 10 scap pull-ups, 10 scap push-ups, 30 s pendurado na barra'),
+      it('Rampa do snatch', 'barra: 5 snatch balance; 40kg x3, 60kg x2, 70kg x1')
+    ], 'RPE 3'),
+    blk('Bloco B — Snatch', 'potencia', [
+      it('Snatch', 'até um single em RPE 8 | ref: 90kg'),
+      it('Snatch (80kg)', '3x2')
+    ], 'RPE 8'),
+    blk('Bloco C — EMOM 12 min (4 rounds)', 'metcon', [
+      it('Chest-to-bar Pull-ups', 'min 1: 10'),
+      it('Toes-to-bar', 'min 2: 12'),
+      it('Remo (calorias)', 'min 3: 12')
+    ], 'RPE 8')
+  ], '• Snatch: se a barra sair lenta ou você precisar salvar a recepção, pare no peso anterior. Depois, 3 séries de 2 com 80kg e 2 min de descanso.\n• Lombar: nada de volume de quadril depois do snatch, por isso o EMOM é só puxada e remo.\n• EMOM: cada minuto termina com pelo menos 15 s de folga. Se não sobrar, a próxima rodada desce 2 reps.\n• Anote: carga do single, RPE e nota.'),
+  wk('2026-11-13', 'HSPU + For Time', [
+    blk('Bloco A — Aquecimento', 'aquecimento', [
+      it('Remo ou bike', '5 min leve'),
+      it('Mobilidade de ombro', '10 deslocamentos com cabo de vassoura, 10 scap pull-ups, 10 scap push-ups, 30 s pendurado na barra'),
+      it('Rotação externa', '2x10 com elástico, devagar')
+    ], 'RPE 3'),
+    blk('Bloco B — EMOM 8 min (técnica do HSPU)', 'gym', [ it('Kipping HSPU', '5 por minuto') ], 'RPE 6-7'),
+    blk('Bloco C — For Time (cap 10 min)', 'metcon', [
+      it('Antes de começar', '3 min de descanso depois do EMOM'),
+      it('Kipping HSPU', '21-15-9'),
+      it('Remo (calorias)', '21-15-9')
+    ], 'RPE 9')
+  ], '• HSPU: os mesmos três pontos de 06/11 (cabeça em triângulo, quadril na parede e joelhos no peito, chute e empurra juntos).\n• Estratégia: 21 em 7+7+7, 15 em 8+7, 9 sem soltar. É o volume de HSPU da Diane, um ensaio para o teste do fim do mês.\n• Meta: abaixo de 7 min.\n• Ombro: acima de 3 de 10, troque o HSPU por push-ups (o dobro de reps) e registre.\n• Anote: tempo, como quebrou o HSPU, RPE e nota.'),
+  wk('2026-11-14', 'Chipper longo', [
+    blk('Bloco A — Aquecimento', 'aquecimento', [
+      it('Remo', '5 min leve'),
+      it('Mobilidade de quadril e tornozelo', '5 world\'s greatest stretch por lado, 10 cossack squats, 30 s no agachamento profundo'),
+      it('Específico', '1 round: 5 pull-ups, 6 passos de afundo com halteres, 5 toes-to-bar')
+    ], 'RPE 3'),
+    blk('Bloco B — Chipper For Time (cap 30 min)', 'metcon', [
+      it('Remo (calorias)', '40'),
+      it('Pull-ups', '40'),
+      it('DB Walking Lunges (2x15kg)', '40 passos'),
+      it('Bike (minutos)', '4'),
+      it('Toes-to-bar', '30'),
+      it('Farmers Carry (2x20kg)', '200 m'),
+      it('Remo (calorias)', '40')
+    ], 'RPE 8')
+  ], '• Ritmo: cabeça de endurance, como no Hyrox. Nada de sprint no primeiro remo; ele precisa sair igual ao último.\n• Sem empurrar: ontem foi dia de HSPU.\n• Farmers: 20 idas de 10 m na arena, sem soltar o KB na virada.\n• Box: abre só 1 h no sábado. Monte tudo antes de começar.\n• Anote: tempo total, RPE e nota.'),
+  wk('2026-11-15', 'Descanso', [
+    blk('Sem treino programado', 'rest', [ it('Descanso', 'se for ao aulão do box pela turma, faça em RPE 6 e me conte o que foi') ], 'RPE 0')
+  ]),
+
+  /* ---------- SEMANA 3 · PICO ---------- */
+  wk('2026-11-16', 'Back Squat pesado + For Time curto', [
+    blk('Bloco A — Aquecimento', 'aquecimento', [
+      it('Remo ou bike', '5 min leve'),
+      it('Mobilidade de quadril e tornozelo', '5 world\'s greatest stretch por lado, 10 cossack squats, 30 s no agachamento profundo'),
+      it('Rampa do back squat', 'barra x10, 60kg x5, 100kg x3, 130kg x1, 150kg x1')
+    ], 'RPE 3'),
+    blk('Bloco B — Força: Back Squat', 'forca', [ it('Back Squat', '3x2 | ref: 160kg | alvo RPE 8-9') ], 'RPE 8-9'),
+    blk('Bloco C — For Time (cap 7 min)', 'metcon', [
+      it('Antes de começar', '5 cal de remo e 5 pull-ups, depois 2 min de descanso'),
+      it('Remo (calorias)', '21-15-9'),
+      it('Butterfly Pull-ups', '21-15-9')
+    ], 'RPE 9')
+  ], '• Agachamento: semana de pico, a mais pesada do ciclo. 3 min de descanso. Se a 1ª série passar de RPE 9, as outras vão com 150kg.\n• For Time: é uma Fran com remo no lugar do thruster. Pull-ups em séries grandes, como na Fran de 29/10.\n• Anote: carga, RPE, tempo e nota.'),
+  wk('2026-11-17', 'Clean & Jerk pesado + intervalos de remo', [
+    blk('Bloco A — Aquecimento', 'aquecimento', [
+      it('Bike', '5 min leve'),
+      it('Mobilidade de ombro', '10 deslocamentos com cabo de vassoura, 10 scap pull-ups, 10 scap push-ups, 30 s pendurado na barra'),
+      it('Rampa do C&J', 'barra: 5 hang power cleans e 5 push press; 60kg x2, 80kg x1, 100kg x1')
+    ], 'RPE 3'),
+    blk('Bloco B — Clean & Jerk pesado', 'potencia', [
+      it('Clean & Jerk', 'até um single em RPE 9 | ref: 120kg'),
+      it('Clean & Jerk (110kg)', '3x1')
+    ], 'RPE 9'),
+    blk('Bloco C — Intervalos de remo', 'metcon', [ it('Remo (1 min forte + 1 min e 30 s leve)', '6 rounds') ], 'RPE 8')
+  ], '• C&J: suba de 10 em 10kg depois do 100kg. Se a barra desacelerar no clean ou o jerk sair torto, aquele é o peso do dia. Depois, 3 singles com 110kg e 2 min de descanso.\n• Remo: anote as calorias de cada minuto forte. O objetivo é ficar dentro de 2 cal do primeiro nos 6 rounds.\n• Por quê: amanhã a corrida é leve, então o motor de hoje pode ser intenso e sem impacto.\n• Anote: carga do single, calorias de cada round, RPE e nota.'),
+  wk('2026-11-18', 'Corrida Zona 2 no condomínio', [
+    blk('Bloco A — Aquecimento', 'aquecimento', [ it('Teste do tendão', '5 subidas na ponta do pé esquerdo'), it('Tornozelo e panturrilha', '10 rotações de tornozelo por lado e 10 elevações de panturrilha com as duas pernas') ], 'RPE 2'),
+    blk('Bloco B — Zona 2 (volta de 1 km no condomínio)', 'resistencia', [ it('Corrida contínua (minutos)', '40') ], 'RPE 3-4 · Zona 2')
+  ], '• Regra: só pelo nariz, sem caminhar. Os primeiros 5 min bem leves.\n• Por quê: 5 min a mais que a de 04/11. Mesmo esforço pela respiração, mais tempo correndo.\n• Tendão: acima de 2 de 10 no teste, troque por 40 min de bike leve.\n• Relógio: modo Corrida, alerta de zona desligado.\n• Anote: como se sentiu, o RPE e a nota.'),
+  wk('2026-11-19', 'Deadlift pesado + ginástica de puxada', [
+    blk('Bloco A — Aquecimento', 'aquecimento', [
+      it('Remo ou bike', '5 min leve'),
+      it('Check da lombar', '10 good mornings com a barra'),
+      it('Rampa do deadlift', 'barra x10, 60kg x5, 100kg x3, 130kg x2, 150kg x1')
+    ], 'RPE 3'),
+    blk('Bloco B — Força: Deadlift', 'forca', [ it('Deadlift', '3x3 | ref: 170kg | alvo RPE 8') ], 'RPE 8'),
+    blk('Bloco C — AMRAP 12 min', 'metcon', [
+      it('Antes de começar', '1 round leve: 3 chest-to-bar, 5 toes-to-bar e 5 air squats'),
+      it('Chest-to-bar Pull-ups', '8'),
+      it('Toes-to-bar', '12'),
+      it('Air Squats', '18')
+    ], 'RPE 8')
+  ], '• Lombar: se os good mornings incomodarem, o deadlift para em 150kg.\n• Deadlift: 3 min de descanso. Se a 1ª série passar de RPE 9, as outras vão com 160kg.\n• AMRAP: o mesmo de 05/11 com mais reps por round. Compare os rounds.\n• Anote: carga, RPE, rounds + reps e nota.'),
+  wk('2026-11-20', 'HSPU + EMOM de motor', [
+    blk('Bloco A — Aquecimento', 'aquecimento', [
+      it('Remo ou bike', '5 min leve'),
+      it('Mobilidade de ombro', '10 deslocamentos com cabo de vassoura, 10 scap pull-ups, 10 scap push-ups, 30 s pendurado na barra'),
+      it('Rotação externa', '2x10 com elástico, devagar')
+    ], 'RPE 3'),
+    blk('Bloco B — EMOM 15 min (5 rounds)', 'metcon', [
+      it('Antes de começar', '2 rounds leves: 3 HSPU, 4 cal de remo, 5 wall balls'),
+      it('Kipping HSPU', 'min 1: 8'),
+      it('Remo (calorias)', 'min 2: 12'),
+      it('Wall Balls (20 lb)', 'min 3: 15')
+    ], 'RPE 8')
+  ], '• HSPU: 8 reps sem soltar, aplicando os três pontos. Se precisar quebrar, 4+4 desde o começo.\n• Remo: 12 cal fica um pouco abaixo do seu limite de 15 cal por minuto. É o minuto que mais cobra; puxe forte desde a primeira remada.\n• Regra: cada minuto termina com pelo menos 10 s de folga. Se não sobrar, a próxima rodada desce 2 reps naquele exercício.\n• Ombro: acima de 3 de 10, troque o HSPU por 12 push-ups.\n• Anote: se fechou todos os minutos, RPE e nota.'),
+  wk('2026-11-21', 'Treino longo de motor', [
+    blk('Bloco A — Aquecimento', 'aquecimento', [
+      it('Remo', '5 min leve'),
+      it('Mobilidade de quadril e tornozelo', '5 world\'s greatest stretch por lado, 10 cossack squats, 30 s no agachamento profundo'),
+      it('Específico', '1 round: 5 pull-ups, 6 passos de afundo com halteres, 10 m de farmers')
+    ], 'RPE 3'),
+    blk('Bloco B — 5 Rounds For Time (cap 32 min)', 'metcon', [
+      it('Remo (calorias)', '20'),
+      it('Pull-ups', '12'),
+      it('DB Walking Lunges (2x15kg)', '20 passos'),
+      it('Farmers Carry (2x20kg)', '40 m')
+    ], 'RPE 8')
+  ], '• Ritmo: os 5 rounds no mesmo tempo. Anote o tempo de cada round; se o 1º for o mais rápido por mais de 30 s, você saiu forte.\n• Sem empurrar: ontem foi dia de HSPU.\n• Box: abre só 1 h no sábado. Monte tudo antes de começar.\n• Anote: tempo total, tempo de cada round, RPE e nota.'),
+  wk('2026-11-22', 'Descanso', [
+    blk('Sem treino programado', 'rest', [ it('Descanso', 'se for ao aulão do box pela turma, faça em RPE 6 e me conte o que foi') ], 'RPE 0')
+  ]),
+
+  /* ---------- SEMANA 4 · TESTES (C&J, 5 km, Diane, Murph) ---------- */
+  wk('2026-11-23', 'Front Squat + For Time curto', [
+    blk('Bloco A — Aquecimento', 'aquecimento', [
+      it('Remo ou bike', '5 min leve'),
+      it('Mobilidade de quadril e tornozelo', '5 world\'s greatest stretch por lado, 10 cossack squats, 30 s no agachamento profundo'),
+      it('Rampa do front squat', 'barra x10, 60kg x5, 90kg x3, 110kg x1')
+    ], 'RPE 3'),
+    blk('Bloco B — Força: Front Squat', 'forca', [ it('Front Squat', '3x3 | ref: 120kg | alvo RPE 7') ], 'RPE 7'),
+    blk('Bloco C — For Time (cap 6 min)', 'metcon', [
+      it('Antes de começar', '5 cal de remo e 3 toes-to-bar, depois 2 min de descanso'),
+      it('Remo (calorias)', '15-12-9'),
+      it('Toes-to-bar', '15-12-9')
+    ], 'RPE 8')
+  ], '• Por quê: semana de testes. A força de hoje mantém a perna afiada sem cansar para o C&J de amanhã.\n• For Time: curto e forte, meta abaixo de 4 min.\n• Anote: carga, RPE, tempo e nota.'),
+  wk('2026-11-24', 'TESTE: Clean & Jerk', [
+    blk('Bloco A — Aquecimento', 'aquecimento', [
+      it('Bike', '5 min leve'),
+      it('Mobilidade de ombro', '10 deslocamentos com cabo de vassoura, 10 scap pull-ups, 10 scap push-ups, 30 s pendurado na barra'),
+      it('Rampa do C&J', 'barra: 5 hang power cleans e 5 push press; 60kg x2, 80kg x1, 100kg x1, 110kg x1')
+    ], 'RPE 3'),
+    blk('Bloco B — TESTE: Clean & Jerk pesado', 'potencia', [ it('Clean & Jerk', 'o mais pesado do dia | RM: 130kg') ], 'RPE 9-10'),
+    blk('Bloco C — Volta à calma', 'recovery', [ it('Bike (minutos)', '10') ], 'RPE 2')
+  ], '• Subida: depois do 110kg, 120kg. Se sair firme, 125kg e depois 130kg ou mais. Aqui vale carga quebrada: é tentativa de PR.\n• Regra: 2 min de descanso entre as tentativas, 3 min a partir de 120kg. Errou o mesmo peso duas vezes, acabou o teste.\n• Ombro: jerk com o ombro acima de 3 de 10, o teste para no clean e registra.\n• Anote: o maior peso, as tentativas, RPE e nota.'),
+  wk('2026-11-25', 'TESTE 5 km no condomínio', [
+    blk('Bloco A — Aquecimento', 'aquecimento', [
+      it('Teste do tendão', '5 subidas na ponta do pé esquerdo'),
+      it('Trote leve', '10 min'),
+      it('Educativos', '2x 20 m de skipping, 2x 20 m de anfersen e 3 acelerações de 15 s')
+    ], 'RPE 3'),
+    blk('Bloco B — TESTE: 5 km For Time', 'resistencia', [ it('Corrida (voltas de 1 km)', '5') ], 'RPE 9')
+  ], '• Referência: 31:25 em 28/10, no sol do meio-dia, com 4 caminhadas depois do 3º km.\n• Ritmo: as 2 primeiras voltas nunca abaixo de 6:00/km. Se sobrar fôlego, acelere a partir da 3ª. Sem caminhar.\n• Horário: depois do expediente, sem o sol do meio-dia. Assim dá para comparar sem o calor no meio.\n• Tendão: acima de 2 de 10 no teste, o 5 km vira 5.000 m de remo.\n• Relógio: modo Corrida; pare assim que cruzar os 5 km.\n• Anote: o tempo, RPE, nota e se precisou caminhar.'),
+  wk('2026-11-26', 'DIANE', [
+    blk('Bloco A — Aquecimento', 'aquecimento', [
+      it('Remo ou bike', '5 min leve'),
+      it('Mobilidade de ombro', '10 deslocamentos com cabo de vassoura, 10 scap pull-ups, 10 scap push-ups, 30 s pendurado na barra'),
+      it('Check da lombar', '10 good mornings com a barra'),
+      it('Rampa do deadlift', 'barra x10, 60kg x5, 80kg x3, 100kg x3')
+    ], 'RPE 3'),
+    blk('Bloco B — DIANE For Time (cap 10 min)', 'metcon', [
+      it('Antes de começar', '5 deadlifts com 100kg e 3 kipping HSPU, depois 3 min de descanso'),
+      it('Deadlift (100kg)', '21-15-9'),
+      it('Kipping HSPU', '21-15-9'),
+      it('Baseline', '15/10: 4:56')
+    ], 'RPE 9-10')
+  ], '• Estratégia: deadlift 21 sem soltar (ou 13+8), 15 e 9 sem soltar. Em 15/10 você quebrou o deadlift com medo do HSPU, e o HSPU aguentou: 11+10, 10+5 e 9.\n• HSPU: os três pontos do mês. Comece em 11+10 como em 15/10.\n• Meta: 4:15 a 4:30.\n• Por quê: dois dias depois do C&J e um depois do 5 km. O deadlift de 100kg é metade do seu RM, a perna aguenta.\n• Anote: tempo, como quebrou cada exercício, RPE e nota.'),
+  wk('2026-11-27', 'Regenerativo · véspera do Murph', [
+    blk('Bloco A — Soltar as pernas', 'recovery', [
+      it('Bike (minutos)', '30'),
+      it('Mobilidade de ombro e quadril', '10 min')
+    ], 'RPE 2')
+  ], '• Ritmo: só pelo nariz, sem olhar o relógio.\n• Por quê: amanhã é o Murph, com 200 push-ups dois dias depois da Diane. Hoje sem empurrar e sem puxar.'),
+  wk('2026-11-28', 'MURPH', [
+    blk('Bloco A — Aquecimento', 'aquecimento', [
+      it('Teste do tendão', '5 subidas na ponta do pé esquerdo'),
+      it('Geral', '400 m de trote leve e 10 rotações de tornozelo por lado'),
+      it('Mobilidade de ombro', '10 deslocamentos com cabo de vassoura, 10 scap pull-ups, 10 scap push-ups, 30 s pendurado na barra'),
+      it('Específico', '2 rounds de 5 pull-ups, 10 push-ups e 15 air squats')
+    ], 'RPE 3'),
+    blk('Bloco B — MURPH For Time (cap 60 min)', 'metcon', [
+      it('Corrida (plano)', '1 milha (1,6 km)'),
+      it('Pull-ups', '100'),
+      it('Push-ups', '200'),
+      it('Air Squats', '300'),
+      it('Corrida (plano)', '1 milha (1,6 km)'),
+      it('Baseline', '24/10: 55:04')
+    ], 'RPE 8-9')
+  ], '• Formato: sem colete, na ordem de sempre: todas as pull-ups, depois todas as push-ups, depois todos os squats, em séries que você escolher, parando antes da falha.\n• Contagem: anote as séries num papel ou em risquinhos no chão. Em 24/10 a contagem do agachamento se perdeu.\n• Primeira milha só pelo nariz. O Murph se perde saindo rápido.\n• Tendão: acima de 2 de 10, as duas milhas viram 2.000 m de remo cada.\n• Local: fora do box, com barra fixa, como em 24/10. Conte uns 70 min com aquecimento.\n• Relógio: um treino só do início ao fim, como no Hyrox. Pare assim que terminar a última milha.\n• Anote: tempo total, séries de cada exercício, RPE e nota.'),
+  wk('2026-11-29', 'Descanso · fechamento do ciclo', [
+    blk('Sem treino programado', 'rest', [ it('Descanso', 'fim do ciclo 03') ], 'RPE 0')
+  ])
 ];
 
 
@@ -5046,7 +5342,8 @@ const RC_WEEK_PHASES = [
   {start:'2026-09-14', end:'2026-09-19', label:'Semana 3 · Pico', week:3},
   {start:'2026-09-21', end:'2026-09-25', label:'Semana 4 · Deload', week:4},
   {start:'2026-09-28', end:'2026-09-30', label:'Semana 5 · Fechamento', week:5},
-  {start:'2026-10-01', end:'2026-10-31', label:'Ciclo 02', week:null}
+  {start:'2026-10-01', end:'2026-10-31', label:'Ciclo 02', week:null},
+  {start:'2026-11-01', end:'2026-11-30', label:'Ciclo 03', week:null}
 ];
 function rcPhaseFor(iso){
   for(const w of RC_WEEK_PHASES){ if(iso >= w.start && iso <= w.end) return w; }
