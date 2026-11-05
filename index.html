@@ -111,6 +111,12 @@
   .workout-date{font-family:var(--font-mono);color:var(--steel);font-size:12px;margin-bottom:16px;text-transform:capitalize;}
 
   .block{margin-bottom:18px;}
+  .coach-card{background:var(--bg-card);border-left:3px solid var(--accent);border-radius:0 10px 10px 0;padding:10px 14px;margin-bottom:14px;}
+  .coach-card.pend{background:linear-gradient(to right,#2a2212,#1d1a12);border-left-color:#ffb547;margin-bottom:18px;}
+  .coach-card-label{display:flex;align-items:center;gap:8px;font-family:var(--font-display);font-size:10px;text-transform:uppercase;letter-spacing:1.2px;color:var(--accent);margin-bottom:4px;}
+  .coach-card.pend .coach-card-label{color:#ffb547;}
+  .coach-card-badge{font-family:var(--font-mono);font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:0;color:#0a0c0b;background:#ffb547;padding:2px 7px;border-radius:10px;}
+  .coach-card-text{font-family:var(--font-body);font-size:14px;line-height:1.45;color:var(--chalk);}
   .block-title-row{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:10px;flex-wrap:wrap;}
   .block-title{
     font-family:var(--font-display);font-size:13px;text-transform:uppercase;letter-spacing:1px;
@@ -4683,9 +4689,20 @@ function renderHero(bodyEl){
     <div class="workout-name">${escapeHtml(w.name)}</div>
     <div class="workout-date">${isToday ? 'Hoje · ' : ''}${fmtDateLong(w.date)}</div>`;
 
+  // Feedback e Pendência do treinador: cartões no topo, só nas abas de atleta
+  const coach = athlete ? splitCoachNotes(w.notes) : { feedback:'', pendencia:'', dias:'', rest: w.notes || '' };
+  // Pendência no topo; Feedback logo acima do bloco principal (1º bloco pontuável)
+  if(coach.pendencia){
+    html += `<div class="coach-card pend"><div class="coach-card-label">Pendência${coach.dias ? `<span class="coach-card-badge">${escapeHtml(coach.dias)}</span>` : ''}</div><div class="coach-card-text">${escapeHtml(coach.pendencia)}</div></div>`;
+  }
+  const feedbackHtml = coach.feedback ? `<div class="coach-card"><div class="coach-card-label">Feedback</div><div class="coach-card-text">${escapeHtml(coach.feedback)}</div></div>` : '';
+  const mainIdx = w.blocks.findIndex(b => !['aquecimento','recovery','rest'].includes(b.category));
+  if(feedbackHtml && mainIdx < 0) html += feedbackHtml;
+
   w.blocks.forEach((block, bi)=>{
     const cat = catInfo(block.category);
     const conditioning = isConditioning(block.category);
+    if(bi === mainIdx) html += feedbackHtml;
     html += `<div class="block">
       <div class="block-title-row">
         <div class="block-title">${escapeHtml(block.title)}</div>
@@ -4726,11 +4743,11 @@ function renderHero(bodyEl){
     html += `</div>`;
   });
 
-  if(w.notes && w.notes.trim()){
+  if(coach.rest && coach.rest.trim()){
     html += `
     <div class="day-notes">
       <div class="day-notes-label">Observações</div>
-      <div class="day-notes-text">${formatDayNotes(w.notes)}</div>
+      <div class="day-notes-text">${formatDayNotes(coach.rest)}</div>
     </div>`;
   }
 
@@ -6546,6 +6563,27 @@ function rcExportVideoRecorder(overlay, status){
 
 /* ---------- UTIL ---------- */
 // Observações do treinador: em cada linha "• Rótulo: texto", o rótulo sai em negrito.
+// Separa das notes as linhas "• Feedback:" e "• Pendência:" (escritas pelo treinador).
+// Um "(há N dias)" no fim da Pendência vira o selo.
+function splitCoachNotes(notes){
+  const out = { feedback:'', pendencia:'', dias:'', rest:'' };
+  const rest = [];
+  String(notes || '').split('\n').forEach(line => {
+    const f = line.match(/^\s*•?\s*Feedback:\s*(.*)$/i);
+    const p = line.match(/^\s*•?\s*Pend[êe]ncia:\s*(.*)$/i);
+    if(f && !out.feedback){ out.feedback = f[1].trim(); return; }
+    if(p && !out.pendencia){
+      let t = p[1].trim();
+      const d = t.match(/\s*\((h[áa]\s+\d+\s+dias?)\)\s*$/i);
+      if(d){ out.dias = d[1].replace(/\s+/g,' '); t = t.slice(0, d.index).trim(); }
+      out.pendencia = t; return;
+    }
+    rest.push(line);
+  });
+  out.rest = rest.join('\n').trim();
+  return out;
+}
+
 function formatDayNotes(notes){
   return String(notes || '').trim().split('\n').map(line => {
     const m = line.match(/^(\s*•\s*)?([^:•]{1,40}):\s(.*)$/);
