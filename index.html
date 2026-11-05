@@ -4940,7 +4940,7 @@ function renderHero(bodyEl){
   </div>`;
 
   // Feedback e Pendência do treinador: cartões no topo, só nas abas de atleta
-  const coach = athlete ? splitCoachNotes(w.notes) : { feedback:'', pendencia:'', dias:'', rest: w.notes || '' };
+  const coach = splitCoachNotes(w.notes);   // Pendência e Feedback viram cartões nas três abas de atleta
   // Pendência no topo; Feedback logo acima do bloco principal (1º bloco pontuável)
   if(coach.pendencia){
     html += `<div class="coach-card pend"><div class="coach-card-label">Pendência${coach.dias ? `<span class="coach-card-badge">${escapeHtml(coach.dias)}</span>` : ''}</div><div class="coach-card-text">${escapeHtml(coach.pendencia)}</div></div>`;
