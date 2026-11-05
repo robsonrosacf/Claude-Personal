@@ -4747,7 +4747,8 @@ function renderCalendar(){
     const iso = calYear + '-' + String(calMonth+1).padStart(2,'0') + '-' + String(d).padStart(2,'0');
     cells.push({day:d, other:false, iso});
   }
-  while(cells.length % 7 !== 0) cells.push({day: cells.length, other:true, iso:null});
+  let nextDay = 1;
+  while(cells.length % 7 !== 0) cells.push({day: nextDay++, other:true, iso:null});
 
   el.innerHTML = `
     <div class="cal-header">
