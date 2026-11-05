@@ -111,6 +111,12 @@
   .workout-date{font-family:var(--font-mono);color:var(--steel);font-size:12px;margin-bottom:16px;text-transform:capitalize;}
 
   .block{margin-bottom:18px;}
+  .coach-card{background:var(--bg-card);border-left:3px solid var(--accent);border-radius:0 10px 10px 0;padding:10px 14px;margin-bottom:14px;}
+  .coach-card.pend{background:linear-gradient(to right,#2a2212,#1d1a12);border-left-color:#ffb547;margin-bottom:18px;}
+  .coach-card-label{display:flex;align-items:center;gap:8px;font-family:var(--font-display);font-size:10px;text-transform:uppercase;letter-spacing:1.2px;color:var(--accent);margin-bottom:4px;}
+  .coach-card.pend .coach-card-label{color:#ffb547;}
+  .coach-card-badge{font-family:var(--font-mono);font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:0;color:#0a0c0b;background:#ffb547;padding:2px 7px;border-radius:10px;}
+  .coach-card-text{font-family:var(--font-body);font-size:14px;line-height:1.45;color:var(--chalk);}
   .block-title-row{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:10px;flex-wrap:wrap;}
   .block-title{
     font-family:var(--font-display);font-size:13px;text-transform:uppercase;letter-spacing:1px;
@@ -544,21 +550,196 @@
   .toast.show{opacity:1;transform:translateX(-50%) translateY(-6px);}
 
   ::selection{background:var(--accent);color:#0a0c0b;}
+
+  /* ================= VERSÃO REF (teste de layout) ================= */
+  :root{ --r-card:24px; --r-tile:16px; --tile:#1c2022; --tile-2:#22272a; }
+  body{background:var(--bg);}
+  .app{padding:14px 14px 120px;}
+  /* topo: avatar + saudação + botão redondo */
+  header.top{border:none;padding:6px 2px 4px;margin-bottom:18px;align-items:center;gap:12px;justify-content:flex-start;}
+  .top-avatar{width:46px;height:46px;border-radius:50%;background:var(--bg-raised);display:flex;align-items:center;justify-content:center;flex-shrink:0;overflow:hidden;}
+  .top-avatar img{width:34px;height:34px;}
+  .top-text{flex:1;min-width:0;}
+  header.top h1{font-size:22px;line-height:1.05;}
+  header.top .date{display:block;font-family:var(--font-body);font-size:13px;color:var(--chalk-dim);margin-top:3px;text-transform:none;}
+  .top-btn{width:44px;height:44px;border-radius:50%;border:none;background:var(--accent);color:#0a0c0b;display:flex;align-items:center;justify-content:center;cursor:pointer;flex-shrink:0;}
+  .top-btn.off{background:var(--bg-raised);color:var(--chalk);}
+  .top-btn svg{width:20px;height:20px;}
+  .top-btn[hidden]{display:none;}
+  /* menu de baixo com botão central verde */
+  nav.tabs{position:fixed;left:50%;transform:translateX(-50%);bottom:12px;width:calc(100% - 24px);max-width:520px;z-index:50;
+    margin:0;padding:8px 6px;border-radius:28px;background:rgba(22,25,26,0.96);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);
+    box-shadow:0 10px 30px rgba(0,0,0,0.5);align-items:center;gap:0;}
+  nav.tabs button{display:flex;flex-direction:column;align-items:center;gap:4px;padding:6px 2px;font-family:var(--font-body);font-size:10px;
+    font-weight:600;text-transform:none;letter-spacing:0;color:var(--steel);border-radius:14px;background:none;}
+  nav.tabs button svg{width:22px;height:22px;}
+  nav.tabs button.active{background:none;color:var(--accent);}
+  nav.tabs button.nav-fab{flex:0 0 auto;width:58px;height:58px;border-radius:50%;background:var(--accent);color:#0a0c0b;margin:-26px 6px 0;
+    box-shadow:0 6px 18px rgba(198,255,58,0.25), 0 0 0 6px var(--bg);justify-content:center;padding:0;}
+  nav.tabs button.nav-fab svg{width:26px;height:26px;}
+  nav.tabs button.nav-fab span{display:none;}
+  nav.tabs button.nav-fab.active{color:#0a0c0b;box-shadow:0 0 0 3px var(--chalk), 0 0 0 9px var(--bg);}
+  /* cartões grandes e arredondados, sem borda */
+  .card,.calendar,.hist-item,.rc-adjust-bar,.rc-day-banner{border:none;border-radius:var(--r-card);background:var(--bg-raised);}
+  .card{padding:20px;}
+  button.primary{border-radius:999px;padding:15px 22px;font-size:15px;}
+  button.ghost{border-radius:999px;border-color:var(--tile-2);background:var(--tile);color:var(--chalk);padding:12px 18px;}
+  input.text-input,select.text-input,.howwas-comment,.notes-field textarea{border-radius:14px;background:var(--tile);border-color:transparent;}
+  /* resumo da semana (cartão tipo "Steps") */
+  .wk-sum{display:grid;grid-template-columns:1fr auto;gap:4px 14px;align-items:end;}
+  .wk-sum-label{grid-column:1/-1;font-family:var(--font-body);font-weight:600;font-size:14px;color:var(--chalk-dim);display:flex;justify-content:space-between;}
+  .wk-sum-label button{background:none;border:none;color:var(--accent);font-family:var(--font-body);font-size:12px;font-weight:600;cursor:pointer;padding:0;}
+  .wk-sum-big{font-family:var(--font-display);font-size:44px;line-height:1;color:var(--chalk);}
+  .wk-sum-big small{font-family:var(--font-body);font-size:15px;color:var(--chalk-dim);margin-left:4px;font-weight:500;}
+  .wk-sum-ring{grid-row:2/4;grid-column:2;width:84px;height:84px;}
+  .wk-sum-bar{height:10px;border-radius:999px;background:var(--tile-2);overflow:hidden;margin-top:10px;position:relative;}
+  .wk-sum-bar i{display:block;height:100%;border-radius:999px;background:var(--accent);}
+  .wk-sum-pct{font-family:var(--font-mono);font-size:11px;color:var(--chalk-dim);margin-top:6px;}
+  /* faixa da semana em pílulas */
+  .week-wrap{background:var(--bg-raised);border-radius:var(--r-card);padding:14px 12px 12px;margin-bottom:14px;}
+  .week-nav-row{margin-bottom:10px;padding:0 4px;}
+  .week-nav-row button{width:32px;height:32px;border-radius:50%;background:var(--tile);color:var(--chalk);padding:0;}
+  .month-toggle{width:auto !important;height:auto !important;background:none !important;color:var(--chalk-dim) !important;font-family:var(--font-body);font-weight:600;font-size:13px;text-transform:none;letter-spacing:0;}
+  .week-strip{gap:5px;margin-bottom:0;}
+  .week-day{background:var(--tile);border-radius:18px;padding:10px 0 9px;gap:4px;}
+  .week-day .wd-label{font-family:var(--font-body);font-weight:600;font-size:10px;}
+  .week-day .wd-num{font-family:var(--font-display);font-size:17px;color:var(--chalk);}
+  .week-day.today{border-color:var(--steel);}
+  .week-day.selected{background:var(--accent);}
+  .calendar{padding:16px;}
+  .cal-day{border-radius:50%;}
+  .cal-nav button{border-radius:50%;border:none;background:var(--tile);width:32px;height:32px;}
+  /* cabeçalho do dia */
+  .day-card{background:none;padding:0;}
+  .day-head{background:var(--bg-raised);border-radius:var(--r-card);padding:20px;margin-bottom:14px;}
+  .day-kicker{font-family:var(--font-body);font-weight:600;font-size:12px;color:var(--accent);margin-bottom:8px;}
+  .day-card .workout-name{font-size:30px;line-height:1.02;margin-bottom:8px;}
+  .day-card .workout-date{color:var(--chalk-dim);font-family:var(--font-body);font-size:13px;margin-bottom:0;}
+  .day-stats{display:grid;grid-template-columns:repeat(3,1fr);margin-top:18px;background:var(--tile);border-radius:var(--r-tile);padding:12px 4px;}
+  .day-stat{text-align:center;border-left:1px solid var(--tile-2);padding:0 6px;min-width:0;}
+  .day-stat:first-child{border-left:none;}
+  .day-stat-k{font-size:11px;color:var(--chalk-dim);margin-bottom:4px;}
+  .day-stat-v{font-weight:700;font-size:14px;color:var(--accent);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+  /* cada bloco é um cartão */
+  .day-card .block{background:var(--bg-raised);border-radius:var(--r-card);padding:18px 16px 16px;margin-bottom:14px;}
+  .block-title{border-left:none;padding-left:0;color:var(--chalk);font-size:17px;letter-spacing:0.4px;}
+  .block-title-row{margin-bottom:12px;}
+  .block-cat-tag{border:none;background:var(--tile);padding:4px 9px;}
+  .block-rpe-tag{padding:4px 9px;}
+  .exercise-row{background:var(--tile);border-radius:var(--r-tile);border:none !important;padding:12px 14px 12px 12px;margin-bottom:6px;gap:12px;}
+  .exercise-row:last-of-type{margin-bottom:0;}
+  .exercise-bullet{width:34px;height:34px;border-radius:50%;background:var(--bg-raised);font-family:var(--font-mono);font-size:12px;font-weight:700;color:var(--accent);}
+  .exercise-bullet::before{display:none;}
+  .exercise-name{font-size:15px;font-weight:600;}
+  .exercise-prescribed{font-family:var(--font-body);font-size:13px;margin-top:3px;}
+  /* resultado em destaque, número grande */
+  .result-panel{background:var(--accent);border-left:none;border-radius:var(--r-tile);padding:14px 16px;margin-top:10px;color:#0a0c0b;}
+  .result-label{color:#0a0c0b;opacity:0.7;font-size:10px;}
+  .result-value{font-family:var(--font-display);font-size:30px;line-height:1.05;color:#0a0c0b;}
+  .result-edit{color:#0a0c0b;opacity:0.7;}
+  .add-result{border:1.5px dashed var(--tile-2);border-radius:var(--r-tile);padding:14px;text-align:center;font-family:var(--font-body);font-weight:600;font-size:14px;}
+  /* recados do treinador */
+  .coach-card{border-radius:0 var(--r-tile) var(--r-tile) 0;}
+  .coach-card:not(.pend){background:var(--bg-raised);}
+  /* observações, comentário e "como foi" como cartões */
+  .day-card .day-notes,.day-card .howwas{background:var(--bg-raised);border-radius:var(--r-card);border-top:none;padding:18px;margin-top:0;margin-bottom:14px;}
+  .day-notes-label{font-family:var(--font-display);font-size:15px;color:var(--chalk);letter-spacing:0.4px;}
+  .howwas-scale{grid-template-columns:repeat(6,1fr);gap:6px;}
+  .howwas-n{border:none;border-radius:50%;aspect-ratio:1;padding:0;background:var(--tile);}
+  .save-bar{margin-top:0;}
+  /* anterior / próximo como no rodapé da ref */
+  .day-nav{gap:10px;margin:4px 0 14px;}
+  .day-nav-btn{flex:1;border:none;border-radius:999px;padding:15px 10px;background:var(--bg-raised);color:var(--chalk);font-family:var(--font-body);font-weight:700;font-size:14px;text-transform:none;letter-spacing:0;}
+  .day-nav-btn#dayNext{background:var(--accent);color:#0a0c0b;}
+  .day-nav-today,.day-nav-today-btn{display:none;}
+  .quiet-link{color:var(--chalk-dim);text-decoration:none;font-family:var(--font-body);font-weight:600;font-size:13px;}
+  /* Guia e Mídia herdam os cantos e as pílulas */
+  .rc-source-btn,.rc-chip,.rc-adjust-btn{border-radius:999px;border:none;background:var(--bg-raised);}
+  .rc-daybar-arrow{border-radius:50%;border:none;}
+  .rc-preview-scaler{border-radius:var(--r-card);border:none;}
+  .rc-upload-zone{border-radius:var(--r-tile);}
+  .rpe-num{border-radius:12px;}
+  .toast{border-radius:999px;bottom:96px;}
+  .week-day .wd-dot.empty{padding:0;}
+  .top-avatar img{width:100%;height:100%;object-fit:cover;}
+
+  /* ---- ajustes 05/11: menos caixa dentro de caixa ---- */
+  .day-head{background:none;padding:2px 4px 0;margin-bottom:18px;}
+  .day-kicker{font-family:var(--font-mono);font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--chalk-dim);margin-bottom:2px;}
+  .day-num{font-family:var(--font-display);font-size:56px;line-height:1;text-transform:uppercase;color:var(--chalk);}
+  .day-meta{font-size:14px;color:var(--chalk-dim);margin-top:8px;text-transform:capitalize;}
+  .day-focus{font-size:14px;color:var(--chalk-dim);margin-top:3px;}
+  .day-focus b{color:var(--accent);font-weight:700;margin-left:4px;}
+  .exercise-row{background:none;border-radius:0;margin:0;padding:12px 2px;border-bottom:1px solid var(--tile-2) !important;}
+  .exercise-row:last-of-type{border-bottom:none !important;}
+  .exercise-bullet{background:none;width:22px;height:auto;justify-content:flex-start;align-self:flex-start;padding-top:2px;}
+  .week-wrap{background:none;padding:0;}
+  .week-nav-row{padding:0 2px;}
+  /* menu de baixo mais presente: barra clara, aba ativa preenchida */
+  nav.tabs{background:#23282b;border:1px solid #33393c;padding:7px;gap:4px;box-shadow:0 12px 34px rgba(0,0,0,0.65);}
+  nav.tabs button{padding:8px 2px 7px;border-radius:20px;color:var(--chalk-dim);font-family:var(--font-display);font-size:12px;letter-spacing:0.5px;text-transform:uppercase;font-weight:400;}
+  nav.tabs button svg{width:22px;height:22px;}
+  nav.tabs button.active{background:var(--accent);color:#0a0c0b;}
+  .nav-ini{width:22px;height:22px;border-radius:50%;border:2px solid currentColor;display:flex;align-items:center;justify-content:center;font-family:var(--font-display);font-size:12px;line-height:1;}
+  /* topo */
+  .top-switch{display:block;background:none;border:none;padding:0;margin-top:4px;color:var(--accent);font-family:var(--font-body);font-weight:600;font-size:13px;cursor:pointer;}
+  .top-switch[hidden],.date[hidden]{display:none !important;}
+  /* tela de escolha */
+  .pick{position:fixed;inset:0;z-index:200;background:var(--bg);overflow:auto;display:flex;align-items:center;justify-content:center;padding:28px 18px;}
+  .pick[hidden]{display:none;}
+  body.picking nav.tabs{display:none;}
+  .pick-in{width:100%;max-width:440px;}
+  .pick-logo{width:72px;height:72px;display:block;margin-bottom:22px;}
+  .pick-title{font-family:var(--font-display);font-size:40px;line-height:1;text-transform:uppercase;}
+  .pick-sub{font-size:14px;color:var(--chalk-dim);margin:10px 0 26px;}
+  .pick-card{width:100%;display:flex;align-items:center;gap:16px;background:var(--bg-raised);border:none;border-radius:var(--r-card);padding:18px;margin-bottom:12px;cursor:pointer;color:var(--chalk);text-align:left;}
+  .pick-card:active{background:var(--accent);color:#0a0c0b;}
+  .pick-ini{width:52px;height:52px;flex-shrink:0;border-radius:50%;border:2.5px solid var(--accent);color:var(--accent);display:flex;align-items:center;justify-content:center;font-family:var(--font-display);font-size:24px;}
+  .pick-txt{flex:1;min-width:0;display:flex;flex-direction:column;gap:3px;}
+  .pick-txt b{font-family:var(--font-display);font-weight:400;font-size:24px;text-transform:uppercase;letter-spacing:0.4px;}
+  .pick-txt small{font-size:13px;color:var(--chalk-dim);}
+  .pick-go{width:40px;height:40px;border-radius:50%;background:var(--accent);color:#0a0c0b;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:18px;flex-shrink:0;}
+
+  /* ---- ajustes 05/11 (2): escudo maior e Mídia com a mesma tipografia ---- */
+  .top-avatar{width:64px;height:64px;background:none;border-radius:0;}
+  header.top{gap:14px;}
+  header.top h1{font-size:28px;}
+  .rc-source-label,#view-recalibra label.field-label,.rc-hidden-label{font-family:var(--font-body);font-weight:600;font-size:14px;text-transform:none;letter-spacing:0;color:var(--chalk-dim);}
+  .rc-source-btn{font-family:var(--font-display);font-size:13px;letter-spacing:0.5px;}
+  .rc-controls-title{font-family:var(--font-display);font-size:18px;letter-spacing:0.4px;}
+  .rc-daybar-date{font-size:22px;}
+  .rc-res-input{font-family:var(--font-body);font-weight:600;font-size:16px;}
+  .rc-tap-hint,.rc-hint,.rc-export-status,.rc-zoom-label{font-family:var(--font-body);font-size:13px;text-transform:none;letter-spacing:0;color:var(--chalk-dim);}
+  .rc-adjust-btn{font-family:var(--font-display);font-size:13px;letter-spacing:0.5px;}
+  .rc-chip{font-family:var(--font-body);font-weight:600;background:var(--tile);color:var(--chalk);}
+  .rc-hidden-chip{font-family:var(--font-body);font-weight:600;border-radius:999px;}
+
+  /* ---- arte do Stories com a mesma tipografia do app (sem mono) ---- */
+  .rc-frame .rc-program-counter,.rc-frame .rc-kicker{font-family:var(--font-body);font-weight:700;letter-spacing:2px;}
+  .rc-frame .rc-block-label{font-family:var(--font-display);font-weight:400;font-size:40px;letter-spacing:1px;}
+  .rc-frame .rc-wod-item-reps{font-family:var(--font-display);font-weight:400;font-size:34px;letter-spacing:0.5px;}
+  .rc-frame .rc-block-result-label{font-family:var(--font-display);font-weight:400;font-size:24px;letter-spacing:2px;}
+  .rc-frame .rc-block-result-rpe{font-family:var(--font-body);font-weight:700;font-size:26px;}
+  .rc-frame .rc-pill,.rc-frame .rc-score-label{font-family:var(--font-body);font-weight:700;}
+  .day-kicker{font-family:var(--font-body);}
+  .wk-sum-pct{font-family:var(--font-body);font-size:13px;}
+  .result-rest{font-family:var(--font-body);font-weight:600;font-size:13px;line-height:1.4;color:#0a0c0b;opacity:0.75;margin-top:6px;}
 </style>
 </head>
 <body>
 <div class="app">
   <header class="top">
-    <h1>Log de Treino</h1>
-    <span class="date" id="headerDate"></span>
+    <div class="top-avatar"><img src="icon-v3-192.png" alt=""></div>
+    <div class="top-text"><h1 id="topTitle">Robinho</h1><span class="date" id="headerDate"></span><button class="top-switch" id="topSwitch">trocar atleta ▾</button></div>
+    <button class="top-btn off" id="topCal" aria-label="Ver mês"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3.5" y="5" width="17" height="15.5" rx="3"/><path d="M3.5 10h17M8 3v4M16 3v4"/></svg></button>
   </header>
 
   <nav class="tabs">
-    <button class="active" data-tab="hoje">Treino</button>
-    <button data-tab="batata">Batata</button>
-    <button data-tab="thomals">Thomals</button>
-    <button data-tab="guia">Guia</button>
-    <button data-tab="recalibra">Mídia</button>
+    <button class="active" data-tab="hoje"><span class="nav-ini">R</span><span>Robinho</span></button>
+    <button data-tab="batata"><span class="nav-ini">B</span><span>Batata</span></button>
+    <button data-tab="thomals"><span class="nav-ini">T</span><span>Thomals</span></button>
+    <button data-tab="guia"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H20v15H6.5A2.5 2.5 0 0 0 4 20.5zM4 20.5A2.5 2.5 0 0 0 6.5 23H20v-5"/></svg><span>Guia</span></button>
+    <button data-tab="recalibra"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8.5A2.5 2.5 0 0 1 5.5 6h2l1.5-2.2h6L16.5 6h2A2.5 2.5 0 0 1 21 8.5v9a2.5 2.5 0 0 1-2.5 2.5h-13A2.5 2.5 0 0 1 3 17.5z"/><circle cx="12" cy="13" r="3.8"/></svg><span>Mídia</span></button>
   </nav>
 
   <div class="view active" id="view-hoje"></div>
@@ -570,6 +751,7 @@
 </div>
 
 <div class="toast" id="toast">Salvo</div>
+<div class="pick" id="refPick" hidden></div>
 
 <script>/* mp4-muxer 5.2.2 · MIT · github.com/Vanilagy/mp4-muxer */
 "use strict";
@@ -4299,7 +4481,7 @@ const THOMALS_PROGRAM = [
    As telas do dia leem sempre `workouts`, que aponta para o programa ativo. */
 const PROGRAMS = {
   treino:  {key: STORAGE_KEY, source: () => MONTH_PROGRAM, view: 'view-hoje',    tab: 'hoje',    data: [],
-            emptyPlanned: 'Nenhum treino planejado', addLabel: '+ Registrar resultado do treino', defaultCat: 'metcon', backLabel: '‹ voltar ao treino'},
+            emptyPlanned: 'Nenhum treino planejado', addLabel: '+ Registrar resultado do treino', defaultCat: 'metcon', backLabel: '‹ voltar ao Robinho'},
   batata:  {key: 'batata',    source: () => BATATA_PROGRAM, view: 'view-batata', tab: 'batata',  data: [],
             emptyPlanned: 'Nenhum treino planejado', addLabel: '+ Registrar resultado do treino', defaultCat: 'metcon', backLabel: '‹ voltar à Batata'},
   thomals: {key: 'thomals',   source: () => THOMALS_PROGRAM, view: 'view-thomals', tab: 'thomals', data: [],
@@ -4449,8 +4631,48 @@ function showTab(tab){
   if(tab === 'historico') renderHistorico();
   if(tab === 'guia') renderGuia();
   if(tab === 'recalibra') renderRecalibraTab();
+  refUpdateTop(navTab);
   window.scrollTo(0, 0);
 }
+const REF_TITLES = { hoje:'Robinho', batata:'Batata', thomals:'Thomals', guia:'Guia', recalibra:'Mídia' };
+const REF_SUBS = { guia:'Escalas e técnica', recalibra:'Stories do treino' };
+const REF_ATHLETES = { hoje:{nome:'Robinho', ini:'R', prog:'treino'}, batata:{nome:'Batata', ini:'B', prog:'batata'}, thomals:{nome:'Thomals', ini:'T', prog:'thomals'} };
+const REF_PICK_KEY = 'atleta-escolhido';
+function refUpdateTop(tab){
+  document.getElementById('topTitle').textContent = REF_TITLES[tab] || 'Log de Treino';
+  document.getElementById('headerDate').textContent = REF_SUBS[tab] || '';
+  const isAth = !!REF_ATHLETES[tab];
+  document.getElementById('topSwitch').hidden = !isAth;
+  document.getElementById('headerDate').hidden = isAth;
+  if(isAth && window.refReady){ try{ localStorage.setItem(REF_PICK_KEY, tab); }catch(e){} }
+  const cal = document.getElementById('topCal');
+  cal.hidden = !['hoje','batata','thomals'].includes(tab);
+  cal.classList.toggle('off', !monthOpen);
+}
+function refShowPicker(){
+  const today = todayISO();
+  const el = document.getElementById('refPick');
+  el.innerHTML = `<div class="pick-in">
+    <img class="pick-logo" src="icon-v3-192.png" alt="">
+    <div class="pick-title">Quem vai treinar?</div>
+    <div class="pick-sub">O app lembra da escolha e abre direto no seu treino.</div>
+    ${Object.entries(REF_ATHLETES).map(([tab,a])=>{
+      const w = PROGRAMS[a.prog].source().find(x => x.date === today);
+      const main = w && w.blocks.find(b => !['aquecimento','recovery','rest'].includes(b.category));
+      const sub = !w ? 'Sem treino hoje' : (main ? 'Hoje: ' + catInfo(main.category).label : 'Hoje: descanso');
+      return `<button class="pick-card" data-pick="${tab}"><span class="pick-ini">${a.ini}</span><span class="pick-txt"><b>${a.nome}</b><small>${escapeHtml(sub)}</small></span><span class="pick-go">→</span></button>`;
+    }).join('')}
+  </div>`;
+  el.hidden = false;
+  document.body.classList.add('picking');
+  el.querySelectorAll('[data-pick]').forEach(b => b.addEventListener('click', ()=>{
+    el.hidden = true; document.body.classList.remove('picking');
+    selectedDate = todayISO(); weekAnchor = selectedDate;
+    showTab(b.dataset.pick);
+  }));
+}
+document.getElementById('topSwitch').addEventListener('click', refShowPicker);
+document.getElementById('topCal').addEventListener('click', ()=>{ monthOpen = !monthOpen; refUpdateTop(document.querySelector('nav.tabs button.active').dataset.tab); rerenderActiveTab(); });
 document.querySelectorAll('nav.tabs button').forEach(btn=>{
   btn.addEventListener('click', ()=> showTab(btn.dataset.tab));
 });
@@ -4467,6 +4689,7 @@ function getWeekDates(anchorISO){
 
 function renderWeekStrip(){
   const wrap = document.createElement('div');
+  wrap.className = 'week-wrap';
   const dates = getWeekDates(weekAnchor);
   const today = todayISO();
   const workoutDates = new Set(workouts.map(w=>w.date));
@@ -4475,7 +4698,7 @@ function renderWeekStrip(){
   wrap.innerHTML = `
     <div class="week-nav-row">
       <button id="weekPrev">‹</button>
-      <button class="month-toggle" id="monthToggleBtn">${monthOpen ? 'Ocultar mês' : 'Ver mês'}</button>
+      <button class="month-toggle" id="monthToggleBtn">${MONTHS[dateFromISO(dates[3]).getMonth()]}</button>
       <button id="weekNext">›</button>
     </div>
     <div class="week-strip">
@@ -4567,19 +4790,43 @@ function rerenderActiveTab(){
 function renderHoje(){
   const container = document.getElementById(PROGRAMS[activeProgram].view);
   container.innerHTML = '';
+  container.appendChild(refWeekSummary());
+  container.appendChild(renderWeekStrip());
+  container.appendChild(renderCalendar());
   const heroEl = document.createElement('div');
   heroEl.className = 'hero-swipe';
   container.appendChild(heroEl);
   renderHero(heroEl);
   attachSwipe(heroEl);
   container.appendChild(renderDayNav());
-  container.appendChild(renderWeekStrip());
-  container.appendChild(renderCalendar());
   const listLink = document.createElement('button');
   listLink.className = 'quiet-link';
   listLink.textContent = 'ver lista completa';
   listLink.addEventListener('click', ()=> showTab('historico'));
   container.appendChild(listLink);
+}
+
+/* resumo da semana: treinos com resultado / treinos planejados */
+function refWeekSummary(){
+  const el = document.createElement('div');
+  el.className = 'card';
+  const dates = getWeekDates(weekAnchor);
+  const days = dates.map(d => getWorkoutByDate(d)).filter(w => w && w.blocks.some(b => !['aquecimento','recovery','rest'].includes(b.category)));
+  const done = days.filter(w => w.blocks.some(b => b.done)).length;
+  const total = days.length;
+  const pct = total ? Math.round(done / total * 100) : 0;
+  const counter = rcCounterText(selectedDate);
+  const C = 2 * Math.PI * 34;
+  el.innerHTML = `<div class="wk-sum">
+    <div class="wk-sum-label"><span>${/Semana/.test(counter) ? counter.split('|')[0].trim() : 'Esta semana'}</span><button id="refAll">ver lista</button></div>
+    <div class="wk-sum-big">${done}<small>/ ${total} treinos</small></div>
+    <svg class="wk-sum-ring" viewBox="0 0 84 84"><circle cx="42" cy="42" r="34" fill="none" stroke="#22272a" stroke-width="10"/>
+      <circle cx="42" cy="42" r="34" fill="none" stroke="var(--accent)" stroke-width="10" stroke-linecap="round" stroke-dasharray="${C*pct/100} ${C}" transform="rotate(-90 42 42)"/>
+      <text x="42" y="47" text-anchor="middle" font-family="Anton" font-size="18" fill="#f4f3ee">${pct}%</text></svg>
+    <div class="wk-sum-pct">com resultado registrado</div>
+  </div>`;
+  el.querySelector('#refAll').addEventListener('click', ()=> showTab('historico'));
+  return el;
 }
 
 /* ---------- NAVEGAÇÃO ENTRE DIAS ---------- */
@@ -4598,9 +4845,9 @@ function renderDayNav(){
   wrap.className = 'day-nav';
   const isToday = selectedDate === todayISO();
   wrap.innerHTML = `
-    <button class="day-nav-btn" id="dayPrev">‹ Anterior</button>
+    <button class="day-nav-btn" id="dayPrev">← Anterior</button>
     ${isToday ? '<span class="day-nav-today">hoje</span>' : '<button class="day-nav-today-btn" id="dayToday">ir para hoje</button>'}
-    <button class="day-nav-btn" id="dayNext">Próximo ›</button>
+    <button class="day-nav-btn" id="dayNext">Próximo →</button>
   `;
   wrap.querySelector('#dayPrev').addEventListener('click', ()=> goToDay(-1));
   wrap.querySelector('#dayNext').addEventListener('click', ()=> goToDay(1));
@@ -4679,13 +4926,32 @@ function renderHero(bodyEl){
 
   if(editingDraft && !athlete){ renderWorkoutForm(bodyEl, w); return; }
 
-  let html = `<div class="card">
-    <div class="workout-name">${escapeHtml(w.name)}</div>
-    <div class="workout-date">${isToday ? 'Hoje · ' : ''}${fmtDateLong(w.date)}</div>`;
+  const refMain = w.blocks.find(b => !['aquecimento','recovery','rest'].includes(b.category));
+  const refScor = w.blocks.filter(b => !['aquecimento','recovery','rest'].includes(b.category));
+  const refCounter = rcCounterText(w.date);
+  const refWeek = (refCounter.match(/Semana (\d+)/) || [])[1];
+  const refDay = (refCounter.match(/Dia (\d+)/) || [])[1];
+  let html = `<div class="card day-card"><div class="day-head">
+    ${refWeek ? `<div class="day-kicker">Semana ${refWeek}</div>` : ''}
+    <div class="day-num">${refDay ? `Dia ${refDay}` : escapeHtml(fmtDateShort(w.date))}</div>
+    <div class="day-meta">${isToday ? 'Hoje · ' : ''}${fmtDateLong(w.date)}</div>
+    <div class="day-focus">Foco <b>${refMain ? escapeHtml(catInfo(refMain.category).label) : 'Descanso'}</b></div>
+  </div>`;
+
+  // Feedback e Pendência do treinador: cartões no topo, só nas abas de atleta
+  const coach = athlete ? splitCoachNotes(w.notes) : { feedback:'', pendencia:'', dias:'', rest: w.notes || '' };
+  // Pendência no topo; Feedback logo acima do bloco principal (1º bloco pontuável)
+  if(coach.pendencia){
+    html += `<div class="coach-card pend"><div class="coach-card-label">Pendência${coach.dias ? `<span class="coach-card-badge">${escapeHtml(coach.dias)}</span>` : ''}</div><div class="coach-card-text">${escapeHtml(coach.pendencia)}</div></div>`;
+  }
+  const feedbackHtml = coach.feedback ? `<div class="coach-card"><div class="coach-card-label">Feedback</div><div class="coach-card-text">${escapeHtml(coach.feedback)}</div></div>` : '';
+  const mainIdx = w.blocks.findIndex(b => !['aquecimento','recovery','rest'].includes(b.category));
+  if(feedbackHtml && mainIdx < 0) html += feedbackHtml;
 
   w.blocks.forEach((block, bi)=>{
     const cat = catInfo(block.category);
     const conditioning = isConditioning(block.category);
+    if(bi === mainIdx) html += feedbackHtml;
     html += `<div class="block">
       <div class="block-title-row">
         <div class="block-title">${escapeHtml(block.title)}</div>
@@ -4697,7 +4963,7 @@ function renderHero(bodyEl){
     block.items.forEach((item, ii)=>{
       html += `
         <div class="exercise-row">
-          <div class="exercise-bullet"></div>
+          <div class="exercise-bullet">${ii+1}</div>
           <div class="exercise-info">
             <div class="exercise-name">${escapeHtml(item.exercise)}</div>
             <div class="exercise-prescribed">${escapeHtml(item.prescribed||'')}</div>
@@ -4718,7 +4984,7 @@ function renderHero(bodyEl){
       html += `
         <div class="result-panel">
           <div class="result-label">Resultado${athlete && scorable ? `<button class="result-edit" data-ar="${bi}">alterar</button>` : ''}</div>
-          <div class="result-value">${escapeHtml(block.done)}</div>
+          ${(()=>{ const parts = String(block.done).split(' · '); return `<div class="result-value">${escapeHtml(parts[0])}</div>${parts.length>1 ? `<div class="result-rest">${escapeHtml(parts.slice(1).join(' · '))}</div>` : ''}`; })()}
         </div>`;
     } else if(athlete && scorable){
       html += `<button class="add-result" data-ar="${bi}">+ Resultado</button>`;
@@ -4726,11 +4992,11 @@ function renderHero(bodyEl){
     html += `</div>`;
   });
 
-  if(w.notes && w.notes.trim()){
+  if(coach.rest && coach.rest.trim()){
     html += `
     <div class="day-notes">
       <div class="day-notes-label">Observações</div>
-      <div class="day-notes-text">${formatDayNotes(w.notes)}</div>
+      <div class="day-notes-text">${formatDayNotes(coach.rest)}</div>
     </div>`;
   }
 
@@ -5356,7 +5622,7 @@ function rcPhaseFor(iso){
 }
 // programa que a aba Mídia usa (seletor no topo da aba): 'treino', 'batata' ou 'thomals'
 let rcSource = 'treino';
-const RC_SOURCE_LABELS = {treino: 'Treino', batata: 'Batata', thomals: 'Thomals'};
+const RC_SOURCE_LABELS = {treino: 'Robinho', batata: 'Batata', thomals: 'Thomals'};
 
 // contador da arte. Treino: ciclo do Robson (RC_START_DATE e RC_WEEK_PHASES).
 // Outros atletas: conta a partir do primeiro dia do programa deles, em semanas de 7 dias.
@@ -6546,6 +6812,27 @@ function rcExportVideoRecorder(overlay, status){
 
 /* ---------- UTIL ---------- */
 // Observações do treinador: em cada linha "• Rótulo: texto", o rótulo sai em negrito.
+// Separa das notes as linhas "• Feedback:" e "• Pendência:" (escritas pelo treinador).
+// Um "(há N dias)" no fim da Pendência vira o selo.
+function splitCoachNotes(notes){
+  const out = { feedback:'', pendencia:'', dias:'', rest:'' };
+  const rest = [];
+  String(notes || '').split('\n').forEach(line => {
+    const f = line.match(/^\s*•?\s*Feedback:\s*(.*)$/i);
+    const p = line.match(/^\s*•?\s*Pend[êe]ncia:\s*(.*)$/i);
+    if(f && !out.feedback){ out.feedback = f[1].trim(); return; }
+    if(p && !out.pendencia){
+      let t = p[1].trim();
+      const d = t.match(/\s*\((h[áa]\s+\d+\s+dias?)\)\s*$/i);
+      if(d){ out.dias = d[1].replace(/\s+/g,' '); t = t.slice(0, d.index).trim(); }
+      out.pendencia = t; return;
+    }
+    rest.push(line);
+  });
+  out.rest = rest.join('\n').trim();
+  return out;
+}
+
 function formatDayNotes(notes){
   return String(notes || '').trim().split('\n').map(line => {
     const m = line.match(/^(\s*•\s*)?([^:•]{1,40}):\s(.*)$/);
@@ -6569,7 +6856,11 @@ async function init(){
   renderHoje();
   flushResultQueue();   // envia o que ficou pendente de uma abertura anterior
 }
-init();
+init().then(function(){
+  let saved = null; try{ saved = localStorage.getItem(REF_PICK_KEY); }catch(e){}
+  window.refReady = true;
+  if(saved && REF_ATHLETES[saved]) showTab(saved); else refShowPicker();
+});
 if('serviceWorker' in navigator && location.protocol==='https:' && !location.hostname.endsWith('claude.ai')){ navigator.serviceWorker.register('sw.js').catch(()=>{}); }
 </script>
 </body>

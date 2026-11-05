@@ -20,7 +20,7 @@ Uso principal: abrir no celular Android, ver o treino do dia, navegar entre os d
 | Repositório | github.com/robsonrosacf/Claude-Personal (público, branch `main`) |
 | Endereço | https://robsonrosacf.github.io/Claude-Personal/ (GitHub Pages, publica do `main` automaticamente) |
 | Instalação | PWA instalado pelo Chrome no Android ("Instalar"), abre em tela cheia |
-| Arquivos | `index.html` (o app inteiro, cerca de 4.760 linhas), `manifest.json`, `sw.js`, `icon.svg`, `icon-v2-192.png`, `icon-v2-512.png` |
+| Arquivos | `index.html` (o app inteiro, cerca de 6.800 linhas), `manifest.json`, `sw.js`, `icon.svg`, `icon-v3-192.png`, `icon-v3-512.png`, `selo-v1.png`, `recalibra-fundo-v2.jpg` |
 | Cópia antiga | Existe uma versão como artifact no claude.ai. **Não usar**: no Android o link abre o app do Claude em vez da página. O GitHub Pages substituiu essa versão. |
 
 **PWA:**
@@ -71,7 +71,15 @@ wk(date, name, blocks, notes)                // dia: {id, date:'AAAA-MM-DD', nam
 
 ## Abas e funcionamento
 
-Menu (`nav.tabs`) com cinco abas: **TREINO**, **BATATA**, **THOMALS**, **GUIA** e **MÍDIA**. A troca passa por `showTab(tab)`, e cada aba renderiza sob demanda. Identificadores internos: TREINO é `hoje`, BATATA é `batata`, THOMALS é `thomals`, MÍDIA é `recalibra`.
+Menu (`nav.tabs`) com cinco abas: **ROBINHO** (o Robson), **BATATA**, **THOMALS**, **GUIA** e **MÍDIA**. A troca passa por `showTab(tab)`, e cada aba renderiza sob demanda. Identificadores internos: ROBINHO é `hoje` (programa `treino`), BATATA é `batata`, THOMALS é `thomals`, MÍDIA é `recalibra`.
+
+**Layout (desde 05/11/2026, baseado numa referência aprovada pelo Robson):**
+- **Menu fixo embaixo**, barra um tom mais clara que o fundo (`#23282b`, contorno e sombra), aba ativa preenchida de verde. Os três atletas usam o mesmo ícone com variação: círculo com a inicial (R, B, T, classe `.nav-ini`); Guia tem livro e Mídia tem câmera. Sem botão "+" central.
+- **Topo:** escudo RBSN (64 px), nome do atleta da aba e o link "trocar atleta ▾" (`topSwitch`); na Guia e na Mídia, o nome da aba e uma linha de apoio. Botão redondo à direita abre o calendário do mês (fica verde aberto). Textos em `REF_TITLES`/`REF_SUBS`; função `refUpdateTop`.
+- **Tela de escolha "Quem vai treinar?"** (`refShowPicker`, `#refPick`): aparece só quando o celular ainda não tem escolha salva. A aba de atleta usada por último fica em `localStorage['atleta-escolhido']` e o app reabre direto nela. A decisão roda depois do `init()` terminar (`init().then(...)`): antes disso o `loadWorkouts` ainda troca o programa ativo e a tela mostraria um atleta com os dados de outro.
+- **Tela do dia, de cima para baixo:** cartão "Esta semana" (`refWeekSummary`: treinos com resultado / treinos com bloco pontuável na semana, com anel de %), faixa da semana em pílulas sem caixa em volta, calendário (quando aberto), cabeçalho do dia **sem caixa e sem o nome do treino** (Semana N em cima, "DIA 67" grande a partir de `rcCounterText`, data e "Foco" com a categoria do bloco principal), **uma caixa por bloco** (exercícios separados por linha fina e numerados em verde, sem caixa por item), Observações e "Como foi" em caixas próprias, e os botões "← Anterior" (escuro) e "Próximo →" (verde).
+- **Resultado do bloco:** caixa verde; o trecho antes do primeiro " · " vai grande em Anton e o resto, menor, embaixo.
+- Regra do Robson: caixa só para dado; nada de caixa dentro de caixa dentro de caixa.
 
 **Programa ativo:** `PROGRAMS` descreve os programas (`treino`, `batata`, `thomals`: chave de storage, fonte, view, aba, textos do estado vazio, rótulo de volta da lista e categoria padrão de bloco novo). Para um atleta novo: um array `NOME_PROGRAM`, uma entrada em `PROGRAMS`, um botão no `nav.tabs` e uma `div.view`; `programForTab` e `loadWorkouts` pegam o resto sozinhos. `setActiveProgram(nome)` troca o array `workouts`, que é o que todas as telas do dia leem (`renderHoje`, `renderHero`, faixa da semana, calendário, formulário de edição, lista completa). `showTab` ativa o programa do atleta só na aba dele (`programForTab`); Treino e Guia usam sempre `treino`, e Mídia usa o programa escolhido no seletor dela (`rcSource`).
 
@@ -88,6 +96,7 @@ Menu (`nav.tabs`) com cinco abas: **TREINO**, **BATATA**, **THOMALS**, **GUIA** 
 2. **BATATA (`batata`) e THOMALS (`thomals`)** funcionam igual à aba Treino (mesmas telas, textos e navegação), cada uma com o próprio programa.
    - **Registro direto na tela, sem "Editar treino":** nessas abas o formulário de edição não existe (nem no dia vazio).
      - Cada bloco que não seja `aquecimento`, `recovery` ou `rest` mostra um botão discreto **"+ Resultado"** no lugar do painel. Ao salvar, vira o painel "Resultado" (com um "alterar" discreto) e envia à planilha só aquele bloco: `{chave, atleta, data, treino, linhas: [{bloco, resultado}], observacoes: ''}`.
+     - **Recados do treinador no topo:** a tarefa das 23:59 do treinador escreve no início das `notes` do dia seguinte até duas linhas, `• Pendência: texto (há N dias)` e `• Feedback: texto`. `splitCoachNotes` tira essas linhas das Observações (se não sobrar nada, a seção não aparece). A **Pendência** vira um cartão âmbar (`#ffb547`, única exceção à paleta, de propósito) logo abaixo do cabeçalho do dia; o "(há N dias)" do fim vira selo ao lado do rótulo. O **Feedback** vira um cartão com borda verde logo acima do bloco principal (o primeiro que não é aquecimento, recovery ou rest); sem bloco assim, fica logo abaixo da Pendência. Sem a linha, o cartão não aparece. Só nas abas Batata e Thomals; a aba Mídia ignora essas linhas.
      - No fim do dia, depois das Observações, o card **"Como foi"**: nota do treino de 0 a 10 em botões, comentário livre e **Enviar**. Envia `{chave, atleta, data, treino, linhas: [], observacoes: comentário, nota: N}` (o campo `nota` só vai quando há nota). Guarda no dia `nota`, `comment` e `sentAt`; o merge preserva os três.
    - **Cópia para o treinador:** Google Apps Script em `RESULTS_URL`, chave `RESULTS_KEY`. `fetch` POST sem cabeçalho (texto simples, sem preflight) e com `mode: 'no-cors'`. Sem internet, fica na fila `envio-pendente` do `localStorage` e sai na próxima abertura ou quando a conexão volta. A aba Treino não envia nada. Cada salvamento gera um envio. A chave fica no código público: serve para filtrar envios, não é segredo. Renderizam em `view-batata` e `view-thomals`. A aba Mídia usa esses programas quando escolhidos no seletor dela.
 3. **Lista completa (`historico`)**, antiga aba Programação: sem botão no menu, abre pelo link da aba Treino ou de um atleta e mostra o programa da aba de origem, com o rótulo de volta dela no topo ("‹ voltar ao treino", "‹ voltar à Batata", "‹ voltar ao Thomals"). Os dias expandem para mostrar blocos e resultados. Com ela aberta, o menu marca a aba de origem.
@@ -99,7 +108,7 @@ Menu (`nav.tabs`) com cinco abas: **TREINO**, **BATATA**, **THOMALS**, **GUIA** 
    É o gerador de Stories em 1080×1920 a partir do treino do dia.
    - **Tela (de cima para baixo):** seletor "Treino de", barra de data compacta (`rcDayBar`: ‹ seg, 19/10 › e "hoje"), card **Resultados** (um campo por bloco, com o nome do bloco como rótulo; já vem com o resultado do programa limpo por `rcCleanResult`; campo vazio tira a faixa daquele bloco), a arte em prévia, a dica "Toque numa linha da arte pra esconder", os chips das linhas escondidas e um card com **Fundo** ("Fazer upload de mídia"/"Trocar mídia" e "Fundo padrão"; contraste e "Ajustar posição" só com foto ou vídeo própria; zoom só durante o ajuste) e o botão **Exportar mídia**. Exercícios, blocos e prescrições vêm do programa e não são editáveis. Sem destaque único, sem tags, sem faixa da semana e sem calendário nesta aba.
    - **Esconder linhas:** cada item tem `hidden`. Instruções conhecidas (`RC_META_LABELS`) já começam escondidas; tocar numa linha da arte esconde (fora do modo de ajuste); os chips "+ nome" abaixo da arte mostram de volta. Bloco sem linha visível some da arte.
-   - **Seletor "Treino de":** no topo da aba, botões Treino, Batata e Thomals (`rcSourceSelector`, `RC_SOURCE_LABELS`). Troca o programa ativo (`rcSource`) e recarrega os blocos; a escolha continua valendo ao sair e voltar à aba. Padrão: Treino.
+   - **Seletor "Treino de":** no topo da aba, botões Robinho, Batata e Thomals (`rcSourceSelector`, `RC_SOURCE_LABELS`). Troca o programa ativo (`rcSource`) e recarrega os blocos; a escolha continua valendo ao sair e voltar à aba. Padrão: Treino.
    - **Montagem do texto:**
      - puxa os blocos do dia, exceto `aquecimento`, `recovery` e `rest`;
      - marca como escondidos os itens de instrução da lista `RC_META_LABELS`;
@@ -128,9 +137,10 @@ Menu (`nav.tabs`) com cinco abas: **TREINO**, **BATATA**, **THOMALS**, **GUIA** 
   - texto `#f4f3ee`, texto secundário `#9aa09c`, `--steel` `#5f6462`, linhas `#262a29`;
   - acento verde-limão `#c6ff3a`.
 - **Tema azul (em teste):** com `?tema=azul` no endereço, `:root[data-tema="azul"]` troca `--accent` e `--done` por `#3d7bff` (e os tons escuros e o fundo do `.result-panel`). Vale para a interface e para os textos da arte da aba Mídia; selo e fundo padrão continuam verdes. Sem o parâmetro, e no app instalado, tudo fica verde.
-- **Tipografia:** Anton em caixa alta para títulos, Work Sans para o corpo e Space Mono para dados.
+- **Tipografia:** Anton em caixa alta para títulos e números grandes, Work Sans para o corpo e rótulos; Space Mono só em etiquetas pequenas (tags de RPE e categoria, selo da Pendência).
+- **Cantos:** cartões com raio 24 px, botões e pílulas totalmente redondos.
 - **Preferências de layout do Robson:** poucas cores (verde + branco e cinza), texto grande e margens generosas.
-- **Recalibra:** zona segura do Stories de 320 px em cima e embaixo e 110 px nas laterais; rótulos de bloco em verde, nomes em branco a 34 px e quantidades a 27 px; cada bloco com resultado termina numa faixa com borda esquerda verde: "RESULTADO" em mono, o valor em Anton 58 px (40 px se longo) e o RPE em mono verde, menor. **Sem a palavra "RECALIBRA" e sem "Treino do dia".**
+- **Recalibra:** zona segura do Stories de 320 px em cima e embaixo e 110 px nas laterais. Mesma tipografia do app, sem mono: contador e data em Work Sans bold verde; rótulos de bloco em Anton 40 px verde; nomes em Work Sans bold branco a 34 px e quantidades em Anton 34 px; cada bloco com resultado termina numa faixa com borda esquerda verde: "RESULTADO" em Anton, o valor em Anton 58 px (40 px se longo) e o RPE em Work Sans bold verde, menor. A tela de controles da Mídia segue o resto do app (Anton nos títulos e botões, Work Sans nos rótulos e dicas). **Sem a palavra "RECALIBRA" e sem "Treino do dia".**
 - **Ícone:** escudo com as letras RBSN, escudo em verde e letras em branco sobre o fundo escuro.
 
 ## Preferências do Robson para quem trabalha com ele
