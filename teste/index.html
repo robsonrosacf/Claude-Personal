@@ -662,6 +662,43 @@
   .toast{border-radius:999px;bottom:96px;}
   .week-day .wd-dot.empty{padding:0;}
   .top-avatar img{width:100%;height:100%;object-fit:cover;}
+
+  /* ---- ajustes 05/11: menos caixa dentro de caixa ---- */
+  .day-head{background:none;padding:2px 4px 0;margin-bottom:18px;}
+  .day-kicker{font-family:var(--font-mono);font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--chalk-dim);margin-bottom:2px;}
+  .day-num{font-family:var(--font-display);font-size:56px;line-height:1;text-transform:uppercase;color:var(--chalk);}
+  .day-meta{font-size:14px;color:var(--chalk-dim);margin-top:8px;text-transform:capitalize;}
+  .day-focus{font-size:14px;color:var(--chalk-dim);margin-top:3px;}
+  .day-focus b{color:var(--accent);font-weight:700;margin-left:4px;}
+  .exercise-row{background:none;border-radius:0;margin:0;padding:12px 2px;border-bottom:1px solid var(--tile-2) !important;}
+  .exercise-row:last-of-type{border-bottom:none !important;}
+  .exercise-bullet{background:none;width:22px;height:auto;justify-content:flex-start;align-self:flex-start;padding-top:2px;}
+  .week-wrap{background:none;padding:0;}
+  .week-nav-row{padding:0 2px;}
+  /* menu de baixo mais presente: barra clara, aba ativa preenchida */
+  nav.tabs{background:#23282b;border:1px solid #33393c;padding:7px;gap:4px;box-shadow:0 12px 34px rgba(0,0,0,0.65);}
+  nav.tabs button{padding:8px 2px 7px;border-radius:20px;color:var(--chalk-dim);font-family:var(--font-display);font-size:12px;letter-spacing:0.5px;text-transform:uppercase;font-weight:400;}
+  nav.tabs button svg{width:22px;height:22px;}
+  nav.tabs button.active{background:var(--accent);color:#0a0c0b;}
+  .nav-ini{width:22px;height:22px;border-radius:50%;border:2px solid currentColor;display:flex;align-items:center;justify-content:center;font-family:var(--font-display);font-size:12px;line-height:1;}
+  /* topo */
+  .top-switch{display:block;background:none;border:none;padding:0;margin-top:4px;color:var(--accent);font-family:var(--font-body);font-weight:600;font-size:13px;cursor:pointer;}
+  .top-switch[hidden],.date[hidden]{display:none !important;}
+  /* tela de escolha */
+  .pick{position:fixed;inset:0;z-index:200;background:var(--bg);overflow:auto;display:flex;align-items:center;justify-content:center;padding:28px 18px;}
+  .pick[hidden]{display:none;}
+  body.picking nav.tabs{display:none;}
+  .pick-in{width:100%;max-width:440px;}
+  .pick-logo{width:72px;height:72px;display:block;margin-bottom:22px;}
+  .pick-title{font-family:var(--font-display);font-size:40px;line-height:1;text-transform:uppercase;}
+  .pick-sub{font-size:14px;color:var(--chalk-dim);margin:10px 0 26px;}
+  .pick-card{width:100%;display:flex;align-items:center;gap:16px;background:var(--bg-raised);border:none;border-radius:var(--r-card);padding:18px;margin-bottom:12px;cursor:pointer;color:var(--chalk);text-align:left;}
+  .pick-card:active{background:var(--accent);color:#0a0c0b;}
+  .pick-ini{width:52px;height:52px;flex-shrink:0;border-radius:50%;border:2.5px solid var(--accent);color:var(--accent);display:flex;align-items:center;justify-content:center;font-family:var(--font-display);font-size:24px;}
+  .pick-txt{flex:1;min-width:0;display:flex;flex-direction:column;gap:3px;}
+  .pick-txt b{font-family:var(--font-display);font-weight:400;font-size:24px;text-transform:uppercase;letter-spacing:0.4px;}
+  .pick-txt small{font-size:13px;color:var(--chalk-dim);}
+  .pick-go{width:40px;height:40px;border-radius:50%;background:var(--accent);color:#0a0c0b;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:18px;flex-shrink:0;}
   .result-rest{font-family:var(--font-body);font-weight:600;font-size:13px;line-height:1.4;color:#0a0c0b;opacity:0.75;margin-top:6px;}
 </style>
 </head>
@@ -669,16 +706,16 @@
 <div class="app">
   <header class="top">
     <div class="top-avatar"><img src="../icon-v3-192.png" alt=""></div>
-    <div class="top-text"><h1 id="topTitle">Olá, Robson</h1><span class="date" id="headerDate"></span></div>
+    <div class="top-text"><h1 id="topTitle">Robinho</h1><span class="date" id="headerDate"></span><button class="top-switch" id="topSwitch">trocar atleta ▾</button></div>
     <button class="top-btn off" id="topCal" aria-label="Ver mês"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3.5" y="5" width="17" height="15.5" rx="3"/><path d="M3.5 10h17M8 3v4M16 3v4"/></svg></button>
   </header>
 
   <nav class="tabs">
-    <button class="active" data-tab="hoje"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 7v10M3.5 9.5v5M18 7v10M20.5 9.5v5M6 12h12"/></svg><span>Treino</span></button>
-    <button data-tab="batata"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="13" cy="4.5" r="2"/><path d="M8 21l3-6 3 2v4M7 12l3-3h4l3 3M11 9l-1 5"/></svg><span>Batata</span></button>
-    <button class="nav-fab" data-tab="recalibra" aria-label="Mídia"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg><span>Mídia</span></button>
-    <button data-tab="thomals"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="7" r="3.2"/><path d="M5 21c.6-4 3.3-6.5 7-6.5s6.4 2.5 7 6.5"/></svg><span>Thomals</span></button>
+    <button class="active" data-tab="hoje"><span class="nav-ini">R</span><span>Robinho</span></button>
+    <button data-tab="batata"><span class="nav-ini">B</span><span>Batata</span></button>
+    <button data-tab="thomals"><span class="nav-ini">T</span><span>Thomals</span></button>
     <button data-tab="guia"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H20v15H6.5A2.5 2.5 0 0 0 4 20.5zM4 20.5A2.5 2.5 0 0 0 6.5 23H20v-5"/></svg><span>Guia</span></button>
+    <button data-tab="recalibra"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8.5A2.5 2.5 0 0 1 5.5 6h2l1.5-2.2h6L16.5 6h2A2.5 2.5 0 0 1 21 8.5v9a2.5 2.5 0 0 1-2.5 2.5h-13A2.5 2.5 0 0 1 3 17.5z"/><circle cx="12" cy="13" r="3.8"/></svg><span>Mídia</span></button>
   </nav>
 
   <div class="view active" id="view-hoje"></div>
@@ -690,6 +727,7 @@
 </div>
 
 <div class="toast" id="toast">Salvo</div>
+<div class="pick" id="refPick" hidden></div>
 
 <script>/* mp4-muxer 5.2.2 · MIT · github.com/Vanilagy/mp4-muxer */
 "use strict";
@@ -4419,7 +4457,7 @@ const THOMALS_PROGRAM = [
    As telas do dia leem sempre `workouts`, que aponta para o programa ativo. */
 const PROGRAMS = {
   treino:  {key: STORAGE_KEY, source: () => MONTH_PROGRAM, view: 'view-hoje',    tab: 'hoje',    data: [],
-            emptyPlanned: 'Nenhum treino planejado', addLabel: '+ Registrar resultado do treino', defaultCat: 'metcon', backLabel: '‹ voltar ao treino'},
+            emptyPlanned: 'Nenhum treino planejado', addLabel: '+ Registrar resultado do treino', defaultCat: 'metcon', backLabel: '‹ voltar ao Robinho'},
   batata:  {key: 'batata',    source: () => BATATA_PROGRAM, view: 'view-batata', tab: 'batata',  data: [],
             emptyPlanned: 'Nenhum treino planejado', addLabel: '+ Registrar resultado do treino', defaultCat: 'metcon', backLabel: '‹ voltar à Batata'},
   thomals: {key: 'thomals',   source: () => THOMALS_PROGRAM, view: 'view-thomals', tab: 'thomals', data: [],
@@ -4572,15 +4610,44 @@ function showTab(tab){
   refUpdateTop(navTab);
   window.scrollTo(0, 0);
 }
-const REF_TITLES = { hoje:'Olá, Robson', batata:'Treino do Batata', thomals:'Treino do Thomals', guia:'Guia', recalibra:'Mídia' };
-const REF_SUBS = { hoje:'Bora pro treino de hoje', batata:'Programa HYROX', thomals:'Programa HYROX', guia:'Escalas e técnica', recalibra:'Stories do treino' };
+const REF_TITLES = { hoje:'Robinho', batata:'Batata', thomals:'Thomals', guia:'Guia', recalibra:'Mídia' };
+const REF_SUBS = { guia:'Escalas e técnica', recalibra:'Stories do treino' };
+const REF_ATHLETES = { hoje:{nome:'Robinho', ini:'R', prog:'treino'}, batata:{nome:'Batata', ini:'B', prog:'batata'}, thomals:{nome:'Thomals', ini:'T', prog:'thomals'} };
+const REF_PICK_KEY = 'atleta-escolhido';
 function refUpdateTop(tab){
   document.getElementById('topTitle').textContent = REF_TITLES[tab] || 'Log de Treino';
   document.getElementById('headerDate').textContent = REF_SUBS[tab] || '';
+  const isAth = !!REF_ATHLETES[tab];
+  document.getElementById('topSwitch').hidden = !isAth;
+  document.getElementById('headerDate').hidden = isAth;
+  if(isAth && window.refReady){ try{ localStorage.setItem(REF_PICK_KEY, tab); }catch(e){} }
   const cal = document.getElementById('topCal');
   cal.hidden = !['hoje','batata','thomals'].includes(tab);
   cal.classList.toggle('off', !monthOpen);
 }
+function refShowPicker(){
+  const today = todayISO();
+  const el = document.getElementById('refPick');
+  el.innerHTML = `<div class="pick-in">
+    <img class="pick-logo" src="../icon-v3-192.png" alt="">
+    <div class="pick-title">Quem vai treinar?</div>
+    <div class="pick-sub">O app lembra da escolha e abre direto no seu treino.</div>
+    ${Object.entries(REF_ATHLETES).map(([tab,a])=>{
+      const w = PROGRAMS[a.prog].source().find(x => x.date === today);
+      const main = w && w.blocks.find(b => !['aquecimento','recovery','rest'].includes(b.category));
+      const sub = !w ? 'Sem treino hoje' : (main ? 'Hoje: ' + catInfo(main.category).label : 'Hoje: descanso');
+      return `<button class="pick-card" data-pick="${tab}"><span class="pick-ini">${a.ini}</span><span class="pick-txt"><b>${a.nome}</b><small>${escapeHtml(sub)}</small></span><span class="pick-go">→</span></button>`;
+    }).join('')}
+  </div>`;
+  el.hidden = false;
+  document.body.classList.add('picking');
+  el.querySelectorAll('[data-pick]').forEach(b => b.addEventListener('click', ()=>{
+    el.hidden = true; document.body.classList.remove('picking');
+    selectedDate = todayISO(); weekAnchor = selectedDate;
+    showTab(b.dataset.pick);
+  }));
+}
+document.getElementById('topSwitch').addEventListener('click', refShowPicker);
 document.getElementById('topCal').addEventListener('click', ()=>{ monthOpen = !monthOpen; refUpdateTop(document.querySelector('nav.tabs button.active').dataset.tab); rerenderActiveTab(); });
 document.querySelectorAll('nav.tabs button').forEach(btn=>{
   btn.addEventListener('click', ()=> showTab(btn.dataset.tab));
@@ -4838,15 +4905,14 @@ function renderHero(bodyEl){
   const refMain = w.blocks.find(b => !['aquecimento','recovery','rest'].includes(b.category));
   const refScor = w.blocks.filter(b => !['aquecimento','recovery','rest'].includes(b.category));
   const refCounter = rcCounterText(w.date);
+  const refWeek = (refCounter.match(/Semana (\d+)/) || [])[1];
+  const refDay = (refCounter.match(/Dia (\d+)/) || [])[1];
   let html = `<div class="card day-card"><div class="day-head">
-    ${refCounter ? `<div class="day-kicker">${escapeHtml(refCounter)}</div>` : ''}
-    <div class="workout-name">${escapeHtml(w.name)}</div>
-    <div class="workout-date">${isToday ? 'Hoje · ' : ''}${fmtDateLong(w.date)}</div>
-    <div class="day-stats">
-      <div class="day-stat"><div class="day-stat-k">Blocos</div><div class="day-stat-v">${refScor.length || w.blocks.length}</div></div>
-      <div class="day-stat"><div class="day-stat-k">Intensidade</div><div class="day-stat-v">${escapeHtml(refMain && refMain.rpe ? refMain.rpe : '–')}</div></div>
-      <div class="day-stat"><div class="day-stat-k">Foco</div><div class="day-stat-v">${refMain ? escapeHtml(catInfo(refMain.category).label.split(/[\/·\s]/)[0].trim()) : 'Descanso'}</div></div>
-    </div></div>`;
+    ${refWeek ? `<div class="day-kicker">Semana ${refWeek}</div>` : ''}
+    <div class="day-num">${refDay ? `Dia ${refDay}` : escapeHtml(fmtDateShort(w.date))}</div>
+    <div class="day-meta">${isToday ? 'Hoje · ' : ''}${fmtDateLong(w.date)}</div>
+    <div class="day-focus">Foco <b>${refMain ? escapeHtml(catInfo(refMain.category).label) : 'Descanso'}</b></div>
+  </div>`;
 
   // Feedback e Pendência do treinador: cartões no topo, só nas abas de atleta
   const coach = athlete ? splitCoachNotes(w.notes) : { feedback:'', pendencia:'', dias:'', rest: w.notes || '' };
@@ -5532,7 +5598,7 @@ function rcPhaseFor(iso){
 }
 // programa que a aba Mídia usa (seletor no topo da aba): 'treino', 'batata' ou 'thomals'
 let rcSource = 'treino';
-const RC_SOURCE_LABELS = {treino: 'Treino', batata: 'Batata', thomals: 'Thomals'};
+const RC_SOURCE_LABELS = {treino: 'Robinho', batata: 'Batata', thomals: 'Thomals'};
 
 // contador da arte. Treino: ciclo do Robson (RC_START_DATE e RC_WEEK_PHASES).
 // Outros atletas: conta a partir do primeiro dia do programa deles, em semanas de 7 dias.
@@ -6766,7 +6832,11 @@ async function init(){
   renderHoje();
   flushResultQueue();   // envia o que ficou pendente de uma abertura anterior
 }
-init();
+init().then(function(){
+  let saved = null; try{ saved = localStorage.getItem(REF_PICK_KEY); }catch(e){}
+  window.refReady = true;
+  if(saved && REF_ATHLETES[saved]) showTab(saved); else refShowPicker();
+});
 // página de teste: sem service worker próprio
 </script>
 </body>
